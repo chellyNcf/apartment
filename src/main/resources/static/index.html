@@ -1,0 +1,103 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="renderer" content="webkit">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+    <link rel="stylesheet" href="layui/css/layui.css"  media="all">
+    <link rel="stylesheet" href="css/base.css"  media="all">
+    <script src="jquery/jquery-3.4.0.js"></script>
+    <script src="layui/layui.js"></script>
+    <!-- 注意：如果你直接复制所有代码到本地，上述css路径需要改成你本地的 -->
+    <title>Title</title>
+</head>
+<body class="layui-layout-body">
+    <div class="layui-layout layui-layout-admin">
+    <div class="layui-header">
+        <div class="layui-logo">LuoYing</div>
+        <!-- 头部区域（可配合layui已有的水平导航） -->
+        <div class="layui-nav layui-layout-left" style="width: 100%">
+
+            <div class="layui-nav-item" style="width: 100%">
+                <div class="layui-logo title_logo" style="font-size: x-large; font-weight: bold; letter-spacing: 5px;width: 30%">学生公寓管理系统</div>
+            </div>
+
+        </div>
+        <ul class="layui-nav layui-layout-right">
+            <li class="layui-nav-item">
+                <a href="javascript:;">
+                    <img src="http://t.cn/RCzsdCq" class="layui-nav-img">
+                    admin
+                </a>
+                <dl class="layui-nav-child">
+                    <dd><a href="">基本资料</a></dd>
+                    <dd><a href="">安全设置</a></dd>
+                </dl>
+            </li>
+            <li class="layui-nav-item"><a href="">退出</a></li>
+        </ul>
+    </div>
+
+    <div class="layui-side layui-bg-black">
+        <div class="layui-side-scroll">
+            <!-- 左侧导航区域（可配合layui已有的垂直导航） -->
+            <ul class="layui-nav layui-nav-tree admin_left"  lay-filter="test">
+                <li class="layui-nav-item layui-nav-itemed">
+                    <a class="" href="javascript:;">学生管理</a>
+                    <dl class="layui-nav-child">
+                        <dd><a href="javascript:;" data-options="{url:'html/student.html',title:'学生信息'}">学生信息</a></dd>
+                        <dd><a href="javascript:;">寒暑假留校</a></dd>
+                        <dd><a href="javascript:;">晚归管理</a></dd>
+                        <dd><a href="javascript:;">退宿管理</a></dd>
+                    </dl>
+                </li>
+                <li class="layui-nav-item">
+                    <a href="javascript:;">宿舍管理</a>
+                    <dl class="layui-nav-child">
+                        <dd><a href="javascript:;">宿舍信息</a></dd>
+                        <dd><a href="javascript:;">违规纪录</a></dd>
+                        <dd><a href="javascript:;">报修处理</a></dd>
+                    </dl>
+                </li>
+                <li class="layui-nav-item">
+                    <a href="javascript:;">日常事项</a>
+                    <dl class="layui-nav-child">
+                        <dd><a href="javascript:;">外来人员登记</a></dd>
+                        <dd><a href="javascript:;">大宗物件出入登记</a></dd>
+                    </dl>
+                </li>
+                <li class="layui-nav-item"><a href="javascript:;">系统设置</a></li>
+            </ul>
+        </div>
+    </div>
+
+    <div class="layui-body">
+        <iframe id="test" scrolling="auto" frameborder="0"  src="html/login.html" style="width:100%;height:100%;"></iframe>
+    </div>
+
+    <div class="layui-footer">
+        <!-- 底部固定区域 -->
+        © layui.com - 毕业设计
+    </div>
+</div>
+<script>
+    //JavaScript代码区域
+    layui.use('element', function(){
+
+        $('#test').attr('src',"html/login.html");
+        $('.admin_left .layui-nav-child a').click(function () {
+            console.log("=========");
+            var options = eval('('+ $(this).data('options') + ')');
+            console.log(options);
+            var url = options.url;
+            var title = options.title;
+
+            $('#test').attr('src',url);
+
+        });
+    });
+
+</script>
+</body>
+</html>
