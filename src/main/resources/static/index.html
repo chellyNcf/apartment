@@ -35,7 +35,7 @@
                     <dd><a href="">安全设置</a></dd>
                 </dl>
             </li>
-            <li class="layui-nav-item"><a href="">退出</a></li>
+            <li class="layui-nav-item"><a href="html/login.html">退出</a></li>
         </ul>
     </div>
 
@@ -85,7 +85,7 @@
     //JavaScript代码区域
     layui.use('element', function(){
 
-        $('#test').attr('src',"html/login.html");
+        $('#test').attr('src',"html/welcome.html");
         $('.admin_left .layui-nav-child a').click(function () {
             console.log("=========");
             var options = eval('('+ $(this).data('options') + ')');
