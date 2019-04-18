@@ -12,6 +12,9 @@ public class StudentsController {
     @GetMapping("/page")
     public ResultMsg getStudentsPage(){
 
-        return null;
+        ResultMsg msg=new ResultMsg();
+        msg.setCode(0);
+        msg.setCount(1);
+        return msg;
     }
 }
