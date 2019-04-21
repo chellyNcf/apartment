@@ -1,6 +1,5 @@
 package com.luoying.apartment.filter;
 
-import org.springframework.stereotype.Component;
 
 import javax.servlet.*;
 import javax.servlet.annotation.WebFilter;
@@ -9,9 +8,9 @@ import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 
 /**
- * iframe跨域
+ * iframe,ajax跨域（前后端分离）
  */
-@WebFilter(urlPatterns = "/")
+@WebFilter(urlPatterns = "/*")
 public class CrossOriginFilter implements Filter {
 
     @Override
@@ -20,7 +19,17 @@ public class CrossOriginFilter implements Filter {
         HttpServletRequest request= (HttpServletRequest) servletRequest;
         HttpServletResponse response= (HttpServletResponse) servletResponse;
 
+        //iframe跨域
         response.setHeader("X-Frame-Options", "ALLOW-FROM http://localhost:8080/apartment/html");
+        //响应数据跨域,*表示所有地址都可访问
+        response.setHeader("Access-Control-Allow-Origin", "*");
+        //请求方法跨域
+        response.setHeader("Access-Control-Allow-Methods", "POST,PUT,GET,DELETE");
+        //在3600秒内，不需要再发送预检验请求
+        response.setHeader("Access-Control-Max-Age", "3600");
+        //允许跨域请求包含content-type头
+        response.setHeader("Access-Control-Allow-Headers", "Content-Type");
+
         filterChain.doFilter(request,response);
     }
 
