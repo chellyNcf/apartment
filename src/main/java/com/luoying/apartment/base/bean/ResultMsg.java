@@ -11,5 +11,8 @@ public class ResultMsg {
 
     private String msg;
 
+    private Integer count;
+
     private Object data;
+
 }
