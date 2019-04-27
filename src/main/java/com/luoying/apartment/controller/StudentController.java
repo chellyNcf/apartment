@@ -41,7 +41,7 @@ public class StudentController extends BaseController {
         page=studentService.getStudentPage(page);
 
         ResultMsg msg=ResultMsgFactory.createSuccessMsg(page.getRecords());
-        msg.setCount(0);
+        msg.setCount(page.getCount());
         return msg;
     }
 
