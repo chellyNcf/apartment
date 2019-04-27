@@ -1,35 +1,96 @@
 package com.luoying.apartment.pojo;
 
+import com.baomidou.mybatisplus.annotation.TableField;
+import com.baomidou.mybatisplus.annotation.TableName;
+import java.util.Date;
+
+import com.fasterxml.jackson.annotation.JsonFormat;
+import com.luoying.apartment.base.bean.BaseEntity;
 import lombok.Data;
+import lombok.EqualsAndHashCode;
+import lombok.experimental.Accessors;
+import org.springframework.format.annotation.DateTimeFormat;
 
+/**
+ * <p>
+ * 学生表
+ * </p>
+ *
+ * @author LuoYing
+ * @since 2019-04-27
+ */
 @Data
-public class Student {
+@EqualsAndHashCode(callSuper = true)
+@Accessors(chain = true)
+@TableName("tb_student")
+public class Student extends BaseEntity {
 
-    private Long Id=Long.valueOf(1);
-
-    private String name="姓名";
+    private static final long serialVersionUID = 1L;
 
     /**
-     * 默认0男1女2
+     * 学号
      */
-    private Integer sex=1;
+    private String studentNum;
 
-    private Integer age=18;
+    /**
+     * 学生名
+     */
+    private String studentName;
 
-    private String sno="20190420001";
+    /**
+     * 院系
+     */
+    private String department;
 
-    private String phone="16596328546";
+    /**
+     * 班级
+     */
+    private String clazz;
 
-    private String className="222";
+    /**
+     * 性别：1男2女
+     */
+    private Integer sex;
 
-    private String departmentName="计算机院系";
+    /**
+     * 出生日期
+     */
+    @DateTimeFormat(pattern = "yyyy-MM-dd")//接收格式
+    @JsonFormat(pattern = "yyyy-MM-dd")//返回格式
+    private Date birthdate;
 
-    private String apartmentName="学生公寓";
+    /**
+     * 手机
+     */
+    private String phone;
 
-    private String  buildingUnit="A栋1单元";
+    /**
+     * 床位id
+     */
+    private Long bedId;
 
-    private String room="301";
+    /**
+     * 宿舍id
+     */
+    private Long dormitoryId;
 
-    private String bed="4";
+    /**
+     * 0未入住，1已入住，2退宿
+     */
+    private Integer status;
 
+    @TableField(exist = false)
+    private Integer age;
+
+    @TableField(exist = false)
+    private String apartmentName;
+
+    @TableField(exist = false)
+    private String bedNum;
+
+    @TableField(exist = false)
+    private String building;
+
+    @TableField(exist = false)
+    private String dormitoryNum;
 }

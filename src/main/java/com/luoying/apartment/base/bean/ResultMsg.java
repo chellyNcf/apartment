@@ -7,6 +7,10 @@ import lombok.Setter;
 @Setter
 public class ResultMsg {
 
+    ResultMsg(){
+
+    }
+
     private Integer code;
 
     private String msg;

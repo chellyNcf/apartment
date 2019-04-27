@@ -24,13 +24,13 @@
                 <div class="layui-inline">
                     <label class="layui-form-label">姓名</label>
                     <div class="layui-input-block">
-                        <input type="text" name="date" id="name" autocomplete="off" class="layui-input">
+                        <input type="text" name="studentName" id="name" autocomplete="off" class="layui-input">
                     </div>
                 </div>
                 <div class="layui-inline">
                     <label class="layui-form-label">学号</label>
                     <div class="layui-input-block">
-                        <input type="text" name="number" autocomplete="off" class="layui-input">
+                        <input type="text" name="studentNum" autocomplete="off" class="layui-input">
                     </div>
                 </div>
                 <div class="layui-inline">
@@ -57,7 +57,7 @@
         <div class="layui-inline">
             <label class="layui-form-label">姓名</label>
             <div class="layui-input-block">
-                <input type="text" lay-verify="required|stu_name" name="name" autocomplete="off" class="layui-input">
+                <input type="text" lay-verify="required|stu_name" name="studentName" autocomplete="off" class="layui-input">
             </div>
         </div>
     </div>
@@ -66,7 +66,7 @@
         <div class="layui-inline">
             <label class="layui-form-label">学号</label>
             <div class="layui-input-block">
-                <input type="text"  lay-verify="required" name="sno" autocomplete="off" class="layui-input">
+                <input type="text"  lay-verify="required" name="studentNum" autocomplete="off" class="layui-input">
             </div>
         </div>
     </div>
@@ -84,13 +84,13 @@
         <div class="layui-inline">
             <label class="layui-form-label">院系</label>
             <div class="layui-input-inline">
-                <input type="tel" name="departmentName" lay-verify="required" autocomplete="off" class="layui-input">
+                <input type="tel" name="department" lay-verify="required" autocomplete="off" class="layui-input">
             </div>
         </div>
         <div class="layui-inline">
             <label class="layui-form-label">班级</label>
             <div class="layui-input-inline">
-                <input type="text" name="className" lay-verify="required" autocomplete="off" class="layui-input">
+                <input type="text" name="clazz" lay-verify="required" autocomplete="off" class="layui-input">
             </div>
         </div>
     </div>
@@ -137,8 +137,26 @@
 <script type="text/html" id="sexTpl">
     {{#  if(d.sex == 1){ }}
         <span>男</span>
-    {{#  } else { }}
+    {{#  } else if(d.sex == 2){ }}
         <span>女</span>
+    {{#  } else{ }}
+        <span></span>
+    {{#  } }}
+</script>
+
+<script type="text/html" id="statusTpl">
+    {{#  if(d.status == 0){ }}
+        <span>未入住</span>
+    {{#  } else if(d.status == 1){ }}
+        <span>已入住</span>
+    {{#  } else if(d.status == 2) { }}
+        <span>退宿</span>
+    {{#  } }}
+</script>
+
+<script type="text/html" id="dormitoryInfoTpl">
+    {{#  if(d.status != 0){ }}
+    <span> {{ d.building }} 栋/{{ d.dormitoryNum }}室/{{  d.bedNum }}号床</span>
     {{#  } }}
 </script>
 
@@ -149,20 +167,21 @@
         table.render({
             id:'student_table',
             elem: '#student_table'
-            ,url:baseUrl+'/students/page'
+            ,url:baseUrl+'/student/page'
             ,toolbar: '#toolbarDemo'
             ,cellMinWidth: 80 //全局定义常规单元格的最小宽度，layui 2.2.1 新增
             ,cols: [[
                 {type: 'numbers',title: '序号', fixed: 'left'}
-                ,{field:'name', width:100, title: '姓名',fixed: 'left'}
-                ,{field:'sno', width:130, title: '学号'}
+                ,{field:'studentName', width:100, title: '姓名',fixed: 'left'}
+                ,{field:'studentNum', width:130, title: '学号'}
                 ,{field:'sex', width:80, title: '性别', templet: '#sexTpl'}
                 ,{field:'age', width:80, title: '年龄'}
                 ,{field:'phone', title: '电话号码', width: 120} //minWidth：局部定义当前单元格的最小宽度，layui 2.2.1 新增
-                ,{field:'className', title: '班级', sort: true}
-                ,{field:'departmentName', title: '院系名称', sort: true}
+                ,{field:'clazz', title: '班级', sort: true}
+                ,{field:'department', title: '院系名称', sort: true}
                 ,{field:'apartmentName', title: '公寓名称'}
-                ,{field:'buildingUnit', width:137, title: '公寓住址', sort: true}
+                ,{field:'dormitoryInfo', width:137, title: '公寓住址', templet: '#dormitoryInfoTpl'}
+                ,{field:'status', width:80, title: '状态', templet: '#statusTpl'}
                 ,{fixed: 'right', title:'操作', toolbar: '#barDemo', width:150}
             ]]
             ,page: true
@@ -185,9 +204,9 @@
                 layer.confirm('真的删除行么', function(index){
                     console.log(data);
                     remoteCall({
-                        url:baseUrl+'/students/1',
+                        url:baseUrl+'/student/1',
                         type:"delete",
-                        data:{id:data.columnNumber},
+                        data:{id:data.id},
                         dataType:'json',
                         success:function (result) {
                             console.log(result);
@@ -208,7 +227,7 @@
                 //console.log(obj)
 
             } else if(obj.event === 'edit'){
-                location.href='student_update.html?id=1';
+                location.href='student_update.html?id='+data.id;
             }
         });
 

@@ -25,7 +25,7 @@
                 <div class="layui-inline">
                     <label class="layui-form-label">姓名</label>
                     <div class="layui-input-block">
-                        <input type="text" lay-verify="required|stu_name" name="name" autocomplete="off" class="layui-input">
+                        <input type="text" lay-verify="required|stu_name" name="studentName" autocomplete="off" class="layui-input">
                     </div>
                 </div>
             </div>
@@ -34,7 +34,7 @@
                 <div class="layui-inline">
                     <label class="layui-form-label">学号</label>
                     <div class="layui-input-block">
-                        <input type="text"  lay-verify="required" name="sno" autocomplete="off" class="layui-input">
+                        <input type="text"  lay-verify="required" name="studentNum" autocomplete="off" class="layui-input">
                     </div>
                 </div>
             </div>
@@ -52,13 +52,13 @@
                 <div class="layui-inline">
                     <label class="layui-form-label">院系</label>
                     <div class="layui-input-inline">
-                        <input type="tel" name="departmentName" lay-verify="required" autocomplete="off" class="layui-input">
+                        <input type="tel" name="department" lay-verify="required" autocomplete="off" class="layui-input">
                     </div>
                 </div>
                 <div class="layui-inline">
                     <label class="layui-form-label">班级</label>
                     <div class="layui-input-inline">
-                        <input type="text" name="className" lay-verify="required" autocomplete="off" class="layui-input">
+                        <input type="text" name="clazz" lay-verify="required" autocomplete="off" class="layui-input">
                     </div>
                 </div>
             </div>
@@ -127,7 +127,7 @@
             console.log(data.form) //被执行提交的form对象，一般在存在form标签时才会返回
             console.log(data.field) //当前容器的全部表单字段，名值对形式：{name: value}
             remoteCall({
-                url:baseUrl+'/students',
+                url:baseUrl+'/student',
                 type:"post",
                 contentType: "application/json; charset=utf-8",
                 data:JSON.stringify(data.field),
