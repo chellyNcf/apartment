@@ -39,6 +39,22 @@ public class Dormitory extends BaseEntity {
     private String building;
 
     /**
+     * 楼层
+     */
+    private Integer floorNumber;
+
+    /**
+     * 床位数
+     */
+    @TableField("bad_num")
+    private Integer bedQuantity;
+
+    /**
+     * 0未满，1已满
+     */
+    private Integer status;
+
+    /**
      * 宿舍描述
      */
     private String note;

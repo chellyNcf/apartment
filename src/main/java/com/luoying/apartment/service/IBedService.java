@@ -3,6 +3,8 @@ package com.luoying.apartment.service;
 import com.baomidou.mybatisplus.extension.service.IService;
 import com.luoying.apartment.pojo.Bed;
 
+import java.util.List;
+
 /**
  * <p>
  * 床位表 服务类
@@ -12,5 +14,7 @@ import com.luoying.apartment.pojo.Bed;
  * @since 2019-04-24
  */
 public interface IBedService extends IService<Bed> {
+
+    List<Bed> list(Long dormitoryId);
 
 }
