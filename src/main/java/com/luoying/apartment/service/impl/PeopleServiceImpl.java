@@ -1,5 +1,6 @@
 package com.luoying.apartment.service.impl;
 
+import com.luoying.apartment.base.bean.MyPage;
 import com.luoying.apartment.pojo.People;
 import com.luoying.apartment.dao.PeopleMapper;
 import com.luoying.apartment.service.IPeopleService;
@@ -17,4 +18,10 @@ import org.springframework.stereotype.Service;
 @Service
 public class PeopleServiceImpl extends ServiceImpl<PeopleMapper, People> implements IPeopleService {
 
+    @Override
+    public MyPage<People> getPeoplePage(MyPage<People> page) {
+        page.setRecords(this.baseMapper.queryPeoplePage( page.getParams()));
+        page.setCount(this.baseMapper.queryPeopleCount(page.getParams()));
+        return page;
+    }
 }

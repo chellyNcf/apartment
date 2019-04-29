@@ -16,7 +16,11 @@ HELP.md
 *.iws
 *.iml
 *.ipr
-
+*.gitignore
+*.md
+*.mvnw
+*.cmd
+*.class
 ### NetBeans ###
 /nbproject/private/
 /nbbuild/

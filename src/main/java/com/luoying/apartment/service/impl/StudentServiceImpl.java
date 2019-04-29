@@ -12,7 +12,6 @@ public class StudentServiceImpl extends ServiceImpl<StudentMapper,Student> imple
 
     @Override
     public MyPage<Student> getStudentPage(MyPage<Student> page) {
-
         page.setRecords(this.baseMapper.queryStudentPage( page.getParams()));
         page.setCount(this.baseMapper.queryStudentCount(page.getParams()));
         return page;

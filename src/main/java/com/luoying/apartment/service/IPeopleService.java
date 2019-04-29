@@ -1,5 +1,6 @@
 package com.luoying.apartment.service;
 
+import com.luoying.apartment.base.bean.MyPage;
 import com.luoying.apartment.pojo.People;
 import com.baomidou.mybatisplus.extension.service.IService;
 
@@ -12,5 +13,7 @@ import com.baomidou.mybatisplus.extension.service.IService;
  * @since 2019-04-27
  */
 public interface IPeopleService extends IService<People> {
+
+    MyPage<People> getPeoplePage(MyPage<People> page);
 
 }
