@@ -1,7 +1,10 @@
 package com.luoying.apartment.service;
 
+import com.luoying.apartment.base.bean.MyPage;
 import com.luoying.apartment.pojo.Dormitory;
 import com.baomidou.mybatisplus.extension.service.IService;
+
+import java.util.List;
 
 /**
  * <p>
@@ -13,4 +16,5 @@ import com.baomidou.mybatisplus.extension.service.IService;
  */
 public interface IDormitoryService extends IService<Dormitory> {
 
+    MyPage<Dormitory>  getDormitoryPage(MyPage<Dormitory> page);
 }

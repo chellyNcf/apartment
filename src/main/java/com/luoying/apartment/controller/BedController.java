@@ -10,6 +10,7 @@ import com.luoying.apartment.service.impl.BedServiceImpl;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import com.luoying.apartment.base.controller.BaseController;
 
@@ -28,9 +29,9 @@ public class BedController extends BaseController{
     private IBedService bedService;
 
     @GetMapping("/list")
-    public ResultMsg getBedList(){
+    public ResultMsg getBedList(@RequestParam Long dormitoryId){
 
-        return ResultMsgFactory.createSuccessMsg(bedService.list());
+        return ResultMsgFactory.createSuccessMsg(bedService.list(dormitoryId));
     }
 
 

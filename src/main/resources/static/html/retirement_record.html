@@ -11,12 +11,12 @@
     <script src="../layui/layui.js" charset="utf-8"></script>
     <script src="../js/base.js" charset="utf-8"></script>
     <!-- 注意：如果你直接复制所有代码到本地，上述css路径需要改成你本地的 -->
-    <title>学生信息</title>
+    <title>宿舍信息</title>
 </head>
 <body>
 <div class="layui-fluid">
     <fieldset class="layui-elem-field layui-field-title top_fieldset" >
-        <legend>学生信息</legend>
+        <legend>宿舍信息</legend>
     </fieldset>
     <div class="layui-row search_criteria">
         <div class="layui-form layui-form-pane">
@@ -47,7 +47,7 @@
     </div>
     <div class="layui-row"></div>
     <div class="layui-row">
-        <table class="layui-hide" id="student_table" lay-filter="student_table"></table>
+        <table class="layui-hide" id="dormitory_table" lay-filter="dormitory_table"></table>
     </div>
 </div>
 
@@ -130,6 +130,7 @@
 </script>
 
 <script type="text/html" id="barDemo">
+    <a class="layui-btn layui-btn-xs layui-btn-normal" lay-event="bed">床位</a>
     <a class="layui-btn layui-btn-xs" lay-event="edit">编辑</a>
     <a class="layui-btn layui-btn-danger layui-btn-xs" lay-event="del">删除</a>
 </script>
@@ -146,11 +147,11 @@
 
 <script type="text/html" id="statusTpl">
     {{#  if(d.status == 0){ }}
-        <span>未入住</span>
+        <span style="color: green">未满</span>
     {{#  } else if(d.status == 1){ }}
-        <span>已入住</span>
-    {{#  } else if(d.status == 2) { }}
-        <span>退宿</span>
+        <span style="color: red">已满</span>
+    {{#  } else { }}
+        <span></span>
     {{#  } }}
 </script>
 
@@ -165,22 +166,19 @@
         var table = layui.table,layer = layui.layer,form = layui.form;
 
         table.render({
-            id:'student_table',
-            elem: '#student_table'
-            ,url:baseUrl+'/student/page'
+            id:'dormitory_table',
+            elem: '#dormitory_table'
+            ,url:baseUrl+'/dormitory/page'
             ,toolbar: '#toolbarDemo'
             ,cellMinWidth: 80 //全局定义常规单元格的最小宽度，layui 2.2.1 新增
             ,cols: [[
                 {type: 'numbers',title: '序号', fixed: 'left'}
-                ,{field:'studentName', width:100, title: '姓名',fixed: 'left'}
-                ,{field:'studentNum', width:130, title: '学号'}
-                ,{field:'sex', width:80, title: '性别', templet: '#sexTpl'}
-                ,{field:'age', width:80, title: '年龄'}
-                ,{field:'phone', title: '电话号码', width: 120} //minWidth：局部定义当前单元格的最小宽度，layui 2.2.1 新增
-                ,{field:'clazz', title: '班级', sort: true}
-                ,{field:'department', title: '院系名称', sort: true}
-                ,{field:'apartmentName', title: '公寓名称'}
-                ,{field:'dormitoryInfo', width:137, title: '公寓住址', templet: '#dormitoryInfoTpl'}
+                ,{field:'dormitoryNum', width:100, title: '宿舍房号',fixed: 'left'}
+                ,{field:'apartmentName', width:130, title: '公寓名'}
+                ,{field:'building', width:80, title: '楼号(栋)',sort: true}
+                ,{field:'note', width:80, title: '宿舍描述'}
+                ,{field:'floorNumber', title: '楼层', width: 80,sort: true} //minWidth：局部定义当前单元格的最小宽度，layui 2.2.1 新增
+                ,{field:'bedQuantity', title: '床位数'}
                 ,{field:'status', width:80, title: '状态', templet: '#statusTpl'}
                 ,{fixed: 'right', title:'操作', toolbar: '#barDemo', width:150}
             ]]
@@ -188,17 +186,17 @@
         });
 
         //头工具栏事件
-        table.on('toolbar(student_table)', function(obj){
+        table.on('toolbar(dormitory_table)', function(obj){
             switch(obj.event){
                 case 'add':
                     // layer.alert("弹出添加");
-                    location.href='student_add.html';
+                    location.href='dormitory_add.html';
                     break;
             };
         });
 
         //监听行工具事件
-        table.on('tool(student_table)', function(obj){
+        table.on('tool(dormitory_table)', function(obj){
             var data = obj.data;
             if(obj.event === 'del'){
                 layer.confirm('真的删除行么', function(index){
@@ -227,7 +225,9 @@
                 //console.log(obj)
 
             } else if(obj.event === 'edit'){
-                location.href='student_update.html?id='+data.id;
+                location.href='dormitory_update.html?id='+data.id;
+            } else if(obj.event === 'bed'){
+                location.href='dormitory_update.html?id='+data.id;
             }
         });
 
@@ -237,7 +237,7 @@
                 var name = $('#name');
                 var studentNum=$('#studentNum');
                 //执行重载表格
-                table.reload('student_table', {
+                table.reload('dormitory_table', {
                     page: {
                         curr: 1 //重新从第 1 页开始
                     }
