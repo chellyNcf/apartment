@@ -16,92 +16,89 @@
 <body>
 <div class="layui-fluid">
     <fieldset class="layui-elem-field layui-field-title top_fieldset" >
-        <legend>修改学生信息</legend>
+        <legend>宿舍信息</legend>
     </fieldset>
 
-    <div class="layui-row search_criteria">
-        <div class="layui-form" lay-filter="student_update">
+    <div class="layui-row ">
+        <div class="layui-form" lay-filter="dormitory_detail">
             <div class="layui-form-item">
                 <div class="layui-inline">
-                    <label class="layui-form-label">姓名</label>
-                    <div class="layui-input-block">
-                        <input type="text" lay-verify="required|stu_name" name="studentName" autocomplete="off" class="layui-input">
-                    </div>
-                </div>
-            </div>
-
-            <div class="layui-form-item">
-                <div class="layui-inline">
-                    <label class="layui-form-label">学号</label>
-                    <div class="layui-input-block">
-                        <input type="text"  lay-verify="required" name="studentNum" autocomplete="off" class="layui-input">
-                    </div>
-                </div>
-            </div>
-
-            <div class="layui-form-item">
-                <div class="layui-inline">
-                    <label class="layui-form-label">出生日期</label>
+                    <label class="layui-form-label">宿舍房号</label>
                     <div class="layui-input-inline">
-                        <input type="text" name="birthdate" id="date" lay-verify="date" placeholder="yyyy-MM-dd" autocomplete="off" class="layui-input">
+                        <input type="text" readonly lay-verify="required|stu_name" name="dormitoryNum" autocomplete="off" class="layui-input">
                     </div>
                 </div>
             </div>
 
             <div class="layui-form-item">
                 <div class="layui-inline">
-                    <label class="layui-form-label">院系</label>
+                    <label class="layui-form-label">公寓名</label>
                     <div class="layui-input-inline">
-                        <input type="text" name="department" lay-verify="required" autocomplete="off" class="layui-input">
+                        <input type="text" readonly  lay-verify="required" name="apartmentName" autocomplete="off" class="layui-input">
                     </div>
                 </div>
                 <div class="layui-inline">
-                    <label class="layui-form-label">班级</label>
+                    <label class="layui-form-label">楼层</label>
                     <div class="layui-input-inline">
-                        <input type="text" name="clazz" lay-verify="required" autocomplete="off" class="layui-input">
+                        <input type="text" readonly name="floorNumber" lay-verify="required" autocomplete="off" class="layui-input">
                     </div>
                 </div>
             </div>
 
             <div class="layui-form-item">
                 <div class="layui-inline">
-                    <label class="layui-form-label">电话号码</label>
+                    <label class="layui-form-label">床位数</label>
                     <div class="layui-input-inline">
-                        <input type="tel" name="phone" lay-verify="required|phone" autocomplete="off" class="layui-input">
+                        <input type="text" readonly name="bedQuantity" lay-verify="required" autocomplete="off" class="layui-input">
+                    </div>
+                </div>
+                <div class="layui-inline">
+                    <label class="layui-form-label">状态</label>
+                    <div class="layui-input-inline">
+                        <input type="tel" readonly name="status" lay-verify="required|phone" autocomplete="off" class="layui-input">
                     </div>
                 </div>
             </div>
 
             <div class="layui-form-item">
-                <label class="layui-form-label">单选框</label>
-                <div class="layui-input-block">
-                    <input type="radio" name="sex" value="1" title="男" checked="">
-                    <input type="radio" name="sex" value="2" title="女">
-                </div>
-            </div>
 
-            <div class="layui-form-item">
-                <label class="layui-form-label">登录密码</label>
-                <div class="layui-input-inline">
-                    <input type="password" name="password" lay-verify="pass" placeholder="请输入密码" autocomplete="off" class="layui-input">
-                </div>
-                <div class="layui-form-mid layui-word-aux">请填写6到12位密码</div>
-            </div>
-
-            <div class="layui-form-item">
-                <div class="layui-input-block">
-                    <button class="layui-btn update_student" lay-submit="" lay-filter="update_student" disabled="true">确认修改</button>
-                    <button id="back" class="layui-btn layui-btn-primary">取消</button>
+                <div class="layui-inline">
+                    <label class="layui-form-label">宿舍描述</label>
+                    <div class="layui-input-inline">
+                        <input type="text" readonly name="note" lay-verify="required|phone" autocomplete="off" class="layui-input">
+                    </div>
                 </div>
             </div>
+        </div>
+        <fieldset class="layui-elem-field layui-field-title top_fieldset" >
+            <legend>床位信息</legend>
+        </fieldset>
+        <div class="layui-row">
+            <table class="layui-hide" id="bed_table" lay-filter="bed_table"></table>
         </div>
     </div>
 </div>
 
+
+<script type="text/html" id="barDemo">
+    <a class="layui-btn layui-btn-danger layui-btn-xs" lay-event="del">删除</a>
+</script>
+
+<script type="text/html" id="statusTpl">
+    {{#  if(d.status == 0){ }}
+    <span style="color: green">未使用</span>
+    {{#  } else if(d.status == 1){ }}
+    <span style="color: red">已使用</span>
+    {{#  } else { }}
+    <span></span>
+    {{#  } }}
+</script>
+
 <script>
 
-    layui.use(['form', 'layedit', 'laydate'], function(){
-        var laydate = layui.laydate,form = layui.form;
+    layui.use(['form', 'layedit', 'laydate','table'], function(){
+        var laydate = layui.laydate,form = layui.form,table=layui.table;
+
         //日期
         laydate.render({
             elem: '#date'
@@ -163,16 +160,31 @@
                 console.log(result);
                 var data=result.data;
                 if(result.code==0){
-                    form.val("student_update", {
-                        "studentName": data.studentName // "name": "value"
-                        ,"sex": data.sex
-                        ,"studentNum": data.studentNum
-                        ,"phone": data.phone
-                        ,"department": data.department
-                        ,"clazz": data.clazz
-                        ,"birthdate": data.birthdate
+                    form.val("dormitory_detail", {
+                        "dormitoryNum": data.dormitoryNum // "name": "value"
+                        ,"building": data.building
+                        ,"floorNumber": data.floorNumber
+                        ,"bedQuantity": data.bedQuantity
+                        ,"status": data.status
+                        ,"note": data.note
+                        ,"apartmentName": data.apartmentName
                     })
-                    $('.update_student').attr("disabled",false);
+                    table.render({
+                        id:'bed_table',
+                        elem: '#bed_table'
+                        ,url:baseUrl+'/bed/list?dormitoryId='+data.id
+                        ,cellMinWidth: 80 //全局定义常规单元格的最小宽度，layui 2.2.1 新增
+                        ,cols: [[
+                            {type: 'numbers',title: '序号', fixed: 'left'}
+                            ,{field:'bedNum', title: '床位号',fixed: 'left'}
+                            ,{field:'studentName', title: '学生名'}
+                            ,{field:'studentNum', title: '学号'}
+                            ,{field:'department', title: '院系' , sort: true} //minWidth：局部定义当前单元格的最小宽度，layui 2.2.1 新增
+                            ,{field:'clazz', title: '班级'}
+                            ,{field:'status', title: '状态', templet: '#statusTpl'}
+                            ,{fixed: 'right', title:'操作', toolbar: '#barDemo', width:220 }
+                        ]]
+                    });
                 }else{
                     layer.msg(result.msg, {icon: 7});
                 }

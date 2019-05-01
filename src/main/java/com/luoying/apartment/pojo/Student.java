@@ -93,4 +93,10 @@ public class Student extends BaseEntity {
 
     @TableField(exist = false)
     private String dormitoryNum;
+
+    @TableField(exist = false)
+    private Long apartmentId;
+
+    @TableField(exist = false)
+    private String password;
 }

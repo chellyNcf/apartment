@@ -11,30 +11,47 @@
     <script src="../layui/layui.js" charset="utf-8"></script>
     <script src="../js/base.js" charset="utf-8"></script>
     <!-- 注意：如果你直接复制所有代码到本地，上述css路径需要改成你本地的 -->
-    <title>宿舍信息</title>
+    <title>寒暑假留宿</title>
 </head>
 <body>
 <div class="layui-fluid">
     <fieldset class="layui-elem-field layui-field-title top_fieldset" >
-        <legend>宿舍信息</legend>
+        <legend>寒暑假留宿</legend>
     </fieldset>
     <div class="layui-row search_criteria">
         <div class="layui-form layui-form-pane">
             <div class="layui-form-item">
                 <div class="layui-inline">
-                    <label class="layui-form-label">宿舍房号</label>
+                    <label class="layui-form-label">学生名</label>
                     <div class="layui-input-block">
-                        <input type="text" name="dormitoryNum" id="dormitoryNumSearch" autocomplete="off" class="layui-input">
+                        <input type="text" name="studentName" id="name" autocomplete="off" class="layui-input">
                     </div>
                 </div>
                 <div class="layui-inline">
-                    <label class="layui-form-label">公寓楼</label>
+                    <label class="layui-form-label">学号</label>
                     <div class="layui-input-block">
-                        <select id="apartmentSearch" name="apartmentId" lay-verify="required">
+                        <input type="text" name="studentNum" id="studentNum" autocomplete="off" class="layui-input">
+                    </div>
+                </div>
+                <div class="layui-inline">
+                    <label class="layui-form-label">留宿时间</label>
+                    <div class="layui-input-inline">
+                        <input type="text" class="layui-input" id="test6" placeholder=" - ">
+                    </div>
+                </div>
+
+                <div class="layui-inline">
+                    <label class="layui-form-label">审核状态</label>
+                    <div class="layui-input-block">
+                        <select id="status" name="status" lay-verify="required">
                             <option value="">请选择</option>
+                            <option value="0">未审核</option>
+                            <option value="1">审核通过</option>
+                            <option value="-1">审核不通过</option>
                         </select>
                     </div>
                 </div>
+
                 <div class="layui-inline">
                     <div class="layui-input-inline">
                         <button class="layui-btn layui-btn-normal layui-btn-sm layui-btn-radius" data-type="search">
@@ -49,47 +66,23 @@
     </div>
     <div class="layui-row"></div>
     <div class="layui-row">
-        <table class="layui-hide" id="dormitory_table" lay-filter="dormitory_table"></table>
+        <table class="layui-hide" id="stay_school_table" lay-filter="stay_school_table"></table>
     </div>
 </div>
 
-<form class="layui-form" style="display: none" id="dormitory_add" lay-filter="dormitory_add">
+<form class="layui-form" style="display: none" id="stay_audit" lay-filter="stay_audit">
 
     <div class="layui-form-item">
-        <div class="layui-inline">
-            <label class="layui-form-label">公寓楼</label>
-            <div class="layui-input-inline">
-                <select id="apartmentId" name="apartmentId" lay-verify="required">
-                    <option value="">请选择</option>
-                </select>
-            </div>
+        <label class="layui-form-label">审核</label>
+        <div class="layui-input-block">
+            <input type="radio" name="sex" value="1" title="通过" checked="">
+            <input type="radio" name="sex" value="-1" title="不通过">
         </div>
     </div>
-
-    <div class="layui-form-item">
-        <div class="layui-inline">
-            <label class="layui-form-label">楼层</label>
-            <div class="layui-input-inline">
-                <input type="tel" name="floorNumber" id="floorNumber" lay-verify="required" autocomplete="off" class="layui-input">
-            </div>
-        </div>
-    </div>
-
-    <div class="layui-form-item">
-        <div class="layui-inline">
-            <label class="layui-form-label">宿舍房号</label>
-            <div class="layui-input-inline">
-                <input type="tel" id="dormitoryNum" name="dormitoryNum" lay-verify="required" autocomplete="off" class="layui-input">
-            </div>
-        </div>
-    </div>
-
-    <div class="layui-form-item">
-        <div class="layui-inline">
-            <label class="layui-form-label">宿舍描述</label>
-            <div class="layui-input-inline">
-                <input type="tel" id="note" name="note" lay-verify="required|phone" autocomplete="off" class="layui-input">
-            </div>
+    <div class="layui-form-item layui-form-text">
+        <label class="layui-form-label">审核理由</label>
+        <div class="layui-input-block">
+            <textarea placeholder="请输入内容" class="layui-textarea"></textarea>
         </div>
     </div>
 
@@ -104,9 +97,7 @@
 </script>
 
 <script type="text/html" id="barDemo">
-    <a class="layui-btn layui-btn-primary layui-btn-xs" lay-event="detail">详情</a>
-    <a class="layui-btn layui-btn-xs layui-btn-warm" lay-event="bed">床位</a>
-    <a class="layui-btn layui-btn-xs" lay-event="edit">编辑</a>
+    <a class="layui-btn layui-btn-xs layui-btn-warm" lay-event="audit">审核</a>
     <a class="layui-btn layui-btn-danger layui-btn-xs" lay-event="del">删除</a>
 </script>
 
@@ -137,23 +128,31 @@
 </script>
 
 <script>
-    layui.use(['table','layer','form'], function(){
-        var table = layui.table,layer = layui.layer,form = layui.form;
+    layui.use(['table','layer','form','laydate'], function(){
+        var table = layui.table,layer = layui.layer,form = layui.form,laydate=layui.laydate;
+
+        //日期范围
+        laydate.render({
+            elem: '#test6'
+            ,range: true
+        });
 
         table.render({
-            id:'dormitory_table',
-            elem: '#dormitory_table'
-            ,url:baseUrl+'/dormitory/page'
+            id:'stay_school_table',
+            elem: '#stay_school_table'
+            ,url:baseUrl+'/stay-school/page'
             ,toolbar: '#toolbarDemo'
             ,cellMinWidth: 80 //全局定义常规单元格的最小宽度，layui 2.2.1 新增
             ,cols: [[
                 {type: 'numbers',title: '序号', fixed: 'left'}
-                ,{field:'dormitoryNum', title: '宿舍房号',fixed: 'left'}
-                ,{field:'apartmentName', title: '公寓楼'}
-                ,{field:'note', title: '宿舍描述'}
-                ,{field:'floorNumber', title: '楼层' , sort: true} //minWidth：局部定义当前单元格的最小宽度，layui 2.2.1 新增
-                ,{field:'bedQuantity', title: '床位数'}
-                ,{field:'status', title: '状态', templet: '#statusTpl'}
+                ,{field:'studentName', title: '学生名',fixed: 'left'}
+                ,{field:'studentNum', title: '学号'}
+                ,{field:'beginTime',width:150, title: '开始日期',sort: true}
+                ,{field:'endTime', width:150,title: '结束日期'}
+                ,{field:'reason', title: '留宿原因' ,width:250, sort: true} //minWidth：局部定义当前单元格的最小宽度，layui 2.2.1 新增
+                ,{field:'auditUserName', title: '审核人'}
+                ,{field:'status', title: '审核状态', templet: '#statusTpl'}
+                ,{field:'auditReason', title: '审核理由',width:250}
                 ,{fixed: 'right', title:'操作', toolbar: '#barDemo', width:220 }
             ]]
             ,page: true
@@ -254,7 +253,7 @@
                 layer.open({
                     id:'dormitory_update_layer',
                     type: 1,
-                    title: '修改宿舍',
+                    title: '新增宿舍',
                     skin: 'layui-layer-rim', //加上边框
                     // area: ['420px', '240px'], //宽高
                     content: $('#dormitory_add'),
@@ -262,19 +261,18 @@
                     btn: ['确定', '取消'],
                     yes: function(index, layero){
                         //按钮【按钮一】的回调
-                        var dormitory={'apartmentId':$('#apartmentId').val(),
+                        var data={'apartmentId':$('#apartmentId').val(),
                             'building':$('#building').val(),
                             'floorNumber':$('#floorNumber').val(),
                             'note':$('#note').val(),
-                            'dormitoryNum':$('#dormitoryNum').val(),
-                            'id':data.id
+                            'dormitoryNum':$('#dormitoryNum').val()
                         };
                         console.log($('#apartmentId').val());
                         remoteCall({
                             url:baseUrl+'/dormitory',
                             type:"put",
                             contentType: "application/json; charset=utf-8",
-                            data: JSON.stringify(dormitory),
+                            data: JSON.stringify(data),
                             dataType:'json',
                             success:function (result) {
                                 console.log(result);
@@ -329,12 +327,13 @@
                     }
                 });
                 // location.href='dormitory_update.html?id='+data.id;
-            } else if(obj.event === 'bed'){
+            } else if(obj.event === 'audit'){
                 layer.prompt({
                     formType: 0,
                     value: data.dormitoryNum,
                     title: '添加床位',
                 }, function(value, index, elem){
+                    alert(data.id); //得到value
                     var bed={'dormitoryId':data.id,'bedNum':value}
                     remoteCall({
                         url:baseUrl+'/bed',
@@ -366,16 +365,16 @@
         var active = {
             //搜索方法
             search: function(){
-                var dormitoryNum = $('#dormitoryNumSearch');
-                var apartment=$('#apartmentSearch');
+                var name = $('#name');
+                var studentNum=$('#studentNum');
                 //执行重载表格
                 table.reload('dormitory_table', {
                     page: {
                         curr: 1 //重新从第 1 页开始
                     }
                     ,where: {
-                        dormitoryNum: dormitoryNum.val()
-                        ,apartmentId: apartment.val()
+                        studentName: name.val()
+                        ,studentNum: studentNum.val()
                     }
                 });
             }

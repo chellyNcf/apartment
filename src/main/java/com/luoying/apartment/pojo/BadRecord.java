@@ -1,5 +1,6 @@
 package com.luoying.apartment.pojo;
 
+import com.baomidou.mybatisplus.annotation.TableField;
 import com.baomidou.mybatisplus.annotation.TableName;
 import com.luoying.apartment.base.bean.BaseEntity;
 import lombok.Data;
@@ -62,5 +63,28 @@ public class BadRecord extends BaseEntity {
      */
     private String handle;
 
+    /**
+     * 学号
+     */
+    @TableField(exist = false)
+    private String studentNum;
+
+    /**
+     * 学生名
+     */
+    @TableField(exist = false)
+    private String studentName;
+
+    /**
+     * 处理人
+     */
+    @TableField(exist = false)
+    private String handleUserName;
+
+    /**
+     * 记录人
+     */
+    @TableField(exist = false)
+    private String recordUserName;
 
 }

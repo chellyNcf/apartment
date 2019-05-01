@@ -17,4 +17,6 @@ public interface IBedService extends IService<Bed> {
 
     List<Bed> list(Long dormitoryId);
 
+    void addBed(Bed bed);
+
 }

@@ -51,13 +51,13 @@
     </div>
 </div>
 
-<div class="layui-form" style="display: none" id="student_update">
+<div class="layui-form" style="display: none" id="student_dormitory" lay-filter="student_dormitory">
 
     <div class="layui-form-item">
         <div class="layui-inline">
             <label class="layui-form-label">姓名</label>
-            <div class="layui-input-block">
-                <input type="text" lay-verify="required|stu_name" name="studentName" autocomplete="off" class="layui-input">
+            <div class="layui-input-inline">
+                <input type="text" readonly lay-verify="required|stu_name" name="studentName" autocomplete="off" class="layui-input">
             </div>
         </div>
     </div>
@@ -65,57 +65,42 @@
     <div class="layui-form-item">
         <div class="layui-inline">
             <label class="layui-form-label">学号</label>
-            <div class="layui-input-block">
-                <input type="text"  lay-verify="required" name="studentNum" autocomplete="off" class="layui-input">
+            <div class="layui-input-inline">
+                <input type="text" readonly lay-verify="required" name="studentNum" autocomplete="off" class="layui-input">
             </div>
         </div>
     </div>
 
     <div class="layui-form-item">
         <div class="layui-inline">
-            <label class="layui-form-label">出生日期</label>
+            <label class="layui-form-label">公寓楼</label>
             <div class="layui-input-inline">
-                <input type="text" name="birthdate" id="date" lay-verify="date" placeholder="yyyy-MM-dd" autocomplete="off" class="layui-input">
+                <select id="apartmentId" name="building" lay-verify="required" lay-filter="apartmentId">
+                    <option value="">请选择</option>
+                </select>
             </div>
         </div>
     </div>
 
     <div class="layui-form-item">
         <div class="layui-inline">
-            <label class="layui-form-label">院系</label>
+            <label class="layui-form-label">宿舍房号</label>
             <div class="layui-input-inline">
-                <input type="tel" name="department" lay-verify="required" autocomplete="off" class="layui-input">
-            </div>
-        </div>
-        <div class="layui-inline">
-            <label class="layui-form-label">班级</label>
-            <div class="layui-input-inline">
-                <input type="text" name="clazz" lay-verify="required" autocomplete="off" class="layui-input">
+                <select name="dormitoryNum" lay-verify="required" lay-search="" id="dormitoryNum" lay-filter="dormitoryNum">
+                    <option value="">直接选择或搜索选择</option>
+                </select>
             </div>
         </div>
     </div>
 
     <div class="layui-form-item">
         <div class="layui-inline">
-            <label class="layui-form-label">电话号码</label>
+            <label class="layui-form-label">床位</label>
             <div class="layui-input-inline">
-                <input type="tel" name="phone" lay-verify="required|phone" autocomplete="off" class="layui-input">
+                <select id="bedId" name="bedId" lay-verify="required"  lay-filter="bedId">
+                    <option value="">请选择</option>
+                </select>
             </div>
-        </div>
-    </div>
-
-    <div class="layui-form-item">
-        <label class="layui-form-label">单选框</label>
-        <div class="layui-input-block">
-            <input type="radio" name="sex" value="1" title="男" checked="">
-            <input type="radio" name="sex" value="2" title="女">
-        </div>
-    </div>
-
-    <div class="layui-form-item">
-        <div class="layui-input-block">
-            <button class="layui-btn" lay-submit="" lay-filter="update_student" id="update">立即提交</button>
-            <button type="reset" class="layui-btn layui-btn-primary">重置</button>
         </div>
     </div>
 
@@ -130,6 +115,8 @@
 </script>
 
 <script type="text/html" id="barDemo">
+    <a class="layui-btn layui-btn-xs layui-btn-warm" lay-event="dormitory">入住</a>
+    <a class="layui-btn layui-btn-xs layui-btn-normal" lay-event="retirement">退宿</a>
     <a class="layui-btn layui-btn-xs" lay-event="edit">编辑</a>
     <a class="layui-btn layui-btn-danger layui-btn-xs" lay-event="del">删除</a>
 </script>
@@ -146,17 +133,17 @@
 
 <script type="text/html" id="statusTpl">
     {{#  if(d.status == 0){ }}
-        <span>未入住</span>
+        <span style="color: #49c1ff">未入住</span>
     {{#  } else if(d.status == 1){ }}
-        <span>已入住</span>
+        <span style="color: green">已入住</span>
     {{#  } else if(d.status == 2) { }}
-        <span>退宿</span>
+        <span style="color: red">退宿</span>
     {{#  } }}
 </script>
 
 <script type="text/html" id="dormitoryInfoTpl">
     {{#  if(d.status != 0){ }}
-    <span> {{ d.building }} 栋/{{ d.dormitoryNum }}室/{{  d.bedNum }}号床</span>
+    <span> {{ d.apartmentName }}#{{ d.dormitoryNum }}室#{{  d.bedNum }}床</span>
     {{#  } }}
 </script>
 
@@ -173,16 +160,16 @@
             ,cols: [[
                 {type: 'numbers',title: '序号', fixed: 'left'}
                 ,{field:'studentName', width:100, title: '姓名',fixed: 'left'}
-                ,{field:'studentNum', width:130, title: '学号'}
+                ,{field:'studentNum', width:130, title: '学号', sort: true}
                 ,{field:'sex', width:80, title: '性别', templet: '#sexTpl'}
-                ,{field:'age', width:80, title: '年龄'}
+                ,{field:'age', width:80, title: '年龄', sort: true}
                 ,{field:'phone', title: '电话号码', width: 120} //minWidth：局部定义当前单元格的最小宽度，layui 2.2.1 新增
-                ,{field:'clazz', title: '班级', sort: true}
-                ,{field:'department', title: '院系名称', sort: true}
-                ,{field:'apartmentName', title: '公寓名称'}
-                ,{field:'dormitoryInfo', width:137, title: '公寓住址', templet: '#dormitoryInfoTpl'}
+                ,{field:'clazz', title: '班级'}
+                ,{field:'department',width:150, title: '院系名称'}
+                // ,{field:'apartmentName', title: '公寓名称'}
+                ,{field:'dormitoryInfo', width:250, title: '宿舍信息', templet: '#dormitoryInfoTpl'}
                 ,{field:'status', width:80, title: '状态', templet: '#statusTpl'}
-                ,{fixed: 'right', title:'操作', toolbar: '#barDemo', width:150}
+                ,{fixed: 'right', title:'操作', toolbar: '#barDemo', width:230}
             ]]
             ,page: true
         });
@@ -201,10 +188,10 @@
         table.on('tool(student_table)', function(obj){
             var data = obj.data;
             if(obj.event === 'del'){
-                layer.confirm('真的删除行么', function(index){
+                layer.confirm('真的删除么', function(index){
                     console.log(data);
                     remoteCall({
-                        url:baseUrl+'/student/1',
+                        url:baseUrl+'/student/'+data.id,
                         type:"delete",
                         data:{id:data.id},
                         dataType:'json',
@@ -228,6 +215,95 @@
 
             } else if(obj.event === 'edit'){
                 location.href='student_update.html?id='+data.id;
+            }else if(obj.event === 'retirement'){
+                layer.prompt({
+                    formType: 2,
+                    title: '退宿原因',
+                }, function(value, index, elem){
+                    var bed={'dormitoryId':data.dormitoryId,'bedId':data.bedId,'reason':value,'studentId':data.id}
+                    remoteCall({
+                        url:baseUrl+'/retirement-record',
+                        type:"post",
+                        contentType: "application/json; charset=utf-8",
+                        data: JSON.stringify(bed),
+                        dataType:'json',
+                        success:function (result) {
+                            console.log(result);
+                            if(result.code==0){
+                                layer.close(index);
+                                table.reload('student_table');
+                                layer.msg('成功', {icon: 1});
+                            }else{
+                                layer.msg(result.msg, {icon: 7});
+                            }
+                        },
+                        error:function (a,b,c) {
+                            layer.msg('错误：'+a.status, {icon: 2});
+                        }
+                    })
+                });
+            }else if(obj.event === 'dormitory'){
+                layer.open({
+                    id:'student_dormitory_layer',
+                    type: 1,
+                    title: '登记入住',
+                    skin: 'layui-layer-rim', //加上边框
+                    area: ['350px', '400px'], //宽高
+                    content: $('#student_dormitory'),
+                    btnAlign: 'c',
+                    btn: ['确定', '取消'],
+                    yes: function(index, layero){
+                        //按钮【按钮一】的回调
+                        var dormitoryData={'apartmentId':$('#apartmentId').val(),
+                            'bedId':$('#bedId').val(),
+                            'dormitoryId':$('#dormitoryNum').val(),
+                            'id':data.id
+                        };
+                        console.log($('#apartmentId').val());
+                        remoteCall({
+                            url:baseUrl+'/student/dormitory',
+                            type:"post",
+                            contentType: "application/json; charset=utf-8",
+                            data: JSON.stringify(dormitoryData),
+                            dataType:'json',
+                            success:function (result) {
+                                console.log(result);
+                                if(result.code==0){
+                                    layer.close(index);
+                                    table.reload('student_table');
+                                    layer.msg('成功', {icon: 1});
+                                }else{
+                                    layer.msg(result.msg, {icon: 7});
+                                }
+                            },
+                            error:function (a,b,c) {
+                                // layer.
+                                layer.msg('错误：'+a.status, {icon: 2});
+                            }
+                        })
+
+                    },
+                    btn2: function(index, layero){
+                    },
+                    end: function(){
+                        //右上角关闭回调
+                        var emptyForm = getobj();
+                        form.val('student_dormitory',emptyForm);
+                        var dormitoryNumSel=$('#dormitoryNum');
+                        dormitoryNumSel.empty();
+                        dormitoryNumSel.append('<option value="" >直接选择或搜索选择</option>');
+                        var bedSel=$('#bedId');
+                        bedSel.empty();
+                        bedSel.append('<option value="" >请选择</option>');
+                        form.render(null, 'student_dormitory');
+                        //return false 开启该代码可禁止点击该按钮关闭
+                    },success:function(){
+                        form.val('student_dormitory',{
+                            'studentName':data.studentName,'studentNum':data.studentNum
+                        });
+                    }
+                });
+
             }
         });
 
@@ -255,8 +331,90 @@
             active[type] ? active[type].call(this) : '';
         });
 
+        remoteCall({
+            url:baseUrl+'/apartment/list',
+            type:"get",
+            dataType:'json',
+            success:function (result) {
+                console.log(result);
+                var data=result.data;
+                if(result.code==0){
+                    for(var i=0;i<data.length;i++){
+                        $('#apartmentId').append('<option value='+data[i].id+' >'+data[i].apartmentName+'</option>');
+                    }
+                    form.render();
+                }else{
+                    layer.msg(result.msg, {icon: 7});
+                }
+            },
+            error:function (a,b,c) {
+                layer.msg("错误："+a.status, {icon: 2});
+            }
+        });
+
+        form.on('select(apartmentId)', function(data){
+            var dormitoryNumSel=$('#dormitoryNum');
+            dormitoryNumSel.empty();
+            dormitoryNumSel.append('<option value="" >直接选择或搜索选择</option>');
+
+            remoteCall({
+                url:baseUrl+'/dormitory/list?apartmentId='+data.value,
+                type:"get",
+                dataType:'json',
+                success:function (result) {
+                    console.log(result);
+                    var data=result.data;
+                    if(result.code==0){
+                        for(var i=0;i<data.length;i++){
+                            dormitoryNumSel.append('<option value='+data[i].id+' >'+data[i].dormitoryNum+'</option>');
+                        }
+                        form.render();
+                    }else{
+                        layer.msg(result.msg, {icon: 7});
+                    }
+                },
+                error:function (a,b,c) {
+                    layer.msg("错误："+a.status, {icon: 2});
+                }
+            });
+        });
+        form.on('select(dormitoryNum)', function(data){
+            var bedSel=$('#bedId');
+            bedSel.empty();
+            bedSel.append('<option value="" >请选择</option>');
+            remoteCall({
+                url:baseUrl+'/bed/list?dormitoryId='+data.value,
+                type:"get",
+                dataType:'json',
+                success:function (result) {
+                    console.log(result);
+                    var data=result.data;
+                    if(result.code==0){
+                        for(var i=0;i<data.length;i++){
+                            bedSel.append('<option value='+data[i].id+' >'+data[i].bedNum+'</option>');
+                        }
+                        form.render();
+                    }else{
+                        layer.msg(result.msg, {icon: 7});
+                    }
+                },
+                error:function (a,b,c) {
+                    layer.msg("错误："+a.status, {icon: 2});
+                }
+            });
+        })
+
     });
 
+    function getobj() {
+        var elms = $("#student_dormitory [name]"); //formid 包含name属性的所有元素
+        var obj = {};
+        $.each(elms, function (i, item) {
+            var name = $(item).attr("name");
+            obj[name] = "";
+        });
+        return obj;
+    }
 
 
 </script>

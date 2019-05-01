@@ -17,4 +17,6 @@ import java.util.List;
 public interface IDormitoryService extends IService<Dormitory> {
 
     MyPage<Dormitory>  getDormitoryPage(MyPage<Dormitory> page);
+
+    Dormitory getDormitory(Long id);
 }

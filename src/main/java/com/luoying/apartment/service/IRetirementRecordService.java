@@ -1,5 +1,6 @@
 package com.luoying.apartment.service;
 
+import com.luoying.apartment.base.bean.MyPage;
 import com.luoying.apartment.pojo.RetirementRecord;
 import com.baomidou.mybatisplus.extension.service.IService;
 
@@ -12,5 +13,9 @@ import com.baomidou.mybatisplus.extension.service.IService;
  * @since 2019-04-27
  */
 public interface IRetirementRecordService extends IService<RetirementRecord> {
+
+    MyPage<RetirementRecord> getRetirementRecordPage(MyPage<RetirementRecord> page);
+
+    public void addRetirementRecord(RetirementRecord retirementRecord);
 
 }

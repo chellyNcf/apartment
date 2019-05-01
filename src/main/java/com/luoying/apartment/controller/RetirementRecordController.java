@@ -1,10 +1,17 @@
 package com.luoying.apartment.controller;
 
 
-import org.springframework.web.bind.annotation.RequestMapping;
+import com.luoying.apartment.base.bean.MyPage;
+import com.luoying.apartment.base.bean.ResultMsg;
+import com.luoying.apartment.base.bean.ResultMsgFactory;
+import com.luoying.apartment.pojo.RetirementRecord;
+import com.luoying.apartment.service.IRetirementRecordService;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.web.bind.annotation.*;
 
-import org.springframework.web.bind.annotation.RestController;
 import com.luoying.apartment.base.controller.BaseController;
+
+import java.util.Map;
 
 /**
  * <p>
@@ -18,5 +25,33 @@ import com.luoying.apartment.base.controller.BaseController;
 @RequestMapping("/apartment/retirement-record")
 public class RetirementRecordController extends BaseController {
 
+    @Autowired
+    private IRetirementRecordService retirementRecordService;
+
+    @GetMapping("/page")
+    public ResultMsg getpage(@RequestParam Map<String,Object> params){
+
+        MyPage<RetirementRecord> recordMyPage=new MyPage<>(params);
+
+        recordMyPage=retirementRecordService.getRetirementRecordPage(recordMyPage);
+        ResultMsg resultMsg=ResultMsgFactory.createSuccessMsg(recordMyPage.getRecords());
+        resultMsg.setCount(recordMyPage.getCount());
+        return resultMsg;
+    }
+
+    @PostMapping
+    public ResultMsg add(@RequestBody RetirementRecord retirementRecord){
+
+
+        retirementRecordService.addRetirementRecord(retirementRecord);
+        return ResultMsgFactory.createSuccessMsg();
+    }
+
+    @DeleteMapping("/{id}")
+    public ResultMsg remove(@PathVariable("id") Long id){
+
+        retirementRecordService.removeById(id);
+        return ResultMsgFactory.createSuccessMsg();
+    }
 }
 

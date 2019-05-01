@@ -11,12 +11,12 @@
     <script src="../layui/layui.js" charset="utf-8"></script>
     <script src="../js/base.js" charset="utf-8"></script>
     <!-- 注意：如果你直接复制所有代码到本地，上述css路径需要改成你本地的 -->
-    <title>宿舍信息</title>
+    <title>退宿管理</title>
 </head>
 <body>
 <div class="layui-fluid">
     <fieldset class="layui-elem-field layui-field-title top_fieldset" >
-        <legend>宿舍信息</legend>
+        <legend>退宿管理</legend>
     </fieldset>
     <div class="layui-row search_criteria">
         <div class="layui-form layui-form-pane">
@@ -28,9 +28,15 @@
                     </div>
                 </div>
                 <div class="layui-inline">
-                    <label class="layui-form-label">学号</label>
+                    <label class="layui-form-label">退宿日期</label>
                     <div class="layui-input-block">
-                        <input type="text" name="studentNum" id="studentNum" autocomplete="off" class="layui-input">
+                        <input type="text" name="createDate" id="createDate" autocomplete="off" class="layui-input">
+                    </div>
+                </div>
+                <div class="layui-inline">
+                    <label class="layui-form-label">宿舍</label>
+                    <div class="layui-input-block">
+                        <input type="text" name="dormitory" id="dormitory" autocomplete="off" class="layui-input">
                     </div>
                 </div>
                 <div class="layui-inline">
@@ -47,78 +53,8 @@
     </div>
     <div class="layui-row"></div>
     <div class="layui-row">
-        <table class="layui-hide" id="dormitory_table" lay-filter="dormitory_table"></table>
+        <table class="layui-hide" id="retirement_table" lay-filter="retirement_table"></table>
     </div>
-</div>
-
-<div class="layui-form" style="display: none" id="student_update">
-
-    <div class="layui-form-item">
-        <div class="layui-inline">
-            <label class="layui-form-label">姓名</label>
-            <div class="layui-input-block">
-                <input type="text" lay-verify="required|stu_name" name="studentName" autocomplete="off" class="layui-input">
-            </div>
-        </div>
-    </div>
-
-    <div class="layui-form-item">
-        <div class="layui-inline">
-            <label class="layui-form-label">学号</label>
-            <div class="layui-input-block">
-                <input type="text"  lay-verify="required" name="studentNum" autocomplete="off" class="layui-input">
-            </div>
-        </div>
-    </div>
-
-    <div class="layui-form-item">
-        <div class="layui-inline">
-            <label class="layui-form-label">出生日期</label>
-            <div class="layui-input-inline">
-                <input type="text" name="birthdate" id="date" lay-verify="date" placeholder="yyyy-MM-dd" autocomplete="off" class="layui-input">
-            </div>
-        </div>
-    </div>
-
-    <div class="layui-form-item">
-        <div class="layui-inline">
-            <label class="layui-form-label">院系</label>
-            <div class="layui-input-inline">
-                <input type="tel" name="department" lay-verify="required" autocomplete="off" class="layui-input">
-            </div>
-        </div>
-        <div class="layui-inline">
-            <label class="layui-form-label">班级</label>
-            <div class="layui-input-inline">
-                <input type="text" name="clazz" lay-verify="required" autocomplete="off" class="layui-input">
-            </div>
-        </div>
-    </div>
-
-    <div class="layui-form-item">
-        <div class="layui-inline">
-            <label class="layui-form-label">电话号码</label>
-            <div class="layui-input-inline">
-                <input type="tel" name="phone" lay-verify="required|phone" autocomplete="off" class="layui-input">
-            </div>
-        </div>
-    </div>
-
-    <div class="layui-form-item">
-        <label class="layui-form-label">单选框</label>
-        <div class="layui-input-block">
-            <input type="radio" name="sex" value="1" title="男" checked="">
-            <input type="radio" name="sex" value="2" title="女">
-        </div>
-    </div>
-
-    <div class="layui-form-item">
-        <div class="layui-input-block">
-            <button class="layui-btn" lay-submit="" lay-filter="update_student" id="update">立即提交</button>
-            <button type="reset" class="layui-btn layui-btn-primary">重置</button>
-        </div>
-    </div>
-
 </div>
 
 <script type="text/html" id="toolbarDemo">
@@ -130,8 +66,6 @@
 </script>
 
 <script type="text/html" id="barDemo">
-    <a class="layui-btn layui-btn-xs layui-btn-normal" lay-event="bed">床位</a>
-    <a class="layui-btn layui-btn-xs" lay-event="edit">编辑</a>
     <a class="layui-btn layui-btn-danger layui-btn-xs" lay-event="del">删除</a>
 </script>
 
@@ -157,36 +91,42 @@
 
 <script type="text/html" id="dormitoryInfoTpl">
     {{#  if(d.status != 0){ }}
-    <span> {{ d.building }} 栋/{{ d.dormitoryNum }}室/{{  d.bedNum }}号床</span>
+    <span> {{ d.apartmentName }}/{{ d.dormitoryNum }}室/{{  d.bedNum }}床</span>
     {{#  } }}
 </script>
 
 <script>
-    layui.use(['table','layer','form'], function(){
-        var table = layui.table,layer = layui.layer,form = layui.form;
+    layui.use(['table','layer','form','laydate'], function(){
+        var table = layui.table,layer = layui.layer,form = layui.form,laydate=layui.laydate;
+
+        //常规用法
+        laydate.render({
+            elem: '#createDate'
+        });
 
         table.render({
-            id:'dormitory_table',
-            elem: '#dormitory_table'
-            ,url:baseUrl+'/dormitory/page'
-            ,toolbar: '#toolbarDemo'
+            id:'retirement_table',
+            elem: '#retirement_table'
+            ,url:baseUrl+'/retirement-record/page'
+            // ,toolbar: '#toolbarDemo'
             ,cellMinWidth: 80 //全局定义常规单元格的最小宽度，layui 2.2.1 新增
             ,cols: [[
                 {type: 'numbers',title: '序号', fixed: 'left'}
-                ,{field:'dormitoryNum', width:100, title: '宿舍房号',fixed: 'left'}
-                ,{field:'apartmentName', width:130, title: '公寓名'}
-                ,{field:'building', width:80, title: '楼号(栋)',sort: true}
-                ,{field:'note', width:80, title: '宿舍描述'}
-                ,{field:'floorNumber', title: '楼层', width: 80,sort: true} //minWidth：局部定义当前单元格的最小宽度，layui 2.2.1 新增
-                ,{field:'bedQuantity', title: '床位数'}
-                ,{field:'status', width:80, title: '状态', templet: '#statusTpl'}
-                ,{fixed: 'right', title:'操作', toolbar: '#barDemo', width:150}
+                ,{field:'studentName', width:100, title: '学生名',fixed: 'left'}
+                ,{field:'studentNum', width:130, title: '学号'}
+                ,{field:'department', width:130, title: '院系'}
+                ,{field:'clazz', width:100, title: '班级',sort: true}
+                ,{field:'dormitoryInfo', width:250, title: '宿舍信息' , templet: '#dormitoryInfoTpl'}
+                ,{field:'retirementDate', title: '退宿日期', width: 150,sort: true} //minWidth：局部定义当前单元格的最小宽度，layui 2.2.1 新增
+                ,{field:'reason', width:300,title: '退宿原因'}
+                // ,{field:'status', width:80, title: '状态', templet: '#statusTpl'}
+                ,{fixed: 'right', title:'操作', toolbar: '#barDemo' ,width:100}
             ]]
             ,page: true
         });
 
         //头工具栏事件
-        table.on('toolbar(dormitory_table)', function(obj){
+        table.on('toolbar(retirement_table)', function(obj){
             switch(obj.event){
                 case 'add':
                     // layer.alert("弹出添加");
@@ -196,13 +136,13 @@
         });
 
         //监听行工具事件
-        table.on('tool(dormitory_table)', function(obj){
+        table.on('tool(retirement_table)', function(obj){
             var data = obj.data;
             if(obj.event === 'del'){
                 layer.confirm('真的删除行么', function(index){
                     console.log(data);
                     remoteCall({
-                        url:baseUrl+'/student/1',
+                        url:baseUrl+'/retirement-record/'+data.id,
                         type:"delete",
                         data:{id:data.id},
                         dataType:'json',
@@ -211,6 +151,7 @@
                             if(result.code==0){
                                 obj.del();
                                 layer.msg('删除成功', {icon: 1});
+                                table.reload('retirement_table');
                             }else{
                                 layer.msg(result.msg, {icon: 7});
                             }
@@ -224,10 +165,6 @@
                 });
                 //console.log(obj)
 
-            } else if(obj.event === 'edit'){
-                location.href='dormitory_update.html?id='+data.id;
-            } else if(obj.event === 'bed'){
-                location.href='dormitory_update.html?id='+data.id;
             }
         });
 
@@ -237,7 +174,7 @@
                 var name = $('#name');
                 var studentNum=$('#studentNum');
                 //执行重载表格
-                table.reload('dormitory_table', {
+                table.reload('retirement_table', {
                     page: {
                         curr: 1 //重新从第 1 页开始
                     }

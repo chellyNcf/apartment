@@ -43,6 +43,8 @@ create table `tb_bed`(
 primary key(`id`)
 )ENGINE = INNODB AUTO_INCREMENT = 1 CHARSET = utf8 comment '床位表';
 
+ALTER TABLE `tb_bed` ADD `status` TINYINT(2) default '0' comment '床位状态 0未占用，1已占用';
+ALTER TABLE `tb_bed` MODIFY COLUMN `studen_id` BIGINT(20) null comment '学生id';
 
 #宿舍表
 drop table `tb_dormitory`;
@@ -59,6 +61,9 @@ create table `tb_dormitory`(
 `update_date` timestamp NULL DEFAULT NULL comment '更新日期',
 primary key(`id`)
 )ENGINE = INNODB AUTO_INCREMENT = 1 CHARSET = utf8 comment '宿舍表';
+
+ALTER TABLE `tb_dormitory` change `bad_num` bed_quantity TINYINT not null default '0' comment'床位数';
+ALTER TABLE `tb_dormitory` MODIFY `building` varchar(10) null comment '第几栋';
 
 #公寓表
 drop table `tb_apartment`;

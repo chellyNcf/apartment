@@ -46,7 +46,6 @@ public class Dormitory extends BaseEntity {
     /**
      * 床位数
      */
-    @TableField("bad_num")
     private Integer bedQuantity;
 
     /**

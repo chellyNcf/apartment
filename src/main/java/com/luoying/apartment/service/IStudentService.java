@@ -16,4 +16,8 @@ public interface IStudentService extends IService<Student> {
 
     MyPage<Student> getStudentPage(MyPage<Student> page);
 
+    void saveStudent(Student student);
+
+    void dormitory(Student student);
+
 }

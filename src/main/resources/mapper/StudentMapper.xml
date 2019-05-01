@@ -6,17 +6,17 @@
         SELECT ts.*,TIMESTAMPDIFF(YEAR, ts.birthdate, CURDATE()) age,tb.bed_num,td.dormitory_num,td.building,ta.apartment_name
         from tb_student ts
         LEFT JOIN tb_bed tb ON ts.bed_id=tb.id
-        LEFT JOIN tb_dormitory td ON ts.dormitory_id=tb.id
+        LEFT JOIN tb_dormitory td ON ts.dormitory_id=td.id
         LEFT JOIN tb_apartment ta ON td.apartment_id=ta.id
         where 1=1
         <if test="studentNum!=null and studentNum!=''">
             and ts.student_num=#{studentNum}
         </if>
         <if test="studentName!=null and studentName!=''">
-            aand ts.student_name like CONCAT(#{studentName},'%')
+            and ts.student_name like CONCAT(#{studentName},'%')
         </if>
         <if test="status!=null and status!=''">
-            and ts.`status`=#{status};
+            and ts.`status`=#{status}
         </if>
         limit #{beginIndex},#{limit}
     </select>
@@ -31,10 +31,10 @@
             and ts.student_num=#{studentNum}
         </if>
         <if test="studentName!=null and studentName!=''">
-            aand ts.student_name like CONCAT(#{studentName},'%')
+            and ts.student_name like CONCAT(#{studentName},'%')
         </if>
         <if test="status!=null and status!=''">
-            and ts.`status`=#{status};
+            and ts.`status`=#{status}
         </if>
     </select>
 

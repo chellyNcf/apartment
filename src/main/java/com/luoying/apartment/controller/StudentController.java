@@ -41,7 +41,7 @@ public class StudentController extends BaseController {
         page=studentService.getStudentPage(page);
 
         ResultMsg msg=ResultMsgFactory.createSuccessMsg(page.getRecords());
-        msg.setCount(0);
+        msg.setCount(page.getCount());
         return msg;
     }
 
@@ -53,7 +53,7 @@ public class StudentController extends BaseController {
     @PostMapping
     public ResultMsg add(@RequestBody Student student){
         logger.info("保存学生信息:{}",student);
-        studentService.save(student);
+        studentService.saveStudent(student);
         return ResultMsgFactory.createSuccessMsg();
     }
 
@@ -79,6 +79,17 @@ public class StudentController extends BaseController {
     public ResultMsg remove(@PathVariable("id") Long id){
         logger.info("删除学生信息:{}",id);
         studentService.removeById(id);
+        return ResultMsgFactory.createSuccessMsg();
+    }
+
+    /**
+     * 入住宿舍
+     * @return
+     */
+    @PostMapping("/dormitory")
+    public ResultMsg dormitory(@RequestBody Student student){
+        logger.info("学生入住:{}",student);
+        studentService.dormitory(student);
         return ResultMsgFactory.createSuccessMsg();
     }
 

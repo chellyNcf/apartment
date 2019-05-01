@@ -1,5 +1,6 @@
 package com.luoying.apartment.pojo;
 
+import com.baomidou.mybatisplus.annotation.TableField;
 import com.baomidou.mybatisplus.annotation.TableName;
 import java.time.LocalDateTime;
 import com.luoying.apartment.base.bean.BaseEntity;
@@ -58,5 +59,21 @@ public class StaySchool extends BaseEntity {
      */
     private Long studentId;
 
+    /**
+     * 审核人
+     */
+    @TableField(exist = false)
+    private String auditUserName
+            ;
+    /**
+     * 学号
+     */
+    @TableField(exist = false)
+    private String studentNum;
 
+    /**
+     * 学生名
+     */
+    @TableField(exist = false)
+    private String studentName;
 }

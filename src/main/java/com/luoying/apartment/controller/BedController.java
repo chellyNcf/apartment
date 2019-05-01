@@ -7,11 +7,9 @@ import com.luoying.apartment.base.bean.ResultMsgFactory;
 import com.luoying.apartment.pojo.Bed;
 import com.luoying.apartment.service.IBedService;
 import com.luoying.apartment.service.impl.BedServiceImpl;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.web.bind.annotation.*;
 
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
 import com.luoying.apartment.base.controller.BaseController;
 
 /**
@@ -26,12 +24,20 @@ import com.luoying.apartment.base.controller.BaseController;
 @RequestMapping("/apartment/bed")
 public class BedController extends BaseController{
 
+    @Autowired
     private IBedService bedService;
 
     @GetMapping("/list")
     public ResultMsg getBedList(@RequestParam Long dormitoryId){
 
         return ResultMsgFactory.createSuccessMsg(bedService.list(dormitoryId));
+    }
+
+    @PostMapping
+    public ResultMsg add(@RequestBody Bed bed){
+
+        bedService.addBed(bed);
+        return ResultMsgFactory.createSuccessMsg();
     }
 
 

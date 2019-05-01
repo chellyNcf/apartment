@@ -34,7 +34,7 @@ public class DormitoryController extends BaseController {
      * @return
      */
     @GetMapping("/list")
-    public ResultMsg getDormitoryList(@RequestParam Dormitory dormitory){
+    public ResultMsg getDormitoryList( Dormitory dormitory){
 
         return ResultMsgFactory.createSuccessMsg( dormitoryService.list(new QueryWrapper<>(dormitory)));
     }
@@ -61,6 +61,31 @@ public class DormitoryController extends BaseController {
     public ResultMsg add(@RequestBody Dormitory dormitory){
 
         dormitoryService.save(dormitory);
+        return ResultMsgFactory.createSuccessMsg();
+    }
+
+    /**
+     * 查询
+     * @return
+     */
+    @GetMapping("/{id}")
+    public ResultMsg get(@PathVariable("id") Long id){
+
+
+        return ResultMsgFactory.createSuccessMsg(dormitoryService.getDormitory(id));
+    }
+
+    @DeleteMapping("/{id}")
+    public ResultMsg remove(@PathVariable("id") Long id){
+
+        dormitoryService.removeById(id);
+        return ResultMsgFactory.createSuccessMsg();
+    }
+
+    @PutMapping
+    public ResultMsg update(@RequestBody Dormitory dormitory){
+
+        dormitoryService.updateById(dormitory);
         return ResultMsgFactory.createSuccessMsg();
     }
 }

@@ -1,5 +1,6 @@
 package com.luoying.apartment.pojo;
 
+import com.baomidou.mybatisplus.annotation.TableField;
 import com.baomidou.mybatisplus.annotation.TableName;
 import java.time.LocalDateTime;
 import com.luoying.apartment.base.bean.BaseEntity;
@@ -37,5 +38,34 @@ public class Bed extends BaseEntity {
      * 宿舍id
      */
     private Long dormitoryId;
+
+    /**
+     * 床位状态 0未占用，1已占用
+     */
+    private Integer status;
+
+    /**
+     * 学号
+     */
+    @TableField(exist = false)
+    private String studentNum;
+
+    /**
+     * 学生名
+     */
+    @TableField(exist = false)
+    private String studentName;
+
+    /**
+     * 院系
+     */
+    @TableField(exist = false)
+    private String department;
+
+    /**
+     * 班级
+     */
+    @TableField(exist = false)
+    private String clazz;
 
 }

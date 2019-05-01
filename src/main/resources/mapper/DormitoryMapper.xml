@@ -11,10 +11,10 @@
             and td.dormitory_num=#{dormitoryNum}
         </if>
         <if test="apartmentId!=null and apartmentId!=''">
-            aand ta.apartment_id = #{apartmentId}
+            and ta.id = #{apartmentId}
         </if>
         <if test="status!=null and status!=''">
-            and td.`status`=#{status};
+            and td.`status`=#{status}
         </if>
         limit #{beginIndex},#{limit}
     </select>
@@ -27,10 +27,10 @@
             and td.dormitory_num=#{dormitoryNum}
         </if>
         <if test="apartmentId!=null and apartmentId!=''">
-            aand ta.apartment_id = #{apartmentId}
+            and ta.id = #{apartmentId}
         </if>
         <if test="status!=null and status!=''">
-            and td.`status`=#{status};
+            and td.`status`=#{status}
         </if>
     </select>
 </mapper>

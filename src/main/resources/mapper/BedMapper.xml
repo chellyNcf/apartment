@@ -2,4 +2,13 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.luoying.apartment.dao.BedMapper">
 
+    <select id="queryBedList" parameterType="Bed" resultType="Bed">
+        SELECT tb.*,ts.student_name,ts.student_num,ts.department,ts.clazz
+        from tb_bed tb LEFT JOIN tb_student ts ON tb.id=ts.bed_id
+        WHERE 1=1
+        <if test="dormitoryId!=null and dormitoryId!='' ">
+            and tb.dormitory_id=#{dormitoryId}
+        </if>
+        ORDER BY id DESC
+    </select>
 </mapper>
