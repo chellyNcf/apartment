@@ -1,5 +1,6 @@
 package com.luoying.apartment.service;
 
+import com.luoying.apartment.base.bean.MyPage;
 import com.luoying.apartment.pojo.BadRecord;
 import com.baomidou.mybatisplus.extension.service.IService;
 
@@ -13,4 +14,7 @@ import com.baomidou.mybatisplus.extension.service.IService;
  */
 public interface IBadRecordService extends IService<BadRecord> {
 
+    MyPage<BadRecord> getBadRecordPage(MyPage<BadRecord> page);
+
+    BadRecord getBadRecordById(Long id);
 }

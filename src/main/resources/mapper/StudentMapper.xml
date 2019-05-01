@@ -13,7 +13,7 @@
             and ts.student_num=#{studentNum}
         </if>
         <if test="studentName!=null and studentName!=''">
-            aand ts.student_name like CONCAT(#{studentName},'%')
+            and ts.student_name like CONCAT(#{studentName},'%')
         </if>
         <if test="status!=null and status!=''">
             and ts.`status`=#{status};
@@ -31,7 +31,7 @@
             and ts.student_num=#{studentNum}
         </if>
         <if test="studentName!=null and studentName!=''">
-            aand ts.student_name like CONCAT(#{studentName},'%')
+            and ts.student_name like CONCAT(#{studentName},'%')
         </if>
         <if test="status!=null and status!=''">
             and ts.`status`=#{status};

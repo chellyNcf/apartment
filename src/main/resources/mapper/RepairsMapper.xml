@@ -1,5 +1,50 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.luoying.apartment.dao.RepairsMapper">
-
+    <select id="queryRepairsPage" parameterType="java.util.Map" resultType="com.luoying.apartment.pojo.Repairs">
+        select tr.*,td.dormitory_num,td.building,tu.username as handle_user_name
+        from tb_repairs tr
+        left join tb_dormitory td on tr.dormitory_id = td.id
+        left join tb_user tu on tr.handle_user_id=tu.id
+        where 1=1
+        <if test="status!=null and status!=''">
+            and tr.status = #{status}
+        </if>
+        <if test="dormitoryNum!=null and dormitoryNum != '' ">
+            and td.dormitory_num=#{dormitoryNum}
+        </if>
+        <if test="building!=null and building != '' ">
+            and td.building =#{building}
+        </if>
+        <if test="handleUserId!=null and handleUserId!=''">
+            and tr.handle_user_id =#{handleUserId}
+        </if>
+        order by tr.create_date desc
+        limit #{beginIndex},#{limit}
+    </select>
+    <select id="queryRepairsPageCount" parameterType="java.util.Map" resultType="int">
+        select count(*)
+        from tb_repairs tr
+        left join tb_dormitory td on tr.dormitory_id = td.id
+        where 1=1
+        <if test="status!=null and status!=''">
+            and tr.status = #{status}
+        </if>
+        <if test="dormitoryNum!=null and dormitoryNum != '' ">
+            and  td.dormitory_num=#{dormitoryNum}
+        </if>
+        <if test="building!=null and building != '' ">
+           and   td.building =#{building}
+        </if>
+        <if test="handleUserId!=null and handleUserId!=''">
+            and tr.handle_user_id =#{handleUserId}
+        </if>
+    </select>
+    <select id="queryRepairsById" parameterType="Long" resultType="com.luoying.apartment.pojo.Repairs">
+        select tr.*,td.dormitory_num,td.building,tu.username as handle_user_name
+        from tb_repairs tr
+        left join tb_dormitory td on tr.dormitory_id = td.id
+        left join tb_user tu on tr.handle_user_id=tu.id
+        where tr.id = #{id}
+    </select>
 </mapper>

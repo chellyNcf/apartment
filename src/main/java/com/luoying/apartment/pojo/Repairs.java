@@ -1,11 +1,15 @@
 package com.luoying.apartment.pojo;
 
+import com.baomidou.mybatisplus.annotation.TableField;
 import com.baomidou.mybatisplus.annotation.TableName;
 import java.time.LocalDateTime;
+
+import com.fasterxml.jackson.annotation.JsonFormat;
 import com.luoying.apartment.base.bean.BaseEntity;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.experimental.Accessors;
+import org.springframework.format.annotation.DateTimeFormat;
 
 /**
  * <p>
@@ -71,6 +75,8 @@ public class Repairs extends BaseEntity {
     /**
      * 修理日期
      */
+    @DateTimeFormat(pattern = "yyyy-MM-dd HH:mm:ss")//接收格式
+    @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")//返回格式
     private LocalDateTime repairsDate;
 
     /**
@@ -83,5 +89,12 @@ public class Repairs extends BaseEntity {
      */
     private Long dormitoryId;
 
+    @TableField(exist = false)
+    private String dormitoryNum;
 
+    @TableField(exist = false)
+    private String building;
+
+    @TableField(exist = false)
+    private String handleUserName;
 }
