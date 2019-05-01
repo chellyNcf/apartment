@@ -1,5 +1,6 @@
 package com.luoying.apartment.service;
 
+import com.luoying.apartment.base.bean.MyPage;
 import com.luoying.apartment.pojo.Good;
 import com.baomidou.mybatisplus.extension.service.IService;
 
@@ -13,4 +14,8 @@ import com.baomidou.mybatisplus.extension.service.IService;
  */
 public interface IGoodService extends IService<Good> {
 
+
+    MyPage<Good> getGoodPage(MyPage<Good> page);
+
+    Good getGoodById(Long id);
 }

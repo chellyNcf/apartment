@@ -1,5 +1,6 @@
 package com.luoying.apartment.service.impl;
 
+import com.luoying.apartment.base.bean.MyPage;
 import com.luoying.apartment.pojo.Repairs;
 import com.luoying.apartment.dao.RepairsMapper;
 import com.luoying.apartment.service.IRepairsService;
@@ -17,4 +18,16 @@ import org.springframework.stereotype.Service;
 @Service
 public class RepairsServiceImpl extends ServiceImpl<RepairsMapper, Repairs> implements IRepairsService {
 
+    @Override
+    public MyPage<Repairs> getRepairsPage(MyPage<Repairs> page) {
+        page.setRecords(this.baseMapper.queryRepairsPage(page.getParams()));
+        page.setCount(this.baseMapper.queryRepairsPageCount(page.getParams()));
+        return page;
+    }
+
+    @Override
+    public Repairs getRepairsById(Long id) {
+        Repairs repairs = this.baseMapper.queryRepairsById(id);
+        return repairs;
+    }
 }

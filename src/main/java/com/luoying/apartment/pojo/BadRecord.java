@@ -87,4 +87,11 @@ public class BadRecord extends BaseEntity {
     @TableField(exist = false)
     private String recordUserName;
 
+    @TableField(exist = false)
+    private String dormitoryNum;
+
+    @TableField(exist = false)
+    private String building;
+
+
 }

@@ -1,5 +1,6 @@
 package com.luoying.apartment.service;
 
+import com.luoying.apartment.base.bean.MyPage;
 import com.luoying.apartment.pojo.Repairs;
 import com.baomidou.mybatisplus.extension.service.IService;
 
@@ -13,4 +14,7 @@ import com.baomidou.mybatisplus.extension.service.IService;
  */
 public interface IRepairsService extends IService<Repairs> {
 
+    MyPage<Repairs> getRepairsPage(MyPage<Repairs> page);
+
+    Repairs getRepairsById(Long id);
 }

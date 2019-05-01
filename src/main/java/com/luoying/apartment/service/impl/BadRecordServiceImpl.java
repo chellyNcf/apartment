@@ -1,5 +1,6 @@
 package com.luoying.apartment.service.impl;
 
+import com.luoying.apartment.base.bean.MyPage;
 import com.luoying.apartment.pojo.BadRecord;
 import com.luoying.apartment.dao.BadRecordMapper;
 import com.luoying.apartment.service.IBadRecordService;
@@ -17,4 +18,15 @@ import org.springframework.stereotype.Service;
 @Service
 public class BadRecordServiceImpl extends ServiceImpl<BadRecordMapper, BadRecord> implements IBadRecordService {
 
+    @Override
+    public MyPage<BadRecord> getBadRecordPage(MyPage<BadRecord> page) {
+        page.setRecords(this.baseMapper.queryBadRecordPage(page.getParams()));
+        page.setCount(this.baseMapper.queryBadRecordCount(page.getParams()));
+        return page;
+    }
+
+    @Override
+    public BadRecord getBadRecordById(Long id) {
+        return this.baseMapper.queryBadRecordById(id);
+    }
 }
