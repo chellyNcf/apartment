@@ -16,79 +16,80 @@
 <body>
 <div class="layui-fluid">
     <fieldset class="layui-elem-field layui-field-title top_fieldset" >
-        <legend>添加宿舍信息</legend>
+        <legend>寒暑假留宿申请</legend>
     </fieldset>
-    <div class="layui-row search_criteria">
-        <div class="layui-form">
 
+    <div class="layui-row">
+        <div class="layui-form" lay-filter="bad_add">
             <div class="layui-form-item">
                 <div class="layui-inline">
-                    <label class="layui-form-label">公寓名</label>
-                    <div class="layui-input-block">
-                        <input type="text" lay-verify="required|stu_name" name="studentName" autocomplete="off" class="layui-input">
-                    </div>
-                </div>
-            </div>
-
-            <div class="layui-form-item">
-                <div class="layui-inline">
-                    <label class="layui-form-label">栋</label>
-                    <div class="layui-input-block">
-                        <input type="text"  lay-verify="required" name="building" autocomplete="off" class="layui-input">
-                    </div>
-                </div>
-            </div>
-
-
-            <div class="layui-form-item">
-                <div class="layui-inline">
-                    <label class="layui-form-label">楼层</label>
+                    <label class="layui-form-label">姓名</label>
                     <div class="layui-input-inline">
-                        <input type="tel" name="floorNumber" lay-verify="required" autocomplete="off" class="layui-input">
-                    </div>
-                </div>
-                <div class="layui-inline">
-                    <label class="layui-form-label">宿舍描述</label>
-                    <div class="layui-input-inline">
-                        <input type="text" name="clazz" lay-verify="required" autocomplete="off" class="layui-input">
+                        <input type="text" readonly lay-verify="required|stu_name" name="studentName" autocomplete="off" class="layui-input">
                     </div>
                 </div>
             </div>
 
             <div class="layui-form-item">
                 <div class="layui-inline">
-                    <label class="layui-form-label">电话号码</label>
+                    <label class="layui-form-label">学号</label>
                     <div class="layui-input-inline">
-                        <input type="tel" name="phone" lay-verify="required|phone" autocomplete="off" class="layui-input">
+                        <input type="text" readonly  lay-verify="required" name="studentNum" autocomplete="off" class="layui-input">
                     </div>
                 </div>
             </div>
 
             <div class="layui-form-item">
-                <label class="layui-form-label">单选框</label>
+                <div class="layui-inline">
+                    <label class="layui-form-label">院系</label>
+                    <div class="layui-input-inline">
+                        <input type="text" readonly name="department" lay-verify="required" autocomplete="off" class="layui-input">
+                    </div>
+                </div>
+            </div>
+
+            <div class="layui-form-item">
+                <div class="layui-inline">
+                    <label class="layui-form-label">班级</label>
+                    <div class="layui-input-inline">
+                        <input type="text" readonly name="clazz" lay-verify="required" autocomplete="off" class="layui-input">
+                    </div>
+                </div>
+            </div>
+
+            <div class="layui-form-item">
+                <div class="layui-inline">
+                    <label class="layui-form-label">开始日期</label>
+                    <div class="layui-input-inline">
+                        <input type="text" name="beginTime" id="beginTime" lay-verify="date" placeholder="开始日期" autocomplete="off" class="layui-input">
+                    </div>
+                </div>
+            </div>
+
+            <div class="layui-form-item">
+                <div class="layui-inline">
+                    <label class="layui-form-label">结束日期</label>
+                    <div class="layui-input-inline">
+                        <input type="text" name="endTime" id="endTime" lay-verify="date" placeholder="结束日期" autocomplete="off" class="layui-input">
+                    </div>
+                </div>
+            </div>
+
+            <div class="layui-form-item layui-form-text">
+                <label class="layui-form-label">留宿原因</label>
                 <div class="layui-input-block">
-                    <input type="radio" name="sex" value="1" title="男" checked="">
-                    <input type="radio" name="sex" value="2" title="女">
+                    <textarea placeholder="请输入内容" class="layui-textarea" name="reason"></textarea>
                 </div>
-            </div>
-
-            <div class="layui-form-item">
-                <label class="layui-form-label">登录密码</label>
-                <div class="layui-input-inline">
-                    <input type="password" name="password" lay-verify="pass" placeholder="请输入密码" autocomplete="off" class="layui-input">
-                </div>
-                <div class="layui-form-mid layui-word-aux">请填写6到12位密码</div>
             </div>
 
             <div class="layui-form-item">
                 <div class="layui-input-block">
-                    <button class="layui-btn" lay-submit="" lay-filter="add_student">立即提交</button>
-                    <button type="reset" class="layui-btn layui-btn-primary">重置</button>
+                    <button class="layui-btn add_bad" lay-submit="" lay-filter="add_bad" disabled="true">确认</button>
+                    <button id="back" class="layui-btn layui-btn-primary">取消</button>
                 </div>
             </div>
 
         </div>
-
     </div>
 </div>
 
@@ -98,7 +99,11 @@
         var laydate = layui.laydate,form = layui.form;
         //日期
         laydate.render({
-            elem: '#date'
+            elem: '#beginTime'
+        });
+
+        laydate.render({
+            elem: '#endTime'
         });
 
         //自定义验证规则
@@ -114,12 +119,14 @@
             ]
         });
 
-        form.on('submit(add_student)', function(data){
+        form.on('submit(add_bad)', function(data){
             console.log(data.elem) //被执行事件的元素DOM对象，一般为button对象
             console.log(data.form) //被执行提交的form对象，一般在存在form标签时才会返回
+            data.field['studentId']=id;
+            // data.field['dormitoryId']=student.dormitoryId;
             console.log(data.field) //当前容器的全部表单字段，名值对形式：{name: value}
             remoteCall({
-                url:baseUrl+'/student',
+                url:baseUrl+'/stay-school',
                 type:"post",
                 contentType: "application/json; charset=utf-8",
                 data:JSON.stringify(data.field),
@@ -146,9 +153,39 @@
             return false; //阻止表单跳转。如果需要表单跳转，去掉这段即可。
         });
 
+        var id=getUrlVariable("id");
+        var student={};
+
+        remoteCall({
+            url:baseUrl+'/student/'+id,
+            type:"get",
+            dataType:'json',
+            success:function (result) {
+                console.log(result);
+                var data=result.data;
+                student=data;
+                if(result.code==0){
+                    form.val("bad_add", {
+                        "studentName": data.studentName // "name": "value"
+                        ,"studentNum": data.studentNum
+                        ,"department": data.department
+                        ,"clazz": data.clazz
+                    })
+                    $('.add_bad').attr("disabled",false);
+                }else{
+                    layer.msg(result.msg, {icon: 7});
+                }
+            },
+            error:function (a,b,c) {
+                layer.msg("错误："+a.status, {icon: 2});
+            }
+        });
+
+        $('#back').click(function () {
+            history.back();
+        })
+
     })
-
-
 
 </script>
 

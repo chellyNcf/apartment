@@ -98,7 +98,10 @@
 <script type="text/html" id="toolbarDemo">
     <div class="layui-btn-container">
         <button class="layui-btn layui-btn-normal layui-btn-sm layui-btn-radius" lay-event="add">
-            增加 <i class="layui-icon layui-icon-add-1"></i>
+            增加宿舍 <i class="layui-icon layui-icon-add-1"></i>
+        </button>
+        <button class="layui-btn layui-btn-normal layui-btn-sm layui-btn-radius" lay-event="repairs">
+            报修 <i class="layui-icon layui-icon-util"></i>
         </button>
     </div>
 </script>
@@ -147,7 +150,8 @@
             ,toolbar: '#toolbarDemo'
             ,cellMinWidth: 80 //全局定义常规单元格的最小宽度，layui 2.2.1 新增
             ,cols: [[
-                {type: 'numbers',title: '序号', fixed: 'left'}
+                {type:'radio', fixed: 'left'}
+                ,{type: 'numbers',title: '序号', fixed: 'left'}
                 ,{field:'dormitoryNum', title: '宿舍房号',fixed: 'left'}
                 ,{field:'apartmentName', title: '公寓楼'}
                 ,{field:'note', title: '宿舍描述'}
@@ -218,6 +222,9 @@
                         }
                     });
 
+                    break;
+                case 'repairs':
+                    location.href='repairs_add.html?id='+data.id;
                     break;
             };
         });

@@ -46,7 +46,7 @@ public class BadRecord extends BaseEntity {
     /**
      * 记录人id
      */
-    private Long recordUserId;
+    private Long recordUserId=-1l;
 
     /**
      * 处理人id
