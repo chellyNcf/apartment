@@ -181,6 +181,8 @@ create table `tb_good`(
 primary key(`id`)
 )ENGINE = INNODB AUTO_INCREMENT = 1 CHARSET = utf8 comment '大件物品表';
 
+ALTER TABLE `tb_good` ADD `good_category_id` BIGINT(20) not null comment '大件物品种类表';
+ALTER TABLE `tb_good` ADD `status` TINYINT(2) default '0' comment '状态 0存在，1已出库';
 
 #报修表
 create table `tb_repairs`(

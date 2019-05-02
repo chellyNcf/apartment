@@ -4,6 +4,7 @@ package com.luoying.apartment.controller;
 import com.baomidou.mybatisplus.extension.api.R;
 import com.luoying.apartment.base.bean.ResultMsg;
 import com.luoying.apartment.base.bean.ResultMsgFactory;
+import com.luoying.apartment.pojo.GoodCategory;
 import com.luoying.apartment.service.IGoodCategoryService;
 import com.luoying.apartment.service.IGoodService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -39,6 +40,13 @@ public class GoodCategoryController extends BaseController {
     public ResultMsg getGoodCateList(){
         logger.info("查询大宗物品列表");
         return ResultMsgFactory.createSuccessMsg(goodCategoryService.list());
+    }
+
+    @PostMapping
+    public ResultMsg add(@RequestBody GoodCategory goodCategory){
+
+        goodCategoryService.save(goodCategory);
+        return ResultMsgFactory.createSuccessMsg();
     }
 
 }
