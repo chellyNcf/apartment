@@ -157,18 +157,20 @@
 </script>
 
 <script type="text/html" id="statusTpl">
-    {{#  if(d.status == 0){ }}
-        <span>未入住</span>
-    {{#  } else if(d.status == 1){ }}
-        <span>已入住</span>
-    {{#  } else if(d.status == 2) { }}
-        <span>退宿</span>
+    {{#  if(d.handleStatus == 0){ }}
+        <span>未处理</span>
+    {{#  } else if(d.handleStatus == 1){ }}
+        <span>警告</span>
+    {{#  } else if(d.handleStatus == 2) { }}
+        <span>处分</span>
+    {{#  } else if(d.handleStatus == 3) { }}
+        <span>撤销</span>
     {{#  } }}
 </script>
 
 <script type="text/html" id="dormitoryInfoTpl">
     {{#  if(d.status != 0){ }}
-    <span> {{ d.building }} 栋/{{ d.dormitoryNum }}室/{{  d.bedNum }}号床</span>
+    <span> {{ d.apartmentName }}#{{ d.dormitoryNum }}室#{{  d.bedNum }}床</span>
     {{#  } }}
 </script>
 

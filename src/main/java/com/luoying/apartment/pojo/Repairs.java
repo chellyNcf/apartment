@@ -93,7 +93,7 @@ public class Repairs extends BaseEntity {
     private String dormitoryNum;
 
     @TableField(exist = false)
-    private String building;
+    private String apartmentName;
 
     @TableField(exist = false)
     private String handleUserName;

@@ -35,7 +35,7 @@ public class Good extends BaseEntity {
     /**
      * 公寓id
      */
-    private Long apartmentId=1l;
+    private Long apartmentId;
 
     /**
      * 学生id
@@ -79,7 +79,7 @@ public class Good extends BaseEntity {
     private String building;
 
     @TableField(exist = false)
-    private String dormitoryNum;
+    private String apartmentName;
 
     @TableField(exist = false)
     private String goodCategoryName;
