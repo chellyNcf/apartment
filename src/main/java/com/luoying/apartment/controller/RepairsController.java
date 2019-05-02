@@ -6,6 +6,7 @@ import com.luoying.apartment.base.bean.ResultMsg;
 import com.luoying.apartment.base.bean.ResultMsgFactory;
 import com.luoying.apartment.pojo.Repairs;
 import com.luoying.apartment.service.IRepairsService;
+import com.luoying.apartment.utils.JwtUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
@@ -38,10 +39,17 @@ public class RepairsController extends BaseController {
         resultMsg.setCount(page.getCount());
         return resultMsg;
     }
+
+    /**
+     * 学生提交报修申请
+     * @param repairs
+     * @return
+     */
     @PostMapping
     public ResultMsg add(@RequestBody Repairs repairs){
         logger.info("保存报修信息{}",repairs);
-        repairsService.save(repairs);
+
+        repairsService.addRepairs(repairs,JwtUtil.getUser());
         return ResultMsgFactory.createSuccessMsg();
     }
     @DeleteMapping("/{id}")
@@ -55,11 +63,17 @@ public class RepairsController extends BaseController {
         logger.info("查询报修信息{}",id);
         return ResultMsgFactory.createSuccessMsg(repairsService.getRepairsById(id));
     }
+
+    /**
+     * 管理员处理报修申请
+     * @param repairs
+     * @return
+     */
     @PutMapping
     public ResultMsg update(@RequestBody Repairs repairs){
         logger.info("更新报修信息{}",repairs);
         repairs.setUpdateDate(new Date());
-        repairsService.updateById(repairs);
+        repairsService.updateRepairs(repairs,JwtUtil.getUser());
         return ResultMsgFactory.createSuccessMsg();
     }
 

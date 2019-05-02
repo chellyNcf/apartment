@@ -3,6 +3,7 @@ package com.luoying.apartment.service;
 import com.luoying.apartment.base.bean.MyPage;
 import com.luoying.apartment.pojo.Repairs;
 import com.baomidou.mybatisplus.extension.service.IService;
+import com.luoying.apartment.pojo.User;
 
 /**
  * <p>
@@ -17,4 +18,8 @@ public interface IRepairsService extends IService<Repairs> {
     MyPage<Repairs> getRepairsPage(MyPage<Repairs> page);
 
     Repairs getRepairsById(Long id);
+
+    void addRepairs(Repairs repairs, User user);
+
+    void updateRepairs(Repairs repairs, User user);
 }
