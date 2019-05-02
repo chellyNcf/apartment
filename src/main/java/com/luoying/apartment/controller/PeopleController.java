@@ -36,7 +36,7 @@ public class PeopleController extends BaseController {
         MyPage<People> page = new MyPage<>(params);
         page = peopleService.getPeoplePage(page);
         ResultMsg msg = ResultMsgFactory.createSuccessMsg(page.getRecords());
-        msg.setCode(0);
+        msg.setCount(page.getCount());
         return msg;
     }
 

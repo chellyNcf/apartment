@@ -165,6 +165,8 @@
 
         //头工具栏事件
         table.on('toolbar(dormitory_table)', function(obj){
+
+            var checkStatus = table.checkStatus(obj.config.id); //获取选中行状态
             switch(obj.event){
                 case 'add':
                     // layer.alert("弹出添加");
@@ -224,6 +226,11 @@
 
                     break;
                 case 'repairs':
+                    if(checkStatus.data.length==0){
+                        layer.msg("请选择宿舍");
+                        break;
+                    }
+                    var data = checkStatus.data[0];  //获取选中行数据
                     location.href='repairs_add.html?id='+data.id;
                     break;
             };
