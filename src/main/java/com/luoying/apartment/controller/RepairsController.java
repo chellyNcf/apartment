@@ -41,7 +41,7 @@ public class RepairsController extends BaseController {
     }
 
     /**
-     * 学生提交报修申请
+     * 提交报修申请
      * @param repairs
      * @return
      */

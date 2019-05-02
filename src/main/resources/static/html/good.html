@@ -324,16 +324,19 @@
         var active = {
             //搜索方法
             search: function(){
-                var name = $('#peopleName');
-                var createDate=$('#createDate');
+                var name = $('#studentName');
+                var apartment = $('#apartmentId')
+                var goodcategory=$('#goodCategoryId');
+
                 //执行重载表格
                 table.reload('good_table', {
                     page: {
                         curr: 1 //重新从第 1 页开始
                     }
                     ,where: {
-                        peopleName: name.val()
-                        ,createDate: createDate.val()
+                        studentName: name.val()
+                        ,apartmentId: apartment.val()
+                        ,goodCategoryId: goodcategory.val()
                     }
                 });
             }

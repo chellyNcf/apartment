@@ -18,8 +18,8 @@
         <if test="dormitoryNum!=null and dormitoryNum != '' ">
             and td.dormitory_num=#{dormitoryNum}
         </if>
-        <if test="apartmentName!=null and apartmentName != '' ">
-            and ta.apartment_name =#{apartmentName}
+        <if test="apartmentId!=null and apartmentId != '' ">
+            and ta.id =#{apartmentId}
         </if>
         order by tg.create_date desc
         limit #{beginIndex},#{limit}
@@ -41,8 +41,8 @@
         <if test="dormitoryNum!=null and dormitoryNum != '' ">
             and td.dormitory_num=#{dormitoryNum}
         </if>
-        <if test="apartmentName!=null and apartmentName != '' ">
-            and ta.apartment_name =#{apartmentName}
+        <if test="apartmentId!=null and apartmentId != '' ">
+            and ta.id =#{apartmentId}
         </if>
     </select>
     <select id="queryGoodById" parameterType="Long" resultType="com.luoying.apartment.pojo.Good">

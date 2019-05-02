@@ -1,6 +1,8 @@
 package com.luoying.apartment.service.impl;
 
 import com.luoying.apartment.base.bean.MyPage;
+import com.luoying.apartment.dao.StudentMapper;
+import com.luoying.apartment.dao.UserMapper;
 import com.luoying.apartment.pojo.Repairs;
 import com.luoying.apartment.dao.RepairsMapper;
 import com.luoying.apartment.pojo.Student;
@@ -25,9 +27,9 @@ import org.springframework.transaction.annotation.Transactional;
 @Service
 public class RepairsServiceImpl extends ServiceImpl<RepairsMapper, Repairs> implements IRepairsService {
     @Autowired
-    private UserService userService;
+    private UserMapper userMapper;
     @Autowired
-    private IStudentService studentService;
+    private StudentMapper studentMapper;
 
     @Override
     public MyPage<Repairs> getRepairsPage(MyPage<Repairs> page) {
@@ -48,10 +50,10 @@ public class RepairsServiceImpl extends ServiceImpl<RepairsMapper, Repairs> impl
         MyUtil.checkNull(user);
         MyUtil.checkNull(user.getId(),"用户为空");
         //获取当前登录学生的user信息
-        User stu = userService.getById(user.getId());
+        User stu = userMapper.selectById(user.getId());
         MyUtil.checkNull(stu);
         MyUtil.checkNull(stu.getStudentId());
-        Student student =  studentService.getById(user.getStudentId());
+        Student student =  studentMapper.selectById(user.getStudentId());
         //填上报人信息
         repairs.setSponsorId(student.getId());
         repairs.setSponsorName(student.getStudentName());
@@ -65,7 +67,7 @@ public class RepairsServiceImpl extends ServiceImpl<RepairsMapper, Repairs> impl
     public void updateRepairs(Repairs repairs, User user) {
         MyUtil.checkNull(user);
         MyUtil.checkNull(user.getId(),"用户为空");
-        User manager = userService.getById(user.getId());
+        User manager = userMapper.selectById(user.getId());
         MyUtil.checkNull(manager);
         MyUtil.check(manager.getUserType()==0, "账号类型非管理员");
         repairs.setHandleUserId(manager.getId());
