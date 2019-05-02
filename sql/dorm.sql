@@ -31,8 +31,8 @@ create table `tb_user`(
  primary key(`id`)
 )ENGINE = INNODB AUTO_INCREMENT = 1 CHARSET = utf8 comment '用户表';
 
--- 超级管理员
-INSERT INTO `tb_user` (`id`,`username`,`password`,`user_type`) VALUES (-1,'admin','123456',0);
+-- 超级管理员 密码123456
+INSERT INTO `tb_user` (`id`,`username`,`password`,`user_type`) VALUES (-1,'admin','70bb8785309fc3f9b7f2a78a4e4bfc22',0);
 
 #床位表
 create table `tb_bed`(

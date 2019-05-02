@@ -27,12 +27,26 @@
                         <input type="text" name="studentName" id="name" autocomplete="off" class="layui-input">
                     </div>
                 </div>
+
                 <div class="layui-inline">
                     <label class="layui-form-label">学号</label>
                     <div class="layui-input-block">
                         <input type="text" name="studentNum" id="studentNum" autocomplete="off" class="layui-input">
                     </div>
                 </div>
+
+                <div class="layui-inline">
+                    <label class="layui-form-label">处理方式</label>
+                    <div class="layui-input-inline">
+                        <select id="handleStatusSearch" name="handleStatus" lay-verify="required">
+                            <option value="">请选择</option>
+                            <option value="1">警告</option>
+                            <option value="2">处罚</option>
+                            <option value="3">撤销</option>
+                        </select>
+                    </div>
+                </div>
+
                 <div class="layui-inline">
                     <div class="layui-input-inline">
                         <button class="layui-btn layui-btn-normal layui-btn-sm layui-btn-radius" data-type="search">
@@ -51,82 +65,27 @@
     </div>
 </div>
 
-<div class="layui-form" style="display: none" id="student_dormitory">
+<div class="layui-form" style="display: none" id="bad_record_handle" lay-filter="bad_record_handle">
 
     <div class="layui-form-item">
         <div class="layui-inline">
-            <label class="layui-form-label">姓名</label>
-            <div class="layui-input-block">
-                <input type="text" lay-verify="required|stu_name" name="studentName" autocomplete="off" class="layui-input">
-            </div>
-        </div>
-    </div>
-
-    <div class="layui-form-item">
-        <div class="layui-inline">
-            <label class="layui-form-label">学号</label>
-            <div class="layui-input-block">
-                <input type="text"  lay-verify="required" name="studentNum" autocomplete="off" class="layui-input">
-            </div>
-        </div>
-    </div>
-
-    <div class="layui-form-item">
-        <div class="layui-inline">
-            <label class="layui-form-label">公寓名</label>
+            <label class="layui-form-label">处理方式</label>
             <div class="layui-input-inline">
-                <select id="apartmentId" name="apartmentId" lay-verify="required">
+                <select id="handleStatus" name="handleStatus" lay-verify="required">
                     <option value="">请选择</option>
+                    <option value="1">警告</option>
+                    <option value="2">处罚</option>
                 </select>
             </div>
         </div>
     </div>
 
-    <div class="layui-form-item">
+    <div class="layui-form-item layui-form-text">
         <div class="layui-inline">
-            <label class="layui-form-label">出生日期</label>
+            <label class="layui-form-label">处理内容</label>
             <div class="layui-input-inline">
-                <input type="text" name="birthdate" id="date" lay-verify="date" placeholder="yyyy-MM-dd" autocomplete="off" class="layui-input">
+                <textarea placeholder="请输入内容" class="layui-textarea" id="handle" name="handle"></textarea>
             </div>
-        </div>
-    </div>
-
-    <div class="layui-form-item">
-        <div class="layui-inline">
-            <label class="layui-form-label">院系</label>
-            <div class="layui-input-inline">
-                <input type="tel" name="department" lay-verify="required" autocomplete="off" class="layui-input">
-            </div>
-        </div>
-        <div class="layui-inline">
-            <label class="layui-form-label">班级</label>
-            <div class="layui-input-inline">
-                <input type="text" name="clazz" lay-verify="required" autocomplete="off" class="layui-input">
-            </div>
-        </div>
-    </div>
-
-    <div class="layui-form-item">
-        <div class="layui-inline">
-            <label class="layui-form-label">电话号码</label>
-            <div class="layui-input-inline">
-                <input type="tel" name="phone" lay-verify="required|phone" autocomplete="off" class="layui-input">
-            </div>
-        </div>
-    </div>
-
-    <div class="layui-form-item">
-        <label class="layui-form-label">单选框</label>
-        <div class="layui-input-block">
-            <input type="radio" name="sex" value="1" title="男" checked="">
-            <input type="radio" name="sex" value="2" title="女">
-        </div>
-    </div>
-
-    <div class="layui-form-item">
-        <div class="layui-input-block">
-            <button class="layui-btn" lay-submit="" lay-filter="update_student" id="update">立即提交</button>
-            <button type="reset" class="layui-btn layui-btn-primary">重置</button>
         </div>
     </div>
 
@@ -141,8 +100,13 @@
 </script>
 
 <script type="text/html" id="barDemo">
-    <a class="layui-btn layui-btn-xs layui-btn-normal" lay-event="handle">处理</a>
-    <a class="layui-btn layui-btn-xs" lay-event="edit">编辑</a>
+    {{#  if(d.handleStatus == 0){ }}
+        <a class="layui-btn layui-btn-xs layui-btn-normal" lay-event="handle">处理</a>
+        <a class="layui-btn layui-btn-xs" lay-event="cancel">撤销</a>
+    {{#  } else{ }}
+        <a class="layui-btn layui-btn-xs layui-btn-disabled" >处理</a>
+        <a class="layui-btn layui-btn-xs layui-btn-disabled" >撤销</a>
+    {{#  } }}
     <a class="layui-btn layui-btn-danger layui-btn-xs" lay-event="del">删除</a>
 </script>
 
@@ -158,13 +122,13 @@
 
 <script type="text/html" id="statusTpl">
     {{#  if(d.handleStatus == 0){ }}
-        <span>未处理</span>
+        <span style="color: blue">未处理</span>
     {{#  } else if(d.handleStatus == 1){ }}
-        <span>警告</span>
+        <span style="color: #ff8d24">警告</span>
     {{#  } else if(d.handleStatus == 2) { }}
-        <span>处分</span>
+        <span style="color: red">处分</span>
     {{#  } else if(d.handleStatus == 3) { }}
-        <span>撤销</span>
+        <span style="color: green">撤销</span>
     {{#  } }}
 </script>
 
@@ -182,26 +146,26 @@
             id:'bad_record_table',
             elem: '#bad_record_table'
             ,url:baseUrl+'/bad-record/page'
-            ,toolbar: '#toolbarDemo'
+            // ,toolbar: '#toolbarDemo'
             ,cellMinWidth: 80 //全局定义常规单元格的最小宽度，layui 2.2.1 新增
             ,cols: [[
                 {type: 'numbers',title: '序号', fixed: 'left'}
                 ,{field:'studentName', width:100, title: '姓名',fixed: 'left'}
                 ,{field:'studentNum', width:130, title: '学号'}
-                ,{field:'eventContent', width:80, title: '违规事件'}
-                ,{field:'reason', width:80, title: '原因'}
+                ,{field:'eventContent', width:120, title: '违规事件'}
                 ,{field:'recordUserName', title: '记录人', width: 120} //minWidth：局部定义当前单元格的最小宽度，layui 2.2.1 新增
-                ,{field:'handleUserName', title: '处理人', sort: true}
-                ,{field:'handle', title: '处理内容'}
-                ,{field:'dormitoryInfo', width:137, title: '宿舍信息', templet: '#dormitoryInfoTpl'}
-                ,{field:'handleStatus', width:80, title: '状态', templet: '#statusTpl'}
+                ,{field:'handleStatus', width:120, title: '处理方式', templet: '#statusTpl'}
+                ,{field:'handleUserName', title: '处理人'}
+                ,{field:'handle', title: '处理内容', minWidth:150}
+                ,{field:'dormitoryInfo', width:250, title: '宿舍信息', templet: '#dormitoryInfoTpl'}
+                ,{field:'reason', minWidth:150, title: '原因'}
                 ,{fixed: 'right', title:'操作', toolbar: '#barDemo', width:200}
             ]]
             ,page: true
         });
 
         //头工具栏事件
-        table.on('toolbar(student_table)', function(obj){
+        table.on('toolbar(bad_record_table)', function(obj){
             switch(obj.event){
                 case 'add':
                     // layer.alert("弹出添加");
@@ -211,15 +175,14 @@
         });
 
         //监听行工具事件
-        table.on('tool(student_table)', function(obj){
+        table.on('tool(bad_record_table)', function(obj){
             var data = obj.data;
             if(obj.event === 'del'){
                 layer.confirm('真的删除行么', function(index){
                     console.log(data);
                     remoteCall({
-                        url:baseUrl+'/student/1',
+                        url:baseUrl+'/bad-record/'+data.id,
                         type:"delete",
-                        data:{id:data.id},
                         dataType:'json',
                         success:function (result) {
                             console.log(result);
@@ -238,36 +201,86 @@
                     layer.close(index);
                 });
                 //console.log(obj)
-
-            } else if(obj.event === 'edit'){
-                location.href='student_update.html?id='+data.id;
             }else if(obj.event === 'handle'){
-                layer.prompt({
-                    formType: 2,
-                    value: data.dormitoryNum,
-                    title: '退宿原因',
-                }, function(value, index, elem){
-                    var bed={'dormitoryId':data.id,'bedNum':value}
+                layer.open({
+                    id:'bad_record_handle_lay',
+                    type: 1,
+                    title: '违规处理',
+                    skin: 'layui-layer-rim', //加上边框
+                    // area: ['420px', '240px'], //宽高
+                    content: $('#bad_record_handle'),
+                    btnAlign: 'c',
+                    btn: ['确定', '取消'],
+                    yes: function(index, layero){
+                        //按钮【按钮一】的回调
+                        var handle={'handleStatus':$('#handleStatus').val(),
+                            'handle':$('#handle').val(),
+                            'handleUserId':'-1',
+                            'id':data.id
+                        };
+                        remoteCall({
+                            url:baseUrl+'/bad-record',
+                            type:"put",
+                            contentType: "application/json; charset=utf-8",
+                            data: JSON.stringify(handle),
+                            dataType:'json',
+                            success:function (result) {
+                                console.log(result);
+                                if(result.code==0){
+                                    layer.close(index);
+                                    table.reload('bad_record_table');
+                                    layer.msg('成功', {icon: 1});
+                                }else{
+                                    layer.msg(result.msg, {icon: 7});
+                                }
+                            },
+                            error:function (a,b,c) {
+                                // layer.
+                                layer.msg('错误：'+a.status, {icon: 2});
+                            }
+                        })
+
+                    },
+                    btn2: function(index, layero){
+                        //return false 开启该代码可禁止点击该按钮关闭
+                    },
+                    end: function(){
+                        //右上角关闭回调
+                        var emptyForm = {'outTime':''};
+                        form.val('outGood',emptyForm);
+                        form.render(null, 'outGood');
+                        //return false 开启该代码可禁止点击该按钮关闭
+                    }
+                });
+            }else if(obj.event === 'cancel'){
+                var cancel={'handleStatus':'3',
+                    'handleUserId':'-1',
+                    'id':data.id
+                };
+
+                layer.confirm('确定要撤销吗？', function(index){
+                    console.log(data);
                     remoteCall({
-                        url:baseUrl+'/bed',
-                        type:"post",
+                        url:baseUrl+'/bad-record',
+                        type:"put",
                         contentType: "application/json; charset=utf-8",
-                        data: JSON.stringify(bed),
+                        data:JSON.stringify(cancel),
                         dataType:'json',
                         success:function (result) {
                             console.log(result);
                             if(result.code==0){
-                                layer.close(index);
-                                table.reload('dormitory_table');
-                                layer.msg('成功', {icon: 1});
+                                layer.msg('撤销成功', {icon: 1});
+                                table.reload('bad_record_table');
                             }else{
                                 layer.msg(result.msg, {icon: 7});
                             }
                         },
                         error:function (a,b,c) {
-                            layer.msg('错误：'+a.status, {icon: 2});
+                            // layer.
+                            layer.msg('错误：'+a,status, {icon: 2});
                         }
-                    })
+                    });
+                    layer.close(index);
                 });
             }
         });
@@ -277,14 +290,16 @@
             search: function(){
                 var name = $('#name');
                 var studentNum=$('#studentNum');
+                var handleStatusSearch=$('#handleStatusSearch');
                 //执行重载表格
-                table.reload('student_table', {
+                table.reload('bad_record_table', {
                     page: {
                         curr: 1 //重新从第 1 页开始
                     }
                     ,where: {
                         studentName: name.val()
                         ,studentNum: studentNum.val()
+                        ,handleStatus:handleStatusSearch.val()
                     }
                 });
             }

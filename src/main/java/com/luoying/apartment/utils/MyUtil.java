@@ -1,6 +1,8 @@
 package com.luoying.apartment.utils;
 
+import com.luoying.apartment.base.constant.Constant;
 import com.luoying.apartment.base.exception.MyException;
+import org.springframework.util.DigestUtils;
 
 import java.util.Collection;
 
@@ -20,6 +22,16 @@ public class MyUtil {
             }
         }
         return 0;
+    }
+
+    /**
+     * 密码加密
+     * @param password
+     * @return
+     */
+    public static String pwdMd5(String password){
+        password=Constant.SALT+password;
+        return DigestUtils.md5DigestAsHex(password.getBytes());
     }
 
 

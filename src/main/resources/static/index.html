@@ -27,7 +27,8 @@
         <ul class="layui-nav layui-layout-right">
             <li class="layui-nav-item">
                 <a href="javascript:;">
-                    <img src="http://t.cn/RCzsdCq" class="layui-nav-img">
+                    <i class="layui-icon layui-icon-username layui-nav-img"></i>
+                    <!--<img src="http://t.cn/RCzsdCq" class="layui-nav-img">-->
                     admin
                 </a>
                 <dl class="layui-nav-child">
@@ -67,7 +68,13 @@
                         <dd><a href="javascript:;" data-options="{url:'html/good.html',title:'大宗物件出入登记'}">大宗物件出入登记</a></dd>
                     </dl>
                 </li>
-                <li class="layui-nav-item"><a href="javascript:;">系统设置</a></li>
+                <li class="layui-nav-item">
+                    <a href="javascript:;">系统管理</a>
+                    <dl class="layui-nav-child">
+                        <dd><a href="javascript:;" data-options="{url:'html/user.html',title:'用户信息'}">用户信息</a></dd>
+                        <dd><a href="javascript:;" data-options="{url:'html/apartment.html',title:'公寓信息'}">公寓信息</a></dd>
+                    </dl>
+                </li>
             </ul>
         </div>
     </div>

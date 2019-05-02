@@ -18,6 +18,12 @@ public class UserController extends  BaseController{
     @Autowired
     private UserService userService;
 
+    @GetMapping("/page")
+    public ResultMsg page(){
+
+        return ResultMsgFactory.createSuccessMsg();
+    }
+
     /**
      * 添加
      * @return
@@ -25,7 +31,7 @@ public class UserController extends  BaseController{
     @PostMapping
     public ResultMsg add(@RequestBody User user){
         logger.info("保存用户信息:{}",user);
-        userService.save(user);
+        userService.addUser(user);
         return ResultMsgFactory.createSuccessMsg();
     }
 

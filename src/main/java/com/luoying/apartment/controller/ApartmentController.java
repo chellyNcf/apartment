@@ -3,12 +3,11 @@ package com.luoying.apartment.controller;
 
 import com.luoying.apartment.base.bean.ResultMsg;
 import com.luoying.apartment.base.bean.ResultMsgFactory;
+import com.luoying.apartment.pojo.Apartment;
 import com.luoying.apartment.service.IApartmentService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.*;
 
-import org.springframework.web.bind.annotation.RestController;
 import com.luoying.apartment.base.controller.BaseController;
 
 /**
@@ -30,6 +29,20 @@ public class ApartmentController extends BaseController {
     public ResultMsg getAll(){
 
         return ResultMsgFactory.createSuccessMsg(apartmentService.list());
+    }
+
+    @PostMapping
+    public ResultMsg add(@RequestBody Apartment apartment){
+
+        apartmentService.save(apartment);
+        return ResultMsgFactory.createSuccessMsg();
+    }
+
+    @PutMapping
+    public ResultMsg update(@RequestBody Apartment apartment){
+
+        apartmentService.updateById(apartment);
+        return ResultMsgFactory.createSuccessMsg();
     }
 
 }

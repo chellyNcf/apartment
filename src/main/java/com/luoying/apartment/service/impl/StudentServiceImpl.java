@@ -17,6 +17,7 @@ import com.luoying.apartment.utils.MyUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.util.DigestUtils;
 
 import java.util.Date;
 
@@ -55,7 +56,7 @@ public class StudentServiceImpl extends ServiceImpl<StudentMapper,Student> imple
         user.setStudentId(student.getId());
         user.setUsername(student.getStudentNum());
         user.setUserType(UserTypeEnum.NORMAL_USER.getValue());
-        user.setPassword(student.getPassword());
+        user.setPassword(MyUtil.pwdMd5(student.getPassword()));
         userMapper.insert(user);
     }
 
