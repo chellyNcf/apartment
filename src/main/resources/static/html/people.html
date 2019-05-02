@@ -11,12 +11,12 @@
     <script src="../layui/layui.js" charset="utf-8"></script>
     <script src="../js/base.js" charset="utf-8"></script>
     <!-- 注意：如果你直接复制所有代码到本地，上述css路径需要改成你本地的 -->
-    <title>报修处理</title>
+    <title>外来人员登记</title>
 </head>
 <body>
 <div class="layui-fluid">
     <fieldset class="layui-elem-field layui-field-title top_fieldset" >
-        <legend>报修处理</legend>
+        <legend>外来人员登记</legend>
     </fieldset>
     <div class="layui-row search_criteria">
         <div class="layui-form layui-form-pane">
@@ -47,7 +47,7 @@
     </div>
     <div class="layui-row"></div>
     <div class="layui-row">
-        <table class="layui-hide" id="repairs_table" lay-filter="repairs_table"></table>
+        <table class="layui-hide" id="people_table" lay-filter="people_table"></table>
     </div>
 </div>
 
@@ -134,23 +134,20 @@
         });
 
         table.render({
-            id:'repairs_table',
-            elem: '#repairs_table'
-            ,url:baseUrl+'/repairs/page'
+            id:'people_table',
+            elem: '#people_table'
+            ,url:baseUrl+'/people/page'
             // ,toolbar: '#toolbarDemo'
             ,cellMinWidth: 80 //全局定义常规单元格的最小宽度，layui 2.2.1 新增
             ,cols: [[
                 {type: 'numbers',title: '序号', fixed: 'left'}
-                ,{field:'sponsorName', width:100, title: '发起人名',fixed: 'left'}
-                ,{field:'sponsorPhone', width:130, title: '发起人电话', sort: true}
-                ,{field:'content', minWidth:150, title: '报修内容'}
+                ,{field:'peopleName', width:100, title: '外访人姓名',fixed: 'left'}
+                ,{field:'peoplePhone', width:130, title: '电话号码'}
+                ,{field:'studentName', minWidth:150, title: '被访学生'}
                 ,{field:'dormitoryInfo', minWidth:200, title: '宿舍信息', templet: '#dormitoryInfoTpl'}
-                ,{field:'sponsorType', width:120, title: '发起人类型', templet: '#typeTpl'}
-                ,{field:'status', width:80, title: '状态', templet: '#statusTpl'}
-                ,{field:'handleUserName', title: '处理人', width: 120} //minWidth：局部定义当前单元格的最小宽度，layui 2.2.1 新增
-                ,{field:'repairsName', title: '修理人'}
-                ,{field:'repairsPhone',width:130, title: '修理人电话'}
-                ,{field:'repairsDate', title: '修理日期',width:150}
+                ,{field:'relationship', width:120, title: '与被访者关系'}
+                ,{field:'reason', title: '事由', width: 120} //minWidth：局部定义当前单元格的最小宽度，layui 2.2.1 新增
+                ,{field:'createDate', minWidth:150, title: '来访时间', sort: true}
                 ,{field:'note', minWidth:150, title: '备注'}
                 ,{fixed: 'right', title:'操作', toolbar: '#barDemo', width:230}
             ]]
