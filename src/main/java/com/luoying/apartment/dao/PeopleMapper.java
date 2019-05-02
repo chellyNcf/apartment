@@ -19,4 +19,6 @@ public interface PeopleMapper extends BaseMapper<People> {
     List<People> queryPeoplePage(Map<String, Object> params);
 
     int queryPeopleCount(Map<String, Object> params);
+
+    People queryPeopleById(Long id);
 }

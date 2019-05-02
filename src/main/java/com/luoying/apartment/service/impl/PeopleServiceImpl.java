@@ -24,4 +24,9 @@ public class PeopleServiceImpl extends ServiceImpl<PeopleMapper, People> impleme
         page.setCount(this.baseMapper.queryPeopleCount(page.getParams()));
         return page;
     }
+
+    @Override
+    public People getPeopleById(Long id) {
+        return this.baseMapper.queryPeopleById(id);
+    }
 }

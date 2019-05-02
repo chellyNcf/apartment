@@ -16,4 +16,5 @@ public interface IPeopleService extends IService<People> {
 
     MyPage<People> getPeoplePage(MyPage<People> page);
 
+    People getPeopleById(Long id);
 }

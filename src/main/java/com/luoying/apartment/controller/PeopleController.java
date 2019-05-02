@@ -73,7 +73,7 @@ public class PeopleController extends BaseController {
     @GetMapping("/{id}")
     public ResultMsg get(@PathVariable("id") Long id){
         logger.info("查询外访人员信信息:{}",id);
-        return ResultMsgFactory.createSuccessMsg(peopleService.getById(id));
+        return ResultMsgFactory.createSuccessMsg(peopleService.getPeopleById(id));
     }
 
     /**

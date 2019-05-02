@@ -2,13 +2,14 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.luoying.apartment.dao.PeopleMapper">
     <select id="queryPeoplePage" parameterType="java.util.Map" resultType="com.luoying.apartment.pojo.People">
-        select * from tb_people
+        select tp.*,ts.student_name from tb_people tp
+        left join tb_student ts on ts.id = tp.student_id
         where 1=1
         <if test="createDate!=null and createDate!=''">
            and create_date = #{createDate}
         </if>
         <if test="studentId!=null and studentId!=''">
-            and student_Id = #{studentId}
+            and student_id = #{studentId}
         </if>
         <if test="peopleName!=null and peopleName!=''">
             and people_name = #{peopleName}
@@ -17,7 +18,8 @@
         limit #{beginIndex},#{limit}
     </select>
     <select id="queryPeopleCount" parameterType="java.util.Map" resultType="int">
-        select count(*) from tb_people
+        select count(*) from tb_people tp
+        left join tb_student ts on ts.id = tp.student_id
         where 1=1
         <if test="createDate!=null and createDate!=''">
             and create_date = #{createDate}
@@ -28,5 +30,10 @@
         <if test="peopleName!=null and peopleName!=''">
             and people_name = #{peopleName}
         </if>
+    </select>
+    <select id="queryPeopleById" parameterType="Long" resultType="com.luoying.apartment.pojo.People">
+         select tp.*,ts.student_name from tb_people tp
+        left join tb_student ts on ts.id = tp.student_id
+        where tp.id= #{id}
     </select>
 </mapper>
