@@ -55,5 +55,12 @@ public class People extends BaseEntity {
 
     @TableField(exist = false)
     private String studentName;
+    @TableField(exist = false)
+    private String dormitoryNum;
+
+    @TableField(exist = false)
+    private String apartmentName;
+    @TableField(exist = false)
+    private String bedNum;
 
 }

@@ -82,7 +82,7 @@ public class Good extends BaseEntity {
     private String studentName;
 
     @TableField(exist = false)
-    private String building;
+    private String dormitoryNum;
 
     @TableField(exist = false)
     private String apartmentName;

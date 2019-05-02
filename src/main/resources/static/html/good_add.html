@@ -235,7 +235,7 @@
             studentSel.empty();
             studentSel.append('<option value="" >请选择</option>');
             remoteCall({
-                url:baseUrl+'/student/list?bedId='+data.value+"&status=1",
+                url:baseUrl+'/student/list?dormitoryId='+data.value+"&status=1",
                 type:"get",
                 dataType:'json',
                 success:function (result) {
