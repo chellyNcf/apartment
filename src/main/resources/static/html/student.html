@@ -383,6 +383,9 @@
             var dormitoryNumSel=$('#dormitoryNum');
             dormitoryNumSel.empty();
             dormitoryNumSel.append('<option value="" >直接选择或搜索选择</option>');
+            var bedSel=$('#bedId');
+            bedSel.empty();
+            bedSel.append('<option value="" >请选择</option>');
 
             remoteCall({
                 url:baseUrl+'/dormitory/list?apartmentId='+data.value,

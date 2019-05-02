@@ -1,0 +1,253 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="renderer" content="webkit">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+    <link rel="stylesheet" href="../layui/css/layui.css"  media="all">
+    <link rel="stylesheet" href="../css/base.css"  media="all">
+    <script src="../jquery/jquery-3.4.0.js" charset="utf-8"></script>
+    <script src="../jquery/jquery.md5.js" charset="utf-8"></script>
+    <script src="../layui/layui.js" charset="utf-8"></script>
+    <script src="../js/base.js" charset="utf-8"></script>
+    <!-- 注意：如果你直接复制所有代码到本地，上述css路径需要改成你本地的 -->
+    <title>Title</title>
+</head>
+<body>
+<div class="layui-fluid">
+    <fieldset class="layui-elem-field layui-field-title top_fieldset" >
+        <legend>外访人员登记</legend>
+    </fieldset>
+    <div class="layui-row search_criteria">
+        <div class="layui-form">
+
+            <div class="layui-form-item">
+                <div class="layui-inline">
+                    <label class="layui-form-label">外访人姓名</label>
+                    <div class="layui-input-inline">
+                        <input type="text" lay-verify="required|stu_name" name="peopleName" autocomplete="off" class="layui-input">
+                    </div>
+                </div>
+            </div>
+
+            <div class="layui-form-item">
+                <div class="layui-inline">
+                    <label class="layui-form-label">电话号码</label>
+                    <div class="layui-input-inline">
+                        <input type="tel" name="peoplePhone" lay-verify="required|phone" autocomplete="off" class="layui-input">
+                    </div>
+                </div>
+            </div>
+
+            <div class="layui-form-item">
+                <div class="layui-inline">
+                    <label class="layui-form-label">被访者关系</label>
+                    <div class="layui-input-inline">
+                        <input type="tel"  lay-verify="required" name="relationship" autocomplete="off" class="layui-input">
+                    </div>
+                </div>
+            </div>
+
+            <div class="layui-form-item">
+                <div class="layui-inline">
+                    <label class="layui-form-label">公寓楼</label>
+                    <div class="layui-input-inline">
+                        <select id="apartmentId" name="building" lay-verify="required" lay-filter="apartmentId">
+                            <option value="">请选择</option>
+                        </select>
+                    </div>
+                </div>
+
+            </div>
+
+            <div class="layui-form-item">
+                <div class="layui-inline">
+                    <label class="layui-form-label">宿舍房号</label>
+                    <div class="layui-input-inline">
+                        <select name="dormitoryNum" lay-verify="required" lay-search="" id="dormitoryNum" lay-filter="dormitoryNum">
+                            <option value="">直接选择或搜索选择</option>
+                        </select>
+                    </div>
+                </div>
+                <div class="layui-inline">
+                    <label class="layui-form-label">学生</label>
+                    <div class="layui-input-inline">
+                        <select  name="studentId" lay-verify="required" id="studentId"  lay-filter="studentId">
+                            <option value="">请选择</option>
+                        </select>
+                    </div>
+                </div>
+            </div>
+
+            <div class="layui-form-item">
+                <div class="layui-inline">
+                    <label class="layui-form-label">事由</label>
+                    <div class="layui-input-inline">
+                        <input type="tel" name="reason" lay-verify="required" autocomplete="off" class="layui-input">
+                    </div>
+                </div>
+            </div>
+
+            <div class="layui-form-item">
+                <div class="layui-inline">
+                    <label class="layui-form-label">备注</label>
+                    <div class="layui-input-inline">
+                        <input type="text" name="note" autocomplete="off" class="layui-input">
+                    </div>
+                </div>
+            </div>
+
+            <div class="layui-form-item">
+                <div class="layui-input-block">
+                    <button class="layui-btn" lay-submit="" lay-filter="add_people">立即提交</button>
+                    <button id="back" class="layui-btn layui-btn-primary">取消</button>
+                </div>
+            </div>
+
+        </div>
+
+    </div>
+</div>
+
+<script>
+
+    layui.use(['form', 'layedit', 'laydate'], function(){
+        var laydate = layui.laydate,form = layui.form;
+        //日期
+        laydate.render({
+            elem: '#date'
+        });
+
+        //自定义验证规则
+        form.verify({
+            stu_name: function(value){
+                if(value.length > 10){
+                    return '姓名不能超过10个字';
+                }
+            }
+            ,pass: [
+                /^[\S]{6,12}$/
+                ,'密码必须6到12位，且不能出现空格'
+            ]
+        });
+
+        form.on('submit(add_people)', function(data){
+            console.log(data.elem) //被执行事件的元素DOM对象，一般为button对象
+            console.log(data.form) //被执行提交的form对象，一般在存在form标签时才会返回
+            console.log(data.field) //当前容器的全部表单字段，名值对形式：{name: value}
+
+            remoteCall({
+                url:baseUrl+'/people',
+                type:"post",
+                contentType: "application/json; charset=utf-8",
+                data:JSON.stringify(data.field),
+                dataType:'json',
+                success:function (result) {
+                    console.log(result);
+                    if(result.code==0){
+                        console.log("ok");
+                        layer.msg('成功', {icon: 1});
+                        location.href='people.html';
+                    }else{
+                        console.log(result.msg);
+                        layer.msg(result.msg, {icon: 7});
+                    }
+                },
+                error:function (a,b,c) {
+                    // layer.
+                    console.log(a);
+                    console.log(b);
+                    console.log(c);
+                    layer.msg("错误："+a.status, {icon: 2});
+                }
+            });
+            return false; //阻止表单跳转。如果需要表单跳转，去掉这段即可。
+        });
+
+        remoteCall({
+            url:baseUrl+'/apartment/list',
+            type:"get",
+            dataType:'json',
+            success:function (result) {
+                console.log(result);
+                var data=result.data;
+                if(result.code==0){
+                    for(var i=0;i<data.length;i++){
+                        $('#apartmentId').append('<option value='+data[i].id+' >'+data[i].apartmentName+'</option>');
+                    }
+                    form.render();
+                }else{
+                    layer.msg(result.msg, {icon: 7});
+                }
+            },
+            error:function (a,b,c) {
+                layer.msg("错误："+a.status, {icon: 2});
+            }
+        });
+
+        form.on('select(apartmentId)', function(data){
+            var dormitoryNumSel=$('#dormitoryNum');
+            dormitoryNumSel.empty();
+            dormitoryNumSel.append('<option value="" >直接选择或搜索选择</option>');
+            var studentSel=$('#studentId');
+            studentSel.empty();
+            studentSel.append('<option value="" >请选择</option>');
+
+            remoteCall({
+                url:baseUrl+'/dormitory/list?apartmentId='+data.value,
+                type:"get",
+                dataType:'json',
+                success:function (result) {
+                    console.log(result);
+                    var data=result.data;
+                    if(result.code==0){
+                        for(var i=0;i<data.length;i++){
+                            dormitoryNumSel.append('<option value='+data[i].id+' >'+data[i].dormitoryNum+'</option>');
+                        }
+                        form.render();
+                    }else{
+                        layer.msg(result.msg, {icon: 7});
+                    }
+                },
+                error:function (a,b,c) {
+                    layer.msg("错误："+a.status, {icon: 2});
+                }
+            });
+        });
+        form.on('select(dormitoryNum)', function(data){
+            var studentSel=$('#studentId');
+            studentSel.empty();
+            studentSel.append('<option value="" >请选择</option>');
+            remoteCall({
+                url:baseUrl+'/student/list?bedId='+data.value+"&status=1",
+                type:"get",
+                dataType:'json',
+                success:function (result) {
+                    console.log(result);
+                    var data=result.data;
+                    if(result.code==0){
+                        for(var i=0;i<data.length;i++){
+                            studentSel.append('<option value='+data[i].id+' >'+data[i].studentName+'</option>');
+                        }
+                        form.render();
+                    }else{
+                        layer.msg(result.msg, {icon: 7});
+                    }
+                },
+                error:function (a,b,c) {
+                    layer.msg("错误："+a.status, {icon: 2});
+                }
+            });
+        })
+
+        $('#back').click(function () {
+            history.back();
+        })
+
+    })
+
+</script>
+
+</body>
+</html>

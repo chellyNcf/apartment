@@ -1,6 +1,7 @@
 package com.luoying.apartment.controller;
 
 
+import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.luoying.apartment.base.bean.MyPage;
 import com.luoying.apartment.base.bean.ResultMsg;
 import com.luoying.apartment.base.bean.ResultMsgFactory;
@@ -28,6 +29,12 @@ public class StudentController extends BaseController {
 
     @Autowired
     private IStudentService studentService;
+
+    @GetMapping("/list")
+    public ResultMsg llist(Student student){
+
+        return ResultMsgFactory.createSuccessMsg(studentService.list(new QueryWrapper<>(student)));
+    }
 
     /**
      * 分页查询
