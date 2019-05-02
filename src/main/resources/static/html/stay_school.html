@@ -24,7 +24,7 @@
                 <div class="layui-inline">
                     <label class="layui-form-label">学生名</label>
                     <div class="layui-input-block">
-                        <input type="text" name="studentName" id="name" autocomplete="off" class="layui-input">
+                        <input type="text" name="studentName" id="studentName" autocomplete="off" class="layui-input">
                     </div>
                 </div>
                 <div class="layui-inline">
@@ -74,15 +74,15 @@
 
     <div class="layui-form-item">
         <label class="layui-form-label">审核</label>
-        <div class="layui-input-block">
-            <input type="radio" name="sex" value="1" title="通过" checked="">
-            <input type="radio" name="sex" value="-1" title="不通过">
+        <div class="layui-input-inline">
+            <input type="radio" name="status" value="1" title="通过" checked="">
+            <input type="radio" name="status" value="-1" title="不通过">
         </div>
     </div>
     <div class="layui-form-item layui-form-text">
         <label class="layui-form-label">审核理由</label>
-        <div class="layui-input-block">
-            <textarea placeholder="请输入内容" class="layui-textarea"></textarea>
+        <div class="layui-input-inline">
+            <textarea placeholder="请输入内容" id="auditReason" name = "auditReason" class="layui-textarea"></textarea>
         </div>
     </div>
 
@@ -91,7 +91,7 @@
 <script type="text/html" id="toolbarDemo">
     <div class="layui-btn-container">
         <button class="layui-btn layui-btn-normal layui-btn-sm layui-btn-radius" lay-event="add">
-            增加 <i class="layui-icon layui-icon-add-1"></i>
+            申请 <i class="layui-icon layui-icon-add-1"></i>
         </button>
     </div>
 </script>
@@ -113,9 +113,11 @@
 
 <script type="text/html" id="statusTpl">
     {{#  if(d.status == 0){ }}
-        <span style="color: green">未满</span>
+        <span style="color: #286c80">未审核</span>
     {{#  } else if(d.status == 1){ }}
-        <span style="color: red">已满</span>
+        <span style="color: green">审核通过</span>
+    {{#  } else if(d.status == -1){ }}
+        <span style="color: red">审核不通过</span>
     {{#  } else { }}
         <span></span>
     {{#  } }}
@@ -141,94 +143,40 @@
             id:'stay_school_table',
             elem: '#stay_school_table'
             ,url:baseUrl+'/stay-school/page'
-            ,toolbar: '#toolbarDemo'
+            // ,toolbar: '#toolbarDemo'
             ,cellMinWidth: 80 //全局定义常规单元格的最小宽度，layui 2.2.1 新增
             ,cols: [[
                 {type: 'numbers',title: '序号', fixed: 'left'}
-                ,{field:'studentName', title: '学生名',fixed: 'left'}
-                ,{field:'studentNum', title: '学号'}
+                ,{field:'studentName', title: '学生名',fixed: 'left' ,width:120}
+                ,{field:'studentNum', title: '学号',width:120}
                 ,{field:'beginTime',width:150, title: '开始日期',sort: true}
                 ,{field:'endTime', width:150,title: '结束日期'}
-                ,{field:'reason', title: '留宿原因' ,width:250, sort: true} //minWidth：局部定义当前单元格的最小宽度，layui 2.2.1 新增
+                ,{field:'reason', title: '留宿原因' ,minWidth:200, sort: true} //minWidth：局部定义当前单元格的最小宽度，layui 2.2.1 新增
                 ,{field:'auditUserName', title: '审核人'}
-                ,{field:'status', title: '审核状态', templet: '#statusTpl'}
-                ,{field:'auditReason', title: '审核理由',width:250}
-                ,{fixed: 'right', title:'操作', toolbar: '#barDemo', width:220 }
+                ,{field:'status', title: '审核状态', templet: '#statusTpl',width:120}
+                ,{field:'auditReason', title: '审核理由',minWidth:200}
+                ,{fixed: 'right', title:'操作', toolbar: '#barDemo', width:120 }
             ]]
             ,page: true
         });
 
         //头工具栏事件
-        table.on('toolbar(dormitory_table)', function(obj){
+        table.on('toolbar(stay_school_table)', function(obj){
             switch(obj.event){
                 case 'add':
-                    // layer.alert("弹出添加");
-                    layer.open({
-                        id:'dormitory_add_layer',
-                        type: 1,
-                        title: '新增宿舍',
-                        skin: 'layui-layer-rim', //加上边框
-                        // area: ['420px', '240px'], //宽高
-                        content: $('#dormitory_add'),
-                        btnAlign: 'c',
-                        btn: ['确定', '取消'],
-                        yes: function(index, layero){
-                            //按钮【按钮一】的回调
-                            var data={'apartmentId':$('#apartmentId').val(),
-                                'building':$('#building').val(),
-                                'floorNumber':$('#floorNumber').val(),
-                                'note':$('#note').val(),
-                                'dormitoryNum':$('#dormitoryNum').val()
-                            };
-                            console.log($('#apartmentId').val());
-                            remoteCall({
-                                url:baseUrl+'/dormitory',
-                                type:"post",
-                                contentType: "application/json; charset=utf-8",
-                                data: JSON.stringify(data),
-                                dataType:'json',
-                                success:function (result) {
-                                    console.log(result);
-                                    if(result.code==0){
-                                        layer.close(index);
-                                        table.reload('dormitory_table');
-                                        layer.msg('成功', {icon: 1});
-                                    }else{
-                                        layer.msg(result.msg, {icon: 7});
-                                    }
-                                },
-                                error:function (a,b,c) {
-                                    // layer.
-                                    layer.msg('错误：'+a.status, {icon: 2});
-                                }
-                            })
-
-                        },
-                        btn2: function(index, layero){
-                            //按钮【按钮二】的回调
-                            //return false 开启该代码可禁止点击该按钮关闭
-                        },
-                        end: function(){
-                            //右上角关闭回调
-                            var emptyForm = getobj();
-                            form.val('dormitory_add',emptyForm);
-                            form.render(null, 'dormitory_add');
-                            //return false 开启该代码可禁止点击该按钮关闭
-                        }
-                    });
 
                     break;
             };
         });
 
         //监听行工具事件
-        table.on('tool(dormitory_table)', function(obj){
+        table.on('tool(stay_school_table)', function(obj){
             var data = obj.data;
             if(obj.event === 'del'){
                 layer.confirm('真的删除行么', function(index){
                     console.log(data);
                     remoteCall({
-                        url:baseUrl+'/dormitory/'+data.id,
+                        url:baseUrl+'/stay-school/'+data.id,
                         type:"delete",
                         dataType:'json',
                         success:function (result) {
@@ -249,36 +197,35 @@
                 });
                 //console.log(obj)
 
-            } else if(obj.event === 'edit'){
+            } else if(obj.event === 'audit'){
                 layer.open({
                     id:'dormitory_update_layer',
                     type: 1,
-                    title: '新增宿舍',
+                    title: '审核',
                     skin: 'layui-layer-rim', //加上边框
-                    // area: ['420px', '240px'], //宽高
-                    content: $('#dormitory_add'),
+                    area: ['380px', '280px'], //宽高
+                    content: $('#stay_audit'),
                     btnAlign: 'c',
                     btn: ['确定', '取消'],
                     yes: function(index, layero){
                         //按钮【按钮一】的回调
-                        var data={'apartmentId':$('#apartmentId').val(),
-                            'building':$('#building').val(),
-                            'floorNumber':$('#floorNumber').val(),
-                            'note':$('#note').val(),
-                            'dormitoryNum':$('#dormitoryNum').val()
+                        var audit={'status':$("input[name='status']:checked").val(),
+                            'auditReason':$('#auditReason').val(),
+                            'auditUserId':'-1',
+                            'id':data.id
                         };
                         console.log($('#apartmentId').val());
                         remoteCall({
-                            url:baseUrl+'/dormitory',
-                            type:"put",
+                            url:baseUrl+'/stay-school/audit',
+                            type:"post",
                             contentType: "application/json; charset=utf-8",
-                            data: JSON.stringify(data),
+                            data: JSON.stringify(audit),
                             dataType:'json',
                             success:function (result) {
                                 console.log(result);
                                 if(result.code==0){
                                     layer.close(index);
-                                    table.reload('dormitory_table');
+                                    table.reload('stay_school_table');
                                     layer.msg('成功', {icon: 1});
                                 }else{
                                     layer.msg(result.msg, {icon: 7});
@@ -296,85 +243,31 @@
                     end: function(){
                         //右上角关闭回调
                         var emptyForm = getobj();
-                        form.val('dormitory_add',emptyForm);
-                        form.render(null, 'dormitory_add');
+                        form.val('stay_audit',emptyForm);
+                        form.render(null, 'stay_audit');
                         //return false 开启该代码可禁止点击该按钮关闭
                     },
                     success:function(){
-                        remoteCall({
-                            url:baseUrl+'/dormitory/'+data.id,
-                            type:"get",
-                            dataType:'json',
-                            success:function (result) {
-                                console.log(result);
-                                var data=result.data;
-                                if(result.code==0){
-                                    form.val("dormitory_add", {
-                                        "dormitoryNum": data.dormitoryNum // "name": "value"
-                                        ,"apartmentId": data.apartmentId
-                                        ,"building": data.building
-                                        ,"floorNumber": data.floorNumber
-                                        ,"note": data.note
-                                    })
-                                }else{
-                                    layer.msg(result.msg, {icon: 7});
-                                }
-                            },
-                            error:function (a,b,c) {
-                                layer.msg("错误："+a.status, {icon: 2});
-                            }
-                        });
                     }
                 });
-                // location.href='dormitory_update.html?id='+data.id;
-            } else if(obj.event === 'audit'){
-                layer.prompt({
-                    formType: 0,
-                    value: data.dormitoryNum,
-                    title: '添加床位',
-                }, function(value, index, elem){
-                    alert(data.id); //得到value
-                    var bed={'dormitoryId':data.id,'bedNum':value}
-                    remoteCall({
-                        url:baseUrl+'/bed',
-                        type:"post",
-                        contentType: "application/json; charset=utf-8",
-                        data: JSON.stringify(bed),
-                        dataType:'json',
-                        success:function (result) {
-                            console.log(result);
-                            if(result.code==0){
-                                layer.close(index);
-                                table.reload('dormitory_table');
-                                layer.msg('成功', {icon: 1});
-                            }else{
-                                layer.msg(result.msg, {icon: 7});
-                            }
-                        },
-                        error:function (a,b,c) {
-                            layer.msg('错误：'+a.status, {icon: 2});
-                        }
-                    })
-                });
-                // location.href='dormitory_update.html?id='+data.id;
-            }else if(obj.event === 'detail'){
-                location.href='dormitory_detail.html?id='+data.id;
             }
         });
 
         var active = {
             //搜索方法
             search: function(){
-                var name = $('#name');
+                var name = $('#studentName');
                 var studentNum=$('#studentNum');
+                var status=$('#status');
                 //执行重载表格
-                table.reload('dormitory_table', {
+                table.reload('stay_school_table', {
                     page: {
                         curr: 1 //重新从第 1 页开始
                     }
                     ,where: {
                         studentName: name.val()
                         ,studentNum: studentNum.val()
+                        ,status:status.val()
                     }
                 });
             }
@@ -386,33 +279,10 @@
             active[type] ? active[type].call(this) : '';
         });
 
-        remoteCall({
-            url:baseUrl+'/apartment/list',
-            type:"get",
-            dataType:'json',
-            success:function (result) {
-                console.log(result);
-                var data=result.data;
-                if(result.code==0){
-                    for(var i=0;i<data.length;i++){
-                        $('#apartmentId').append('<option value='+data[i].id+' >'+data[i].apartmentName+'</option>');
-                        $('#apartmentSearch').append('<option value='+data[i].id+' >'+data[i].apartmentName+'</option>');
-                    }
-                    form.render();
-                    $('.update_student').attr("disabled",false);
-                }else{
-                    layer.msg(result.msg, {icon: 7});
-                }
-            },
-            error:function (a,b,c) {
-                layer.msg("错误："+a.status, {icon: 2});
-            }
-        });
-
     });
 
     function getobj() {
-        var elms = $("#dormitory_add [name]"); //formid 包含name属性的所有元素
+        var elms = $("#stay_audit [name]"); //formid 包含name属性的所有元素
         var obj = {};
         $.each(elms, function (i, item) {
             var name = $(item).attr("name");

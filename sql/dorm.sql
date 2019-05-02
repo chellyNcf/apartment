@@ -31,6 +31,8 @@ create table `tb_user`(
  primary key(`id`)
 )ENGINE = INNODB AUTO_INCREMENT = 1 CHARSET = utf8 comment '用户表';
 
+-- 超级管理员
+INSERT INTO `tb_user` (`id`,`username`,`password`,`user_type`) VALUES (-1,'admin','123456',0);
 
 #床位表
 create table `tb_bed`(
@@ -119,6 +121,7 @@ create table `tb_stay_school`(
 primary key(`id`)
 )ENGINE = INNODB AUTO_INCREMENT = 1 CHARSET = utf8 comment '寒暑假留校表';
 
+ALTER TABLE `tb_stay_school` MODIFY `audit_user_id` BIGINT(20) null comment '审核人';
 
 #违规表
 create table `tb_bad_record`(
@@ -199,3 +202,4 @@ create table `tb_repairs`(
 primary key(`id`)
 )ENGINE = INNODB AUTO_INCREMENT = 1 CHARSET = utf8 comment '报修表';
 
+ALTER TABLE `tb_repairs` MODIFY `handle_user_id` BIGINT(20) null comment '处理人id';
