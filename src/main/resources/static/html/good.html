@@ -1,0 +1,410 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="renderer" content="webkit">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+    <link rel="stylesheet" href="../layui/css/layui.css"  media="all">
+    <link rel="stylesheet" href="../css/base.css"  media="all">
+    <script src="../jquery/jquery-3.4.0.js" charset="utf-8"></script>
+    <script src="../layui/layui.js" charset="utf-8"></script>
+    <script src="../js/base.js" charset="utf-8"></script>
+    <!-- 注意：如果你直接复制所有代码到本地，上述css路径需要改成你本地的 -->
+    <title>大物件出入登记</title>
+</head>
+<body>
+<div class="layui-fluid">
+    <fieldset class="layui-elem-field layui-field-title top_fieldset" >
+        <legend>大物件出入登记</legend>
+    </fieldset>
+    <div class="layui-row search_criteria">
+        <div class="layui-form layui-form-pane">
+            <div class="layui-form-item">
+                <div class="layui-inline">
+                    <label class="layui-form-label">学生姓名</label>
+                    <div class="layui-input-block">
+                        <input type="text" name="studentName" id="studentName" autocomplete="off" class="layui-input">
+                    </div>
+                </div>
+                <div class="layui-inline">
+                    <label class="layui-form-label">公寓楼</label>
+                    <div class="layui-input-block">
+                        <select id="apartmentId" name="apartmentId" lay-verify="required">
+                            <option value="">请选择</option>
+                        </select>
+                    </div>
+                </div>
+
+                <div class="layui-inline">
+                    <label class="layui-form-label">物品种类</label>
+                    <div class="layui-input-block">
+                        <select id="goodCategoryId" name="goodCategoryId" lay-verify="required">
+                            <option value="">请选择</option>
+                        </select>
+                    </div>
+                </div>
+
+                <div class="layui-inline">
+                    <div class="layui-input-inline">
+                        <button class="layui-btn layui-btn-normal layui-btn-sm layui-btn-radius" data-type="search">
+                            查询 <i class="layui-icon layui-icon-search"></i>
+                        </button>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+
+    </div>
+    <div class="layui-row"></div>
+    <div class="layui-row">
+        <table class="layui-hide" id="good_table" lay-filter="good_table"></table>
+    </div>
+</div>
+
+<div class="layui-form" style="display: none" id="goodCategory" lay-filter="goodCategory">
+
+    <div class="layui-form-item">
+        <div class="layui-inline">
+            <label class="layui-form-label">种类名</label>
+            <div class="layui-input-inline">
+                <input type="text" lay-verify="required|stu_name" id="goodCategoryName" name="goodCategoryName" autocomplete="off" class="layui-input">
+            </div>
+        </div>
+    </div>
+
+    <div class="layui-form-item">
+        <div class="layui-inline">
+            <label class="layui-form-label">种类类型值</label>
+            <div class="layui-input-inline">
+                <input type="text" lay-verify="required" id="goodCategoryType" name="goodCategoryType" autocomplete="off" class="layui-input">
+            </div>
+        </div>
+    </div>
+
+</div>
+
+<div class="layui-form" style="display: none" id="outGood" lay-filter="outGood">
+
+    <div class="layui-form-item">
+        <div class="layui-inline">
+            <label class="layui-form-label">出库时间</label>
+            <div class="layui-input-inline">
+                <input type="text" lay-verify="required|date" id="outTime" name="outTime" autocomplete="off" class="layui-input">
+            </div>
+        </div>
+    </div>
+
+</div>
+
+<script type="text/html" id="toolbarDemo">
+    <div class="layui-btn-container">
+        <button class="layui-btn layui-btn-normal layui-btn-sm layui-btn-radius" lay-event="add">
+            增加 <i class="layui-icon layui-icon-add-1"></i>
+        </button>
+        <button class="layui-btn layui-btn-normal layui-btn-sm layui-btn-radius" lay-event="addCategory">
+            增加物品种类 <i class="layui-icon layui-icon-add-1"></i>
+        </button>
+    </div>
+</script>
+
+<script type="text/html" id="barDemo">
+    <a class="layui-btn layui-btn-xs" lay-event="out">出库</a>
+    <a class="layui-btn layui-btn-danger layui-btn-xs" lay-event="del">删除</a>
+</script>
+
+<script type="text/html" id="typeTpl">
+    {{#  if(d.sponsorType == 0){ }}
+        <span>学生</span>
+    {{#  } else if(d.sponsorType == 1){ }}
+        <span>管理员</span>
+    {{#  } else{ }}
+        <span></span>
+    {{#  } }}
+</script>
+
+<script type="text/html" id="statusTpl">
+    {{#  if(d.status == 0){ }}
+        <span style="color: green">在库</span>
+    {{#  } else if(d.status == 1){ }}
+        <span style="color: red">已出库</span>
+    {{#  } else { }}
+        <span ></span>
+    {{#  } }}
+</script>
+
+<script type="text/html" id="dormitoryInfoTpl">
+    {{#  if(d.apartmentName != null && d.dormitoryNum !=null && d.bedNum !=null ){ }}
+    <span> {{ d.apartmentName }}#{{ d.dormitoryNum }}室#{{  d.bedNum }}床</span>
+    {{#  } }}
+</script>
+
+<script>
+    layui.use(['table','layer','form', 'laydate'], function(){
+        var table = layui.table,layer = layui.layer,form = layui.form,laydate = layui.laydate;
+
+        //日期
+        laydate.render({
+            elem: '#outTime'
+            ,type: 'datetime'
+        });
+
+        table.render({
+            id:'good_table',
+            elem: '#good_table'
+            ,url:baseUrl+'/good/page'
+            ,toolbar: '#toolbarDemo'
+            ,cellMinWidth: 80 //全局定义常规单元格的最小宽度，layui 2.2.1 新增
+            ,cols: [[
+                {type: 'numbers',title: '序号', fixed: 'left'}
+                ,{field:'goodName', width:150, title: '物品名',fixed: 'left'}
+                ,{field:'studentName', width:130, title: '学生'}
+                ,{field:'apartmentName', minWidth:150, title: '公寓楼'}
+                ,{field:'goodCategoryName', minWidth:200, title: '物品类型'}
+                ,{field:'inTime', width:180, title: '入库时间'}
+                ,{field:'outTime', title: '出库时间', width: 180} //minWidth：局部定义当前单元格的最小宽度，layui 2.2.1 新增
+                ,{field:'status', width:80, title: '状态', templet: '#statusTpl'}
+                ,{field:'note', minWidth:150, title: '备注'}
+                ,{fixed: 'right', title:'操作', toolbar: '#barDemo', width:150}
+            ]]
+            ,page: true
+        });
+
+
+        //头工具栏事件
+        table.on('toolbar(good_table)', function(obj){
+            // var checkStatus = table.checkStatus(obj.config.id); //获取选中行状态
+            switch(obj.event){
+                case 'add':
+                    // layer.alert("弹出添加");
+                    location.href='good_add.html';
+                    break;
+                case 'addCategory':
+
+                    layer.open({
+                        id:'goodCategory_lay',
+                        type: 1,
+                        title: '新增物品类型',
+                        skin: 'layui-layer-rim', //加上边框
+                        // area: ['420px', '240px'], //宽高
+                        content: $('#goodCategory'),
+                        btnAlign: 'c',
+                        btn: ['确定', '取消'],
+                        yes: function(index, layero){
+                            //按钮【按钮一】的回调
+                            var goodCategory={'goodCategoryName':$('#goodCategoryName').val(),
+                                'goodCategoryType':$('#goodCategoryType').val()
+                            };
+                            remoteCall({
+                                url:baseUrl+'/good-category',
+                                type:"post",
+                                contentType: "application/json; charset=utf-8",
+                                data: JSON.stringify(goodCategory),
+                                dataType:'json',
+                                success:function (result) {
+                                    console.log(result);
+                                    if(result.code==0){
+                                        layer.close(index);
+                                        table.reload('good_table');
+                                        layer.msg('成功', {icon: 1});
+                                        loadGoodCategory(form);
+                                    }else{
+                                        layer.msg(result.msg, {icon: 7});
+                                    }
+                                },
+                                error:function (a,b,c) {
+                                    // layer.
+                                    layer.msg('错误：'+a.status, {icon: 2});
+                                }
+                            })
+
+                        },
+                        btn2: function(index, layero){
+                            //return false 开启该代码可禁止点击该按钮关闭
+                        },
+                        end: function(){
+                            //右上角关闭回调
+                            var emptyForm = getobj();
+                            form.val('goodCategory',emptyForm);
+                            form.render(null, 'goodCategory');
+                            //return false 开启该代码可禁止点击该按钮关闭
+                        }
+                    });
+                    break;
+            };
+        });
+
+        //监听行工具事件
+        table.on('tool(good_table)', function(obj){
+            var data = obj.data;
+            if(obj.event === 'del'){
+                layer.confirm('真的删除么', function(index){
+                    console.log(data);
+                    remoteCall({
+                        url:baseUrl+'/good/'+data.id,
+                        type:"delete",
+                        data:{id:data.id},
+                        dataType:'json',
+                        success:function (result) {
+                            console.log(result);
+                            if(result.code==0){
+                                obj.del();
+                                layer.msg('删除成功', {icon: 1});
+                            }else{
+                                layer.msg(result.msg, {icon: 7});
+                            }
+                        },
+                        error:function (a,b,c) {
+                            // layer.
+                            layer.msg('错误：'+a,status, {icon: 2});
+                        }
+                    });
+                    layer.close(index);
+                });
+                //console.log(obj)
+
+            }else if(obj.event === 'out'){
+                layer.open({
+                    id:'outGood_lay',
+                    type: 1,
+                    title: '出库物品',
+                    skin: 'layui-layer-rim', //加上边框
+                    // area: ['420px', '240px'], //宽高
+                    content: $('#outGood'),
+                    btnAlign: 'c',
+                    btn: ['确定', '取消'],
+                    yes: function(index, layero){
+                        //按钮【按钮一】的回调
+                        var good={'outTime':$('#outTime').val(),
+                            'status':'1','id':data.id
+                        };
+                        remoteCall({
+                            url:baseUrl+'/good',
+                            type:"put",
+                            contentType: "application/json; charset=utf-8",
+                            data: JSON.stringify(good),
+                            dataType:'json',
+                            success:function (result) {
+                                console.log(result);
+                                if(result.code==0){
+                                    layer.close(index);
+                                    table.reload('good_table');
+                                    layer.msg('成功', {icon: 1});
+                                }else{
+                                    layer.msg(result.msg, {icon: 7});
+                                }
+                            },
+                            error:function (a,b,c) {
+                                // layer.
+                                layer.msg('错误：'+a.status, {icon: 2});
+                            }
+                        })
+
+                    },
+                    btn2: function(index, layero){
+                        //return false 开启该代码可禁止点击该按钮关闭
+                    },
+                    end: function(){
+                        //右上角关闭回调
+                        var emptyForm = {'outTime':''};
+                        form.val('outGood',emptyForm);
+                        form.render(null, 'outGood');
+                        //return false 开启该代码可禁止点击该按钮关闭
+                    }
+                });
+                // location.href='dormitory_update.html?id='+data.id;
+            }
+        });
+
+        var active = {
+            //搜索方法
+            search: function(){
+                var name = $('#peopleName');
+                var createDate=$('#createDate');
+                //执行重载表格
+                table.reload('good_table', {
+                    page: {
+                        curr: 1 //重新从第 1 页开始
+                    }
+                    ,where: {
+                        peopleName: name.val()
+                        ,createDate: createDate.val()
+                    }
+                });
+            }
+        };
+
+        //给搜索按钮添加点击事件，从active里调用对应的方法
+        $('.search_criteria .layui-btn').on('click', function(){
+            var type = $(this).data('type');
+            active[type] ? active[type].call(this) : '';
+        });
+
+        remoteCall({
+            url:baseUrl+'/apartment/list',
+            type:"get",
+            dataType:'json',
+            success:function (result) {
+                console.log(result);
+                var data=result.data;
+                if(result.code==0){
+                    for(var i=0;i<data.length;i++){
+                        $('#apartmentId').append('<option value='+data[i].id+' >'+data[i].apartmentName+'</option>');
+                    }
+                    form.render();
+                }else{
+                    layer.msg(result.msg, {icon: 7});
+                }
+            },
+            error:function (a,b,c) {
+                layer.msg("错误："+a.status, {icon: 2});
+            }
+        });
+
+        loadGoodCategory(form);
+
+    });
+
+    function getobj() {
+        var elms = $("#goodCategory [name]"); //formid 包含name属性的所有元素
+        var obj = {};
+        $.each(elms, function (i, item) {
+            var name = $(item).attr("name");
+            obj[name] = "";
+        });
+        return obj;
+    }
+
+    function loadGoodCategory(form) {
+        var goodCategoryId=$('#goodCategoryId');
+        goodCategoryId.empty();
+        goodCategoryId.append('<option value="" >请选择</option>');
+
+        remoteCall({
+            url:baseUrl+'/good-category/list',
+            type:"get",
+            dataType:'json',
+            success:function (result) {
+                console.log(result);
+                var data=result.data;
+                if(result.code==0){
+                    for(var i=0;i<data.length;i++){
+                        goodCategoryId.append('<option value='+data[i].id+' >'+data[i].goodCategoryName+'</option>');
+                    }
+                    form.render();
+                }else{
+                    layer.msg(result.msg, {icon: 7});
+                }
+            },
+            error:function (a,b,c) {
+                layer.msg("错误："+a.status, {icon: 2});
+            }
+        });
+    }
+
+
+</script>
+
+</body>
+</html>

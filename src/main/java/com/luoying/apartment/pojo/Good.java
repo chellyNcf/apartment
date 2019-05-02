@@ -3,6 +3,7 @@ package com.luoying.apartment.pojo;
 import com.baomidou.mybatisplus.annotation.TableField;
 import com.baomidou.mybatisplus.annotation.TableName;
 import java.time.LocalDateTime;
+import java.util.Date;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
 import com.luoying.apartment.base.bean.BaseEntity;
@@ -52,14 +53,14 @@ public class Good extends BaseEntity {
      */
     @DateTimeFormat(pattern = "yyyy-MM-dd HH:mm:ss")//接收格式
     @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")//返回格式
-    private LocalDateTime inTime;
+    private Date inTime;
 
     /**
      * 出库时间
      */
     @DateTimeFormat(pattern = "yyyy-MM-dd HH:mm:ss")//接收格式
     @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")//返回格式
-    private LocalDateTime outTime;
+    private Date outTime;
 
     /**
      * 备注
@@ -70,6 +71,11 @@ public class Good extends BaseEntity {
      * 种类
      */
     private Long goodCategoryId;
+
+    /**
+     * 状态 0存在，1已出库
+     */
+    private Integer status;
 
 
     @TableField(exist = false)
