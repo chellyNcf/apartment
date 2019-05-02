@@ -2,13 +2,14 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.luoying.apartment.dao.BadRecordMapper">
     <select id="queryBadRecordPage" parameterType="java.util.Map" resultType="com.luoying.apartment.pojo.BadRecord">
-        select  tbr.*,ts.student_name,ts.student_num,td.dormitory_num,ta.apartment_name,tu.username as record_user_name,tu2.username as handle_user_name
+        select  tbr.*,ts.student_name,ts.student_num,td.dormitory_num,tbed.bed_num,ta.apartment_name,tu.username as record_user_name,tu2.username as handle_user_name
         from tb_bad_record tbr
         left join tb_student ts on tbr.student_id = ts.id
         left join tb_dormitory td on tbr.dormitory_id = td.id
         left join tb_user tu on tbr.record_user_id = tu.id
         left join tb_user tu2  on tbr.handle_user_id = tu2.id
         left join tb_apartment ta on td.apartment_id = ta.id
+        left join tb_bed tbed on ts.bed_id = tbed.bed_num
         where 1=1
         <if test="studentName!=null and studentName !=''">
             and ts.student_name = #{studentName}
@@ -42,6 +43,7 @@
         left join tb_user tu on tbr.record_user_id = tu.id
         left join tb_user tu2  on tbr.handle_user_id = tu2.id
         left join tb_apartment ta on td.apartment_id = ta.id
+
         where 1=1
         <if test="studentName!=null and studentName !=''">
             and ts.student_name = #{studentName}
@@ -66,13 +68,14 @@
         </if>
     </select>
     <select id="queryBadRecordById" parameterType="Long" resultType="com.luoying.apartment.pojo.BadRecord">
-        select  tbr.*,ts.student_name,ts.student_num,td.dormitory_num,ta.apartment_name,tu.username as record_user_name,tu2.username as handle_user_name
+        select  tbr.*,ts.student_name,ts.student_num,tbed.bed_num,td.dormitory_num,ta.apartment_name,tu.username as record_user_name,tu2.username as handle_user_name
         from tb_bad_record tbr
         left join tb_student ts on tbr.student_id = ts.id
         left join tb_dormitory td on tbr.dormitory_id = td.id
         left join tb_user tu on tbr.record_user_id = tu.id
         left join tb_user tu2  on tbr.handle_user_id = tu2.id
         left join tb_apartment ta on td.apartment_id = ta.id
+        left join tb_bed tbed on ts.bed_id = tbed.bed_num
         where tbr.id = #{id}
     </select>
 </mapper>

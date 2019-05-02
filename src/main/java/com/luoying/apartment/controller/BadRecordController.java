@@ -6,6 +6,7 @@ import com.luoying.apartment.base.bean.ResultMsg;
 import com.luoying.apartment.base.bean.ResultMsgFactory;
 import com.luoying.apartment.pojo.BadRecord;
 import com.luoying.apartment.service.IBadRecordService;
+import com.luoying.apartment.utils.JwtUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
@@ -47,7 +48,7 @@ public class BadRecordController extends BaseController {
     @PostMapping
     public ResultMsg add(@RequestBody BadRecord badRecord){
         logger.info("保存违规记录{}",badRecord);
-        badRecordService.save(badRecord);
+        badRecordService.saveBadRecord(badRecord, JwtUtil.getUser());
        return ResultMsgFactory.createSuccessMsg();
     }
     @DeleteMapping("/{id}")
@@ -60,7 +61,7 @@ public class BadRecordController extends BaseController {
     public ResultMsg update(@RequestBody BadRecord badRecord){
         logger.info("更新违规记录{}",badRecord);
         badRecord.setUpdateDate(new Date());
-        badRecordService.updateById(badRecord);
+        badRecordService.updateBadRecord(badRecord,JwtUtil.getUser());
         return ResultMsgFactory.createSuccessMsg();
     }
 
