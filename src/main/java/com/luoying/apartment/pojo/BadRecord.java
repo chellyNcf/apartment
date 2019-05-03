@@ -92,6 +92,7 @@ public class BadRecord extends BaseEntity {
 
     @TableField(exist = false)
     private String apartmentName;
+
     @TableField(exist = false)
     private String bedNum;
 

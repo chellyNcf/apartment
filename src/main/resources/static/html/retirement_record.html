@@ -173,6 +173,7 @@
             search: function(){
                 var name = $('#name');
                 var studentNum=$('#studentNum');
+                var dormitory=$('#dormitory')
                 //执行重载表格
                 table.reload('retirement_table', {
                     page: {
@@ -181,6 +182,7 @@
                     ,where: {
                         studentName: name.val()
                         ,studentNum: studentNum.val()
+                        ,dormitoryNum:dormitory.val()
                     }
                 });
             }

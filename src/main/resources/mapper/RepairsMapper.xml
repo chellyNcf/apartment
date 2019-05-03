@@ -21,7 +21,7 @@
             and tr.handle_user_id =#{handleUserId}
         </if>
         <if test="studentName!=null and studentName !=''">
-            and tr.sponsor_name=#{studentName}
+            and tr.sponsor_name like CONCAT('%',#{studentName},'%')
         </if>
         <if test="studentNum!=null and studentNum!=''">
             and tr.sponsor_id = (select id from tb_student where tb_student.student_num = #{studentNum})
@@ -49,7 +49,7 @@
             and tr.handle_user_id =#{handleUserId}
         </if>
         <if test="studentName!=null and studentName !=''">
-            and tr.sponsor_name=#{studentName}
+            and tr.sponsor_name like CONCAT('%',#{studentName},'%')
         </if>
         <if test="studentNum!=null and studentNum!=''">
             and tr.sponsor_id = (select id from tb_student where tb_student.student_num = #{studentNum})

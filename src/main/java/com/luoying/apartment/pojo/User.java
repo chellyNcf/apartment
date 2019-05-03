@@ -38,4 +38,16 @@ public class User extends BaseEntity {
     @TableField(exist = false)
     private String token;
 
+    @TableField(exist = false)
+    private String studentName;
+
+    @TableField(exist = false)
+    private Integer sex;
+
+    @TableField(exist = false)
+    private String department;
+
+    @TableField(exist = false)
+    private String clazz;
+
 }
