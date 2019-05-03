@@ -12,7 +12,7 @@
         left join tb_bed tbed on ts.bed_id = tbed.bed_num
         where 1=1
         <if test="studentName!=null and studentName !=''">
-            and ts.student_name = #{studentName}
+            and ts.student_name like CONCAT('%',#{studentName},'%')
         </if>
         <if test="studentNum!=null and studentNum !='' ">
             and ts.student_num = #{studentNum}
@@ -31,6 +31,9 @@
         </if>
         <if test="apartmentName!=null and apartmentName != '' ">
             and ta.apartment_name =#{apartmentName}
+        </if>
+        <if test="handleStatus!=null and handleStatus!=''">
+            and handle_status =#{handleStatus}
         </if>
         order by tbr.create_date desc
         limit #{beginIndex},#{limit}
@@ -46,7 +49,7 @@
 
         where 1=1
         <if test="studentName!=null and studentName !=''">
-            and ts.student_name = #{studentName}
+            and ts.student_name like CONCAT('%',#{studentName},'%')
         </if>
         <if test="studentNum!=null and studentNum !='' ">
             and ts.student_num = #{studentNum}
@@ -65,6 +68,9 @@
         </if>
         <if test="apartmentName!=null and apartmentName != '' ">
             and ta.apartment_name =#{apartmentName}
+        </if>
+        <if test="handleStatus!=null and handleStatus!=''">
+            and handle_status =#{handleStatus}
         </if>
     </select>
     <select id="queryBadRecordById" parameterType="Long" resultType="com.luoying.apartment.pojo.BadRecord">

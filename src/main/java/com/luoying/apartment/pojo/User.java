@@ -1,5 +1,6 @@
 package com.luoying.apartment.pojo;
 
+import com.baomidou.mybatisplus.annotation.TableField;
 import com.baomidou.mybatisplus.annotation.TableName;
 import com.luoying.apartment.base.bean.BaseEntity;
 import lombok.Data;
@@ -33,5 +34,14 @@ public class User extends BaseEntity {
      * 联系方式
      */
     private String phone;
+
+    @TableField(exist = false)
+    private String studentName;
+    @TableField(exist = false)
+    private Integer sex;
+    @TableField(exist = false)
+    private String department;
+    @TableField(exist = false)
+    private String clazz;
 
 }

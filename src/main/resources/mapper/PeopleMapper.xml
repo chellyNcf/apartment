@@ -10,13 +10,13 @@
         left join tb_bed bed on ts.bed_id = bed.id
         where 1=1
         <if test="createDate!=null and createDate!=''">
-           and create_date = #{createDate}
+            and (tp.create_date between  date_sub(DATE_FORMAT(#{createDate},'%Y-%m-%d %H:%i:%s'), interval 1 hour)  and date_add(DATE_FORMAT(#{createDate},'%Y-%m-%d %H:%i:%s'), interval 1 hour))
         </if>
         <if test="studentId!=null and studentId!=''">
-            and student_id = #{studentId}
+            and tp.student_id = #{studentId}
         </if>
         <if test="peopleName!=null and peopleName!=''">
-            and people_name = #{peopleName}
+            and tp.people_name like CONCAT('%',#{peopleName},'%')
         </if>
         order by create_date desc
         limit #{beginIndex},#{limit}
@@ -26,13 +26,13 @@
         left join tb_student ts on ts.id = tp.student_id
         where 1=1
         <if test="createDate!=null and createDate!=''">
-            and create_date = #{createDate}
+            and (tp.create_date between  date_sub(DATE_FORMAT(#{createDate},'%Y-%m-%d %H:%i:%s'), interval 1 hour)  and date_add(DATE_FORMAT(#{createDate},'%Y-%m-%d %H:%i:%s'), interval 1 hour))
         </if>
         <if test="studentId!=null and studentId!=''">
-            and student_id = #{studentId}
+            and tp.student_id = #{studentId}
         </if>
         <if test="peopleName!=null and peopleName!=''">
-            and people_name = #{peopleName}
+            and tp.people_name like CONCAT('%',#{peopleName},'%')
         </if>
     </select>
     <select id="queryPeopleById" parameterType="Long" resultType="com.luoying.apartment.pojo.People">
