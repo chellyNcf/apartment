@@ -1,0 +1,87 @@
+<div class="layui-row" >
+    <div class="layui-form" lay-filter="student_info" style="margin-top: 50px">
+
+        <div class="layui-form-item">
+            <div class="layui-inline">
+                <label class="layui-form-label">姓名</label>
+                <div class="layui-input-inline">
+                    <input type="text"  lay-verify="required|stu_name" name="studentName" autocomplete="off" class="layui-input">
+                </div>
+            </div>
+        </div>
+
+        <div class="layui-form-item">
+            <div class="layui-inline">
+                <label class="layui-form-label">学号</label>
+                <div class="layui-input-inline">
+                    <input type="text"  lay-verify="required" name="studentNum" autocomplete="off" class="layui-input">
+                </div>
+            </div>
+        </div>
+
+        <div class="layui-form-item">
+            <div class="layui-inline">
+                <label class="layui-form-label">出生日期</label>
+                <div class="layui-input-inline">
+                    <input type="text" name="birthdate" id="date" lay-verify="date" placeholder="yyyy-MM-dd" autocomplete="off" class="layui-input">
+                </div>
+            </div>
+        </div>
+
+        <div class="layui-form-item">
+            <div class="layui-inline">
+                <label class="layui-form-label">电话号码</label>
+                <div class="layui-input-inline">
+                    <input type="tel" name="phone" lay-verify="required|phone" autocomplete="off" class="layui-input">
+                </div>
+            </div>
+        </div>
+
+        <div class="layui-form-item">
+            <label class="layui-form-label">性别</label>
+            <div class="layui-input-inline">
+                <input type="radio"  name="sex" value="1" title="男" checked="">
+                <input type="radio"  name="sex" value="2" title="女">
+            </div>
+        </div>
+
+
+        <div class="layui-form-item">
+            <div class="layui-inline">
+                <label class="layui-form-label">院系</label>
+                <div class="layui-input-inline">
+                    <input type="text" name="department" lay-verify="required" autocomplete="off" class="layui-input">
+                </div>
+            </div>
+            <div class="layui-inline">
+                <label class="layui-form-label">班级</label>
+                <div class="layui-input-inline">
+                    <input type="text" name="clazz" lay-verify="required" autocomplete="off" class="layui-input">
+                </div>
+            </div>
+        </div>
+
+        <div class="layui-form-item">
+            <div class="layui-inline">
+                <label class="layui-form-label">公寓名</label>
+                <div class="layui-input-inline">
+                    <input type="text" disabled  lay-verify="required" name="apartmentName" autocomplete="off" class="layui-input">
+                </div>
+            </div>
+            <div class="layui-inline">
+                <label class="layui-form-label">宿舍房号</label>
+                <div class="layui-input-inline">
+                    <input type="text" disabled lay-verify="required|stu_name" name="dormitoryNum" autocomplete="off" class="layui-input">
+                </div>
+            </div>
+
+            <div class="layui-inline">
+                <label class="layui-form-label">床位</label>
+                <div class="layui-input-inline">
+                    <input type="text" disabled name="bedNum" lay-verify="required" autocomplete="off" class="layui-input">
+                </div>
+            </div>
+        </div>
+
+    </div>
+</div>

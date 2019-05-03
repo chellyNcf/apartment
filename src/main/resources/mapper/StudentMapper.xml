@@ -38,4 +38,25 @@
         </if>
     </select>
 
+    <select id="queryStudentInfo" parameterType="Student" resultType="com.luoying.apartment.pojo.Student">
+        SELECT ts.*,tb.bed_num,td.dormitory_num,ta.apartment_name
+        from tb_student ts
+        LEFT JOIN tb_bed tb ON ts.bed_id=tb.id
+        LEFT JOIN tb_dormitory td ON ts.dormitory_id=td.id
+        LEFT JOIN tb_apartment ta ON td.apartment_id=ta.id
+        where 1=1
+        <if test="studentNum!=null and studentNum!=''">
+            and ts.student_num=#{studentNum}
+        </if>
+        <if test="studentName!=null and studentName!=''">
+            and ts.student_name like CONCAT(#{studentName},'%')
+        </if>
+        <if test="status!=null and status!=''">
+            and ts.`status`=#{status}
+        </if>
+        <if test="id!=null and id!=''">
+            and ts.`id`=#{id}
+        </if>
+    </select>
+
 </mapper>

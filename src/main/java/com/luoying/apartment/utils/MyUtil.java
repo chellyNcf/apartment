@@ -25,6 +25,22 @@ public class MyUtil {
     }
 
     /**
+     * Object转long，出错返回0
+     * @param obj
+     * @return
+     */
+    public static long getLong(Object obj){
+        if(null!=obj){
+            try {
+                return Long.valueOf(obj.toString());
+            }catch(Exception e) {
+
+            }
+        }
+        return 0;
+    }
+
+    /**
      * 密码加密
      * @param password
      * @return

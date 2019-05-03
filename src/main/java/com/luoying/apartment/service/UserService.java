@@ -6,4 +6,6 @@ import com.luoying.apartment.pojo.User;
 public interface UserService extends IService<User> {
 
     void addUser(User user);
+
+    void updatePwd(String password,String newPassword,String confirmPassword);
 }

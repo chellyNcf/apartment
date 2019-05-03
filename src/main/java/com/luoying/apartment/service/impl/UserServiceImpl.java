@@ -6,10 +6,13 @@ import com.luoying.apartment.base.constant.UserTypeEnum;
 import com.luoying.apartment.dao.UserMapper;
 import com.luoying.apartment.pojo.User;
 import com.luoying.apartment.service.UserService;
+import com.luoying.apartment.utils.JwtUtil;
 import com.luoying.apartment.utils.MyUtil;
 import org.springframework.stereotype.Service;
 import org.springframework.util.DigestUtils;
 import org.springframework.util.StringUtils;
+
+import java.util.Date;
 
 @Service
 public class UserServiceImpl extends ServiceImpl<UserMapper,User> implements UserService {
@@ -29,5 +32,18 @@ public class UserServiceImpl extends ServiceImpl<UserMapper,User> implements Use
         user.setUserStatus(0);
         user.setPassword(MyUtil.pwdMd5(password));
         save(user);
+    }
+
+    @Override
+    public void updatePwd(String password, String newPassword, String confirmPassword) {
+        MyUtil.check(!StringUtils.isEmpty(password), "密码不能为空");
+        MyUtil.check(!StringUtils.isEmpty(newPassword), "密码不能为空");
+        MyUtil.check(newPassword.equals(confirmPassword), "两次密码不一样");
+
+        User user=getById(JwtUtil.getUser().getId());
+        MyUtil.check(MyUtil.pwdMd5(password).equals(user.getPassword()), "密码不正确");
+        user.setPassword(MyUtil.pwdMd5(newPassword));
+        user.setUpdateDate(new Date());
+        this.updateById(user);
     }
 }

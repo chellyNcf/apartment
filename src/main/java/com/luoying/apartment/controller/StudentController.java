@@ -11,6 +11,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
 import com.luoying.apartment.base.controller.BaseController;
+import org.springframework.web.multipart.MultipartFile;
 
 import java.util.Map;
 
@@ -96,6 +97,22 @@ public class StudentController extends BaseController {
     public ResultMsg dormitory(@RequestBody Student student){
         logger.info("学生入住:{}",student);
         studentService.dormitory(student);
+        return ResultMsgFactory.createSuccessMsg();
+    }
+
+    @GetMapping("/{id}/detail")
+    public ResultMsg getDetail(@PathVariable("id") Long id){
+        logger.info("查询学生信息:{}",id);
+        Student student=new Student();
+        student.setId(id);
+        return ResultMsgFactory.createSuccessMsg(studentService.getStudentDetail(student));
+    }
+
+    @PostMapping("/upload")
+    public ResultMsg upload(@RequestParam("file") MultipartFile multipartFile,@RequestParam Integer id){
+        logger.info("上传学生头像:{}",multipartFile.getOriginalFilename());
+//        Student student=new Student();
+//        student.setId(id);
         return ResultMsgFactory.createSuccessMsg();
     }
 

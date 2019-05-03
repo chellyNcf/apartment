@@ -36,7 +36,7 @@
                     <dd><a href="">安全设置</a></dd>
                 </dl>
             </li>
-            <li class="layui-nav-item"><a href="html/login.html">退出</a></li>
+            <li class="layui-nav-item"><a href="javascript:logout()">退出</a></li>
         </ul>
     </div>
 
@@ -90,6 +90,15 @@
 </div>
 <script>
     //JavaScript代码区域
+    var token=localStorage.getItem("token");
+    if(token==null){
+        location.href='html/login.html';
+    }
+    var userType=localStorage.getItem("userType");
+    if(userType==1){
+        location.href='index_app.html';
+    }
+
     layui.use('element', function(){
 
         $('#show_body').attr('src',"html/welcome.html");
@@ -104,6 +113,15 @@
 
         });
     });
+
+    function logout() {
+        localStorage.removeItem("token");
+        localStorage.removeItem("username");
+        localStorage.removeItem("studentId");
+        localStorage.removeItem("userType");
+        localStorage.removeItem("phone");
+        location.href='html/login.html';
+    }
 
 </script>
 </body>

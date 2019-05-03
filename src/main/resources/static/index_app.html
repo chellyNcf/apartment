@@ -1,0 +1,350 @@
+<!DOCTYPE html>
+<html lang="en" style="height: 100%" >
+<head>
+    <meta charset="UTF-8">
+    <meta name="renderer" content="webkit">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+    <link rel="stylesheet" href="layui/css/layui.css"  media="all">
+    <link rel="stylesheet" href="css/base.css"  media="all">
+    <script src="jquery/jquery-3.4.0.js"></script>
+    <script src="layui/layui.js"></script>
+    <script src="js/base.js"></script>
+    <!-- 注意：如果你直接复制所有代码到本地，上述css路径需要改成你本地的 -->
+    <title>学生公寓管理系统</title>
+</head>
+
+<body style="height: 100%" >
+<div class="layui-container" style="height: 100%" >
+    <div class="layui-row" style="text-align: center;height: 100%">
+
+        <div class="layui-bg-gray" style="height: 100%">
+            <div class="layui-tab" lay-filter="app_tab">
+                <ul class="layui-tab-title layui-bg-green">
+                    <li class="layui-this">个人信息</li>
+                    <li>密码修改</li>
+                    <li>签到</li>
+                    <li><i class="layui-icon layui-icon-util"></i>报修</li>
+                    <li>寒暑假留宿申请</li>
+                </ul>
+                <div class="layui-tab-content">
+                    <div class="layui-tab-item layui-show" data-options="{url:'html/app/student_info.html',title:'个人信息'}" id="tab0">
+                    </div>
+                    <div class="layui-tab-item" data-options="{url:'html/app/student_info.html',title:'密码修改'}" id="tab1">
+
+                        <div class="layui-row" >
+                            <div class="layui-form" lay-filter="password_update" style="margin-top: 50px">
+
+                                <div class="layui-form-item">
+                                    <div class="layui-inline">
+                                        <label class="layui-form-label">原密码</label>
+                                        <div class="layui-input-inline">
+                                            <input type="password"  lay-verify="required" name="password" autocomplete="off" class="layui-input">
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="layui-form-item">
+                                    <div class="layui-inline">
+                                        <label class="layui-form-label">新密码</label>
+                                        <div class="layui-input-inline">
+                                            <input type="password" name="newPassword" lay-verify="required" autocomplete="off" class="layui-input">
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="layui-form-item">
+                                    <div class="layui-inline">
+                                        <label class="layui-form-label">确认密码</label>
+                                        <div class="layui-input-inline">
+                                            <input type="password" name="confirmPassword" lay-verify="required" autocomplete="off" class="layui-input">
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="layui-form-item">
+                                    <div class="layui-input-block">
+                                        <button class="layui-btn" lay-submit="" lay-filter="update_password">确认</button>
+                                    </div>
+                                </div>
+
+                            </div>
+                        </div>
+                    </div>
+                    <div class="layui-tab-item" data-options="{url:'html/app/student_info.html',title:'签到'}" id="tab2">
+                        <div class="layui-row">
+
+                            <div class="layui-upload">
+                                <button type="button" class="layui-btn" id="uploadImg">拍照签到</button>
+                                <div class="layui-upload-list">
+                                    <img class="layui-upload-img" id="demo1" >
+                                    <p id="demoText"></p>
+                                </div>
+                            </div>
+
+                        </div>
+                    </div>
+                    <div class="layui-tab-item" data-options="{url:'html/app/student_info.html',title:'报修'}" id="tab3">
+                        <div class="layui-row">
+                            <div class="layui-form" lay-filter="repairs_add">
+
+                                <div class="layui-form-item layui-form-text">
+                                    <label class="layui-form-label">报修内容</label>
+                                    <div class="layui-input-block">
+                                        <textarea placeholder="请输入内容" lay-verify="required" class="layui-textarea" name="content"></textarea>
+                                    </div>
+                                </div>
+
+                                <div class="layui-form-item">
+                                    <div class="layui-input-block">
+                                        <button class="layui-btn" lay-submit="" lay-filter="add_repairs" disabled="true">提交</button>
+                                        <button id="back" class="layui-btn layui-btn-primary">取消</button>
+                                    </div>
+                                </div>
+
+                            </div>
+                        </div>
+                    </div>
+                    <div class="layui-tab-item" data-options="{url:'html/app/student_info.html',title:'寒暑假留宿申请'}" id="tab4">
+                        <div class="layui-row">
+                            <div class="layui-form" lay-filter="stay_add">
+
+                                <div class="layui-form-item">
+                                    <div class="layui-inline">
+                                        <label class="layui-form-label">开始日期</label>
+                                        <div class="layui-input-inline">
+                                            <input type="text" name="beginTime" id="beginTime" lay-verify="date" placeholder="开始日期" autocomplete="off" class="layui-input">
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="layui-form-item">
+                                    <div class="layui-inline">
+                                        <label class="layui-form-label">结束日期</label>
+                                        <div class="layui-input-inline">
+                                            <input type="text" name="endTime" id="endTime" lay-verify="date" placeholder="结束日期" autocomplete="off" class="layui-input">
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="layui-form-item layui-form-text">
+                                    <label class="layui-form-label">留宿原因</label>
+                                    <div class="layui-input-block">
+                                        <textarea placeholder="请输入内容" class="layui-textarea" name="reason"></textarea>
+                                    </div>
+                                </div>
+
+                                <div class="layui-form-item">
+                                    <div class="layui-input-block">
+                                        <button class="layui-btn add_bad" lay-submit="" lay-filter="add_stay" >确认</button>
+                                    </div>
+                                </div>
+
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+    </div>
+</div>
+<script>
+    //JavaScript代码区域
+    var token=localStorage.getItem("token");
+    if(token==null){
+        location.href='html/login.html';
+    }
+    var userType=localStorage.getItem("userType");
+    if(userType==0){
+        location.href='index.html';
+    }
+
+    layui.use(['element','form', 'layedit', 'laydate','upload'], function(){
+
+        var laydate = layui.laydate,form = layui.form,element=layui.element,upload = layui.upload;
+
+        $('#tab0').load('html/app/student_info.html',function () {
+            form.render();
+        })
+
+
+        element.on('tab(app_tab)', function(data){
+            console.log(this); //当前Tab标题所在的原始DOM元素
+            console.log(data.index); //得到当前Tab的所在下标
+            console.log(data.elem); //得到当前的Tab大容器
+
+            var thisTab=$('#tab'+data.index);
+            var options = eval('('+ thisTab.data('options') + ')');
+
+            console.log(JSON.stringify(options));
+
+            // thisTab.load(options.url,function () {
+            //     form.render();
+            // })
+
+            // element.init();
+
+
+        });
+
+        //日期
+        laydate.render({
+            elem: '#date'
+        });
+        //日期
+        laydate.render({
+            elem: '#beginTime'
+        });
+        //日期
+        laydate.render({
+            elem: '#endTime'
+        });
+
+
+        var id=localStorage.getItem('studentId');
+
+        remoteCall({
+            url:baseUrl+'/student/'+id+'/detail',
+            type:"get",
+            dataType:'json',
+            success:function (result) {
+                console.log(result);
+                var data=result.data;
+                if(result.code==0){
+                    form.val("student_info", {
+                        "studentName": data.studentName // "name": "value"
+                        ,"sex": data.sex
+                        ,"studentNum": data.studentNum
+                        ,"phone": data.phone
+                        ,"department": data.department
+                        ,"clazz": data.clazz
+                        ,"birthdate": data.birthdate
+                        ,"apartmentName": data.apartmentName
+                        ,"bedNum": data.bedNum
+                        ,"dormitoryNum": data.dormitoryNum
+                    })
+
+                    $('.update_student').attr("disabled",false);
+                }else{
+                    layer.msg(result.msg, {icon: 7});
+                }
+            },
+            error:function (a,b,c) {
+                layer.msg("错误："+a.status, {icon: 2});
+            }
+        });
+
+        form.on('submit(add_repairs)', function(data){
+            data.field['sponsorType']='0';
+            console.log(data.field) //当前容器的全部表单字段，名值对形式：{name: value}
+            remoteCall({
+                url:baseUrl+'/repairs',
+                type:"post",
+                contentType: "application/json; charset=utf-8",
+                data:JSON.stringify(data.field),
+                dataType:'json',
+                success:function (result) {
+                    if(result.code==0){
+                        layer.msg('成功', {icon: 1});
+                    }else{
+                        console.log(result.msg);
+                        layer.msg(result.msg, {icon: 7});
+                    }
+                },
+                error:function (a,b,c) {
+                    layer.msg("错误："+a.status, {icon: 2});
+                }
+            });
+            return false; //阻止表单跳转。如果需要表单跳转，去掉这段即可。
+        });
+
+
+        form.on('submit(add_stay)', function(data){
+            console.log(data.elem) //被执行事件的元素DOM对象，一般为button对象
+            console.log(data.form) //被执行提交的form对象，一般在存在form标签时才会返回
+            data.field['studentId']=id;
+            // data.field['dormitoryId']=student.dormitoryId;
+            console.log(data.field) //当前容器的全部表单字段，名值对形式：{name: value}
+            remoteCall({
+                url:baseUrl+'/stay-school',
+                type:"post",
+                contentType: "application/json; charset=utf-8",
+                data:JSON.stringify(data.field),
+                dataType:'json',
+                success:function (result) {
+                    if(result.code==0){
+                        layer.msg('成功', {icon: 1});
+                    }else{
+                        layer.msg(result.msg, {icon: 7});
+                    }
+                },
+                error:function (a,b,c) {
+                    // layer.
+                    layer.msg("错误："+a.status, {icon: 2});
+                }
+            });
+            return false; //阻止表单跳转。如果需要表单跳转，去掉这段即可。
+        });
+
+        form.on('submit(update_password)', function(data){
+            data.field['studentId']=id;
+            // data.field['dormitoryId']=student.dormitoryId;
+            console.log(data.field) //当前容器的全部表单字段，名值对形式：{name: value}
+            remoteCall({
+                url:baseUrl+'/user/pwd',
+                type:"put",
+                contentType: "application/json; charset=utf-8",
+                data:JSON.stringify(data.field),
+                dataType:'json',
+                success:function (result) {
+                    if(result.code==0){
+                        layer.msg('成功', {icon: 1});
+                    }else{
+                        layer.msg(result.msg, {icon: 7});
+                    }
+                },
+                error:function (a,b,c) {
+                    // layer.
+                    layer.msg("错误："+a.status, {icon: 2});
+                }
+            });
+            return false; //阻止表单跳转。如果需要表单跳转，去掉这段即可。
+        });
+
+        //普通图片上传
+        var uploadInst = upload.render({
+            elem: '#uploadImg'
+            ,url: baseUrl+'/sign-in/upload'
+            ,size: 1024
+            ,data:{'id':'1'}
+            ,before: function(obj){
+                //预读本地文件示例，不支持ie8
+                obj.preview(function(index, file, result){
+                    $('#demo1').attr('width', '300');
+                    $('#demo1').attr('height', '400');
+                    $('#demo1').attr('src', result); //图片链接（base64）
+                });
+            }
+            ,done: function(res){
+                //如果上传失败
+                if(res.code > 0){
+                    return layer.msg('上传失败');
+                }
+                //上传成功
+            }
+            ,error: function(){
+                //演示失败状态，并实现重传
+                var demoText = $('#demoText');
+                demoText.html('<span style="color: #FF5722;">上传失败</span> <a class="layui-btn layui-btn-xs demo-reload">重试</a>');
+                demoText.find('.demo-reload').on('click', function(){
+                    uploadInst.upload();
+                });
+            }
+        });
+
+    });
+
+</script>
+</body>
+</html>

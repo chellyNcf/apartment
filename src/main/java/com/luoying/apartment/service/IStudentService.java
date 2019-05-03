@@ -20,4 +20,6 @@ public interface IStudentService extends IService<Student> {
 
     void dormitory(Student student);
 
+    Student getStudentDetail(Student student);
+
 }

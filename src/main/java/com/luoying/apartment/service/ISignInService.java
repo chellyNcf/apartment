@@ -2,6 +2,7 @@ package com.luoying.apartment.service;
 
 import com.luoying.apartment.pojo.SignIn;
 import com.baomidou.mybatisplus.extension.service.IService;
+import org.springframework.web.multipart.MultipartFile;
 
 /**
  * <p>
@@ -13,4 +14,6 @@ import com.baomidou.mybatisplus.extension.service.IService;
  */
 public interface ISignInService extends IService<SignIn> {
 
+
+    void signIn(MultipartFile multipartFile);
 }

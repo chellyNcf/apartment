@@ -3,6 +3,7 @@ package com.luoying.apartment.base.controller;
 import com.luoying.apartment.base.bean.ResultMsg;
 import com.luoying.apartment.base.bean.ResultMsgFactory;
 import com.luoying.apartment.base.exception.MyException;
+import com.luoying.apartment.utils.JwtUtil;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.WebDataBinder;
 import org.springframework.web.bind.annotation.*;
@@ -36,6 +37,7 @@ public class ExceptionController extends BaseController{
     public ResultMsg errorHandler(Exception e) {
         logger.error("统一异常处理", e);
         //正式生产环境需要屏蔽数据库异常，这里开发环境直接返回所有异常信息
+        JwtUtil.removeUser();
         return ResultMsgFactory.createErrorMsg("系统错误："+e.getMessage());
     }
 
@@ -43,6 +45,7 @@ public class ExceptionController extends BaseController{
     @ExceptionHandler(value = MyException.class)
     public ResultMsg myErrorHandler(MyException e){
         logger.warn("业务异常", e);
+        JwtUtil.removeUser();
         return ResultMsgFactory.createErrorMsg(e.getMessage());
     }
 

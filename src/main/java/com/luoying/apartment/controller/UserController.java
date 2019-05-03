@@ -59,4 +59,10 @@ public class UserController extends  BaseController{
         userService.removeById(id);
         return ResultMsgFactory.createSuccessMsg();
     }
+
+    @PutMapping("/pwd")
+    public ResultMsg updatePwd(String password,String newPassword,String confirmPassword){
+
+        return ResultMsgFactory.createSuccessMsg();
+    }
 }

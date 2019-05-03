@@ -13,4 +13,6 @@ public interface StudentMapper extends BaseMapper<Student> {
 
     int queryStudentCount(Map<String,Object> params);
 
+    Student queryStudentInfo(Student student);
+
 }

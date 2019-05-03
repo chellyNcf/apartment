@@ -5,6 +5,7 @@ import com.luoying.apartment.dao.SignInMapper;
 import com.luoying.apartment.service.ISignInService;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import org.springframework.stereotype.Service;
+import org.springframework.web.multipart.MultipartFile;
 
 /**
  * <p>
@@ -17,4 +18,8 @@ import org.springframework.stereotype.Service;
 @Service
 public class SignInServiceImpl extends ServiceImpl<SignInMapper, SignIn> implements ISignInService {
 
+    @Override
+    public void signIn(MultipartFile multipartFile) {
+
+    }
 }

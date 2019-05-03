@@ -49,16 +49,24 @@ public class RepairsServiceImpl extends ServiceImpl<RepairsMapper, Repairs> impl
     public void addRepairs(Repairs repairs, User user) {
         MyUtil.checkNull(user);
         MyUtil.checkNull(user.getId(),"用户为空");
-        //获取当前登录学生的user信息
-        User stu = userMapper.selectById(user.getId());
-        MyUtil.checkNull(stu);
-        MyUtil.checkNull(stu.getStudentId());
-        Student student =  studentMapper.selectById(user.getStudentId());
-        //填上报人信息
-        repairs.setSponsorId(student.getId());
-        repairs.setSponsorName(student.getStudentName());
-        repairs.setSponsorPhone(student.getPhone());
-        repairs.setDormitoryId(student.getDormitoryId());
+        Integer sponsorType=repairs.getSponsorType();
+        MyUtil.checkNull(sponsorType);
+        //学生
+        if(sponsorType==0){
+            //获取当前登录学生的user信息
+            User stu = userMapper.selectById(user.getId());
+            MyUtil.checkNull(stu);
+            MyUtil.checkNull(stu.getStudentId());
+            Student student =  studentMapper.selectById(user.getStudentId());
+            //填上报人信息
+            repairs.setSponsorId(student.getId());
+            repairs.setSponsorName(student.getStudentName());
+            repairs.setSponsorPhone(student.getPhone());
+            repairs.setDormitoryId(student.getDormitoryId());
+        }else if (sponsorType==1){
+            repairs.setSponsorId(user.getId());
+        }
+
         this.baseMapper.insert(repairs);
     }
 

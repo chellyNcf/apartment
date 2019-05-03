@@ -7,8 +7,10 @@
     <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
     <link rel="stylesheet" href="../layui/css/layui.css"  media="all">
     <link rel="stylesheet" href="../css/base.css"  media="all">
-    <script src="../jquery/jquery-3.4.0.js"></script>
-    <script src="../layui/layui.js"></script>
+    <script src="../jquery/jquery-3.4.0.js" charset="utf-8"></script>
+    <script src="../jquery/jquery.md5.js" charset="utf-8"></script>
+    <script src="../layui/layui.js" charset="utf-8"></script>
+    <script src="../js/base.js" charset="utf-8"></script>
     <!-- 注意：如果你直接复制所有代码到本地，上述css路径需要改成你本地的 -->
     <title>Title</title>
 </head>
@@ -21,7 +23,7 @@
     </div>
     <div class="layui-row">
         <div class="layui-col-md4 layui-col-lg-offset4 layui-bg-black" style="margin-top: 40px;padding-top: 40px">
-            <form class="layui-form" action="../index.html">
+            <div class="layui-form" >
 
                 <div class="layui-form-item">
                     <label class="layui-form-label">账号</label>
@@ -37,21 +39,14 @@
                     </div>
                 </div>
 
-                <div class="layui-form-item" pane="">
-                    <label class="layui-form-label">记住密码</label>
-                    <div class="layui-input-block">
-                        <input type="checkbox" name="like1[write]" lay-skin="primary" title="勾选" >
-                    </div>
-                </div>
-
                 <div class="layui-form-item">
                     <div class="layui-input-block">
-                        <button class="layui-btn" lay-submit="" lay-filter="demo1">登录</button>
-                        <button type="reset" class="layui-btn layui-btn-primary">注册</button>
+                        <button class="layui-btn" lay-submit="" lay-filter="login">登录</button>
+                        <!--<button type="reset" class="layui-btn layui-btn-primary">注册</button>-->
                     </div>
                 </div>
 
-            </form>
+            </div>
         </div>
     </div>
 </div>
@@ -59,6 +54,44 @@
 <script>
     layui.use(['form','element'], function(){
 
+        var form = layui.form;
+
+        form.on('submit(login)', function(data){
+
+            var password=data.field['password'];
+            data.field['password']=$.md5(password);
+            remoteCall({
+                url:baseUrl+'/login',
+                type:"post",
+                contentType: "application/json; charset=utf-8",
+                data:JSON.stringify(data.field),
+                dataType:'json',
+                success:function (result) {
+                    console.log(result);
+                    if(result.code==0){
+                        var user=result.data;
+                        localStorage.setItem('token',user.token);
+                        localStorage.setItem('username',user.username);
+                        localStorage.setItem('userType',user.userType);
+
+                        if(user.userType==0){
+                            location.href='../index.html';
+                        }else{
+                            localStorage.setItem('studentId',user.studentId);
+                            location.href='../index_app.html';
+                        }
+
+                    }else{
+                        layer.msg(result.msg, {icon: 7});
+                    }
+                },
+                error:function (a,b,c) {
+                    // layer.
+                    layer.msg("错误："+a.status, {icon: 2});
+                }
+            });
+            return false; //阻止表单跳转。如果需要表单跳转，去掉这段即可。
+        });
 
     })
 

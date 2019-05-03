@@ -93,4 +93,10 @@ public class StudentServiceImpl extends ServiceImpl<StudentMapper,Student> imple
         student.setUpdateDate(new Date());
         updateById(student);
     }
+
+    @Override
+    public Student getStudentDetail(Student student) {
+
+        return this.baseMapper.queryStudentInfo(student);
+    }
 }

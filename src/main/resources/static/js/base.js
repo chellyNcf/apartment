@@ -1,8 +1,16 @@
 var baseUrl="http://localhost:8080/apartment";
 
+var headers={'authorization':'bearer;'+localStorage.getItem("token")};
 
 function remoteCall(options) {
 
+    var token=localStorage.getItem("token");
+    // if(token==null){
+    //     location.href='../html/login.html';
+    // }
+    options['headers']={'authorization':'bearer;'+token}
+    console.log("token:"+token);
+    console.log("options:"+JSON.stringify(options));
     $.ajax(options);
 }
 

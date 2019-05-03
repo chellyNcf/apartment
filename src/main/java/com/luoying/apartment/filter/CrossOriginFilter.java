@@ -25,10 +25,10 @@ public class CrossOriginFilter implements Filter {
         response.setHeader("Access-Control-Allow-Origin", "*");
         //请求方法跨域
         response.setHeader("Access-Control-Allow-Methods", "POST,PUT,GET,DELETE");
-        //在3600秒内，不需要再发送预检验请求
-        response.setHeader("Access-Control-Max-Age", "3600");
+        //在86400秒(一天)内，不需要再发送预检验请求
+        response.setHeader("Access-Control-Max-Age", "86400");
         //允许跨域请求包含content-type头
-        response.setHeader("Access-Control-Allow-Headers", "Content-Type");
+        response.setHeader("Access-Control-Allow-Headers", "Content-Type,authorization");
 
         filterChain.doFilter(request,response);
     }
