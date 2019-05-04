@@ -84,11 +84,11 @@ public class SignInServiceImpl extends ServiceImpl<SignInMapper, SignIn> impleme
 
         Gson gson =new Gson();
         Map<String,Object> objectMap=gson.fromJson(result,Map.class );
-        int code=MyUtil.getInt(objectMap.get("error_code"));
+        double code=MyUtil.getDouble(objectMap.get("error_code"));
         if(code!=0){
             signIn.setSuccess(0);
             save(signIn);
-            MyUtil.checkFailed(objectMap.get("error_msg").toString());
+            MyUtil.checkFailed("人脸识别失败:"+objectMap.get("error_msg").toString());
         }
         logger.info("{}-人脸识别结果：{}",student.getStudentName(), objectMap.get("result"));
         signIn.setSuccess(1);
