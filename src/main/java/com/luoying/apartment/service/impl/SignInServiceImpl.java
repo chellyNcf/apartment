@@ -64,6 +64,7 @@ public class SignInServiceImpl extends ServiceImpl<SignInMapper, SignIn> impleme
         user=userMapper.selectById(user.getId());
         Student student=studentMapper.selectById(user.getStudentId());
         MyUtil.checkNull(student.getPhotoImgUrl(),"你还未上传照片");
+        MyUtil.check(student.getStatus()==1,"你还未入住宿舍" );
         String path=apartmentConfig.getFilePath()+student.getPhotoImgUrl();
         String result=null;
         try {

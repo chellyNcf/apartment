@@ -49,4 +49,10 @@ public class SignIn extends BaseEntity {
     @TableField(exist = false)
     private String studentName;
 
+    @TableField(exist = false)
+    private String apartmentName;
+
+    @TableField(exist = false)
+    private String dormitoryNum;
+
 }

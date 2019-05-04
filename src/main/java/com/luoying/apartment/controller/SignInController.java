@@ -47,5 +47,12 @@ public class SignInController extends BaseController {
         return ResultMsgFactory.createSuccessMsg();
     }
 
+    @DeleteMapping("/{id}")
+    public ResultMsg remove(@PathVariable("id") Long id){
+        logger.info("删除信息:{}",id);
+        signInService.removeById(id);
+        return ResultMsgFactory.createSuccessMsg();
+    }
+
 }
 
