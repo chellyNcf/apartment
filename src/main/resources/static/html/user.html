@@ -33,7 +33,7 @@
                 <div class="layui-inline">
                     <label class="layui-form-label">学生名</label>
                     <div class="layui-input-block">
-                        <input type="text" name="studentName" id="name" autocomplete="off" class="layui-input">
+                        <input type="text" name="studentName" id="studentName" autocomplete="off" class="layui-input">
                     </div>
                 </div>
 
@@ -96,6 +96,7 @@
 
 </div>
 
+
 <script type="text/html" id="toolbarDemo">
     <div class="layui-btn-container">
         <button class="layui-btn layui-btn-normal layui-btn-sm layui-btn-radius" lay-event="add">
@@ -106,7 +107,7 @@
 
 <script type="text/html" id="barDemo">
     <a class="layui-btn layui-btn-xs layui-btn-disabled" lay-event="disable">禁用</a>
-    <a class="layui-btn layui-btn-xs" lay-event="edit">编辑</a>
+    <!--<a class="layui-btn layui-btn-xs" lay-event="edit">编辑</a>-->
     <a class="layui-btn layui-btn-danger layui-btn-xs" lay-event="del">删除</a>
 </script>
 
@@ -130,11 +131,11 @@
 </script>
 <script type="text/html" id="statusTpl">
     {{#  if(d.userStatus == 0){ }}
-        <span style="color: #49c1ff">未入住</span>
+        <span style="color: green">正常</span>
     {{#  } else if(d.userStatus == 1){ }}
-        <span style="color: green">已入住</span>
-    {{#  } else if(d.userStatus == 2) { }}
-        <span style="color: red">退宿</span>
+        <span style="color: red">禁用</span>
+    {{#  } else { }}
+        <span ></span>
     {{#  } }}
 </script>
 
@@ -160,8 +161,8 @@
                 ,{field:'username', width:100, title: '用户名',fixed: 'left'}
                 ,{field:'userType', width:100, title: '用户类型', templet: '#userTypeTpl'}
                 ,{field:'userStatus', width:80, title: '状态', templet: '#statusTpl'}
-                ,{field:'phone', width:100, title: '联系方式'}
-                ,{field:'studentName', width:100, title: '姓名'}
+                ,{field:'phone', width:120, title: '联系方式'}
+                ,{field:'studentName', width:100, title: '学生名'}
                 ,{field:'sex', width:80, title: '性别', templet: '#sexTpl'}
                 ,{field:'department',width:150, title: '院系名称'}
                 ,{field:'clazz', title: '班级'}
@@ -364,16 +365,18 @@
         var active = {
             //搜索方法
             search: function(){
-                var name = $('#name');
-                var studentNum=$('#studentNum');
+                var usernameSearch=$('#usernameSearch')
+                var studentName = $('#studentName');
+                var userType=$('#userType');
                 //执行重载表格
                 table.reload('user_table', {
                     page: {
                         curr: 1 //重新从第 1 页开始
                     }
                     ,where: {
-                        studentName: name.val()
-                        ,studentNum: studentNum.val()
+                        studentName: studentName.val()
+                        ,userType: userType.val()
+                        ,username:usernameSearch.val()
                     }
                 });
             }

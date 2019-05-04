@@ -345,7 +345,42 @@
             }
         });
 
+        form.on('submit(update_student)', function(data){
+            data.field['id']=id;
+            remoteCall({
+                url:baseUrl+'/student',
+                type:"put",
+                contentType: "application/json; charset=utf-8",
+                data:JSON.stringify(data.field),
+                dataType:'json',
+                success:function (result) {
+                    console.log(result);
+                    if(result.code==0){
+                        layer.msg('成功', {icon: 1});
+                        location.href='#';
+                    }else{
+                        layer.msg(result.msg, {icon: 7});
+                    }
+                },
+                error:function (a,b,c) {
+                    // layer.
+                    layer.msg("错误："+a.status, {icon: 2});
+                }
+            });
+            return false; //阻止表单跳转。如果需要表单跳转，去掉这段即可。
+        });
+
+
     });
+
+    function logout() {
+        localStorage.removeItem("token");
+        localStorage.removeItem("username");
+        localStorage.removeItem("studentId");
+        localStorage.removeItem("userType");
+        localStorage.removeItem("phone");
+        location.href='html/login.html';
+    }
 
 </script>
 </body>

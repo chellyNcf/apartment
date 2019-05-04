@@ -29,7 +29,7 @@
                 <a href="javascript:;">
                     <i class="layui-icon layui-icon-username layui-nav-img"></i>
                     <!--<img src="http://t.cn/RCzsdCq" class="layui-nav-img">-->
-                    admin
+                    <span id="username">admin</span>
                 </a>
                 <dl class="layui-nav-child">
                     <dd><a href="">基本资料</a></dd>
@@ -99,6 +99,8 @@
         location.href='index_app.html';
     }
 
+    $('#username').text(localStorage.getItem("username"));
+
     layui.use('element', function(){
 
         $('#show_body').attr('src',"html/welcome.html");
@@ -112,6 +114,9 @@
             $('#show_body').attr('src',url);
 
         });
+
+
+
     });
 
     function logout() {

@@ -14,7 +14,7 @@
             <div class="layui-inline">
                 <label class="layui-form-label">学号</label>
                 <div class="layui-input-inline">
-                    <input type="text"  lay-verify="required" name="studentNum" autocomplete="off" class="layui-input">
+                    <input type="text" disabled  lay-verify="required" name="studentNum" autocomplete="off" class="layui-input">
                 </div>
             </div>
         </div>
@@ -80,6 +80,13 @@
                 <div class="layui-input-inline">
                     <input type="text" disabled name="bedNum" lay-verify="required" autocomplete="off" class="layui-input">
                 </div>
+            </div>
+        </div>
+
+        <div class="layui-form-item">
+            <div class="layui-input-block">
+                <button class="layui-btn update_student" lay-submit="" lay-filter="update_student" disabled="true">修改信息</button>
+                <button id="logout" onclick="logout()" class="layui-btn layui-btn-primary">退出登录</button>
             </div>
         </div>
 
