@@ -9,7 +9,7 @@
         left join tb_user tu on tbr.record_user_id = tu.id
         left join tb_user tu2  on tbr.handle_user_id = tu2.id
         left join tb_apartment ta on td.apartment_id = ta.id
-        left join tb_bed tbed on ts.bed_id = tbed.bed_num
+        left join tb_bed tbed on ts.bed_id = tbed.id
         where 1=1
         <if test="studentName!=null and studentName !=''">
             and ts.student_name like CONCAT('%',#{studentName},'%')
@@ -46,7 +46,7 @@
         left join tb_user tu on tbr.record_user_id = tu.id
         left join tb_user tu2  on tbr.handle_user_id = tu2.id
         left join tb_apartment ta on td.apartment_id = ta.id
-
+        left join tb_bed tbed on ts.bed_id = tbed.id
         where 1=1
         <if test="studentName!=null and studentName !=''">
             and ts.student_name like CONCAT('%',#{studentName},'%')
@@ -81,7 +81,7 @@
         left join tb_user tu on tbr.record_user_id = tu.id
         left join tb_user tu2  on tbr.handle_user_id = tu2.id
         left join tb_apartment ta on td.apartment_id = ta.id
-        left join tb_bed tbed on ts.bed_id = tbed.bed_num
+        left join tb_bed tbed on ts.bed_id = tbed.id
         where tbr.id = #{id}
     </select>
 </mapper>
