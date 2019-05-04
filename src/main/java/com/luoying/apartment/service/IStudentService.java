@@ -3,6 +3,7 @@ package com.luoying.apartment.service;
 import com.luoying.apartment.base.bean.MyPage;
 import com.luoying.apartment.pojo.Student;
 import com.baomidou.mybatisplus.extension.service.IService;
+import org.springframework.web.multipart.MultipartFile;
 
 /**
  * <p>
@@ -21,5 +22,7 @@ public interface IStudentService extends IService<Student> {
     void dormitory(Student student);
 
     Student getStudentDetail(Student student);
+
+    void uploadPhoto(MultipartFile multipartFile, Integer id);
 
 }

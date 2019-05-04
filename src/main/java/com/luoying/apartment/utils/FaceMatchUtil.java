@@ -29,8 +29,31 @@ public class FaceMatchUtil {
         String url = "https://aip.baidubce.com/rest/2.0/face/v3/match";
         try {
 
-            byte[] bytes1 = FileUtil.readFileByBytes(baseImg);
             byte[] bytes2 = FileUtil.readFileByBytes(toMatchImg);
+            return match(baseImg, bytes2);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return null;
+    }
+
+    public static String match(String baseImg, byte[] bytes2) {
+        // 请求url
+        String url = "https://aip.baidubce.com/rest/2.0/face/v3/match";
+        try {
+            byte[] bytes1 = FileUtil.readFileByBytes(baseImg);
+            return match(bytes1, bytes2);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return null;
+    }
+
+    public static String match(byte[] bytes1, byte[] bytes2) {
+        // 请求url
+        String url = "https://aip.baidubce.com/rest/2.0/face/v3/match";
+        try {
+
             String image1 = Base64Util.encode(bytes1);
             String image2 = Base64Util.encode(bytes2);
 

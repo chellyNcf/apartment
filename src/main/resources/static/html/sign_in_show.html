@@ -126,11 +126,11 @@
     <a class="layui-btn layui-btn-danger layui-btn-xs" lay-event="del">删除</a>
 </script>
 
-<script type="text/html" id="sexTpl">
-    {{#  if(d.sex == 1){ }}
-        <span>男</span>
-    {{#  } else if(d.sex == 2){ }}
-        <span>女</span>
+<script type="text/html" id="typeTpl">
+    {{#  if(d.signInType == 0){ }}
+        <span style="color: blue">人脸识别</span>
+    {{#  } else if(d.signInType == 1){ }}
+        <span>人工签到</span>
     {{#  } else{ }}
         <span></span>
     {{#  } }}
@@ -138,9 +138,9 @@
 
 <script type="text/html" id="successTpl">
     {{# if(d.success == 1){ }}
-        <span style="color: red">已签到</span>
+        <span style="color: greenyellow">已签到</span>
     {{#  } else { }}
-        <span>未签到</span>
+        <span style="color: red">签到失败</span>
     {{#  } }}
 </script>
 
@@ -151,13 +151,23 @@
 </script>
 
 <script>
-    layui.use(['table','layer','form','element'], function(){
-        var table = layui.table,layer = layui.layer,form = layui.form,element=layui.element;
+    layui.use(['table','layer','form','element', 'laydate'], function(){
+        var table = layui.table,layer = layui.layer,form = layui.form,element=layui.element, laydate = layui.laydate;
+
+        //日期
+        laydate.render({
+            elem: '#test1'
+            ,done: function(value, date){
+                layer.alert('你选择的日期是：' + value + '<br>获得的对象是' + JSON.stringify(date));
+            }
+        });
+
+
 
         table.render({
             id:'sign_in_table',
             elem: '#sign_in_table'
-            ,url:baseUrl+'/dormitory/page'
+            ,url:baseUrl+'/sign_in/page'
             ,toolbar: '#toolbarDemo'
             ,cellMinWidth: 80 //全局定义常规单元格的最小宽度，layui 2.2.1 新增
             ,cols: [[
@@ -166,7 +176,7 @@
                 ,{field:'studentNum', title: '学号',sort: true}
                 ,{field:'createDate', title: '签到时间',width:180}
                 ,{field:'dormitoryInfo', title: '宿舍信息' , sort: true} //minWidth：局部定义当前单元格的最小宽度，layui 2.2.1 新增
-                ,{field:'signInType', title: '签到类型'}
+                ,{field:'signInType', title: '签到类型', templet: '#typeTpl'}
                 ,{field:'success', title: '签到', templet: '#successTpl'}
                 ,{fixed: 'right', title:'操作', toolbar: '#barDemo' }
             ]]

@@ -25,6 +25,22 @@ public class MyUtil {
     }
 
     /**
+     * Object转double，出错返回0
+     * @param obj
+     * @return
+     */
+    public static double getDouble(Object obj){
+        if(null!=obj){
+            try {
+                return Double.valueOf(obj.toString());
+            }catch(Exception e) {
+
+            }
+        }
+        return 0;
+    }
+
+    /**
      * Object转long，出错返回0
      * @param obj
      * @return

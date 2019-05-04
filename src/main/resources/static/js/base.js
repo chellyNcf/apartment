@@ -1,4 +1,5 @@
 var baseUrl="http://localhost:8080/apartment";
+var fileUrl="http://localhost:8080/file/";
 
 var headers={'authorization':'bearer;'+localStorage.getItem("token")};
 

@@ -1,17 +1,18 @@
 package com.luoying.apartment.controller;
 
 
+import com.luoying.apartment.base.bean.MyPage;
 import com.luoying.apartment.base.bean.ResultMsg;
 import com.luoying.apartment.base.bean.ResultMsgFactory;
+import com.luoying.apartment.pojo.SignIn;
 import com.luoying.apartment.service.ISignInService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.*;
 
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
 import com.luoying.apartment.base.controller.BaseController;
 import org.springframework.web.multipart.MultipartFile;
+
+import java.util.Map;
 
 /**
  * <p>
@@ -28,11 +29,21 @@ public class SignInController extends BaseController {
     @Autowired
     private ISignInService signInService;
 
+    @GetMapping("/page")
+    public ResultMsg page(@RequestParam Map<String,Object> params){
+
+        MyPage<SignIn> page=new MyPage<>(params);
+
+        page=signInService.getSignInPage(page);
+        ResultMsg msg=ResultMsgFactory.createSuccessMsg(page.getRecords());
+        msg.setCount(page.getCount());
+        return msg;
+    }
+
     @PostMapping("/upload")
     public ResultMsg upload(@RequestParam("file") MultipartFile multipartFile){
         logger.info("上传学生头像:{}",multipartFile.getOriginalFilename());
-//        Student student=new Student();
-//        student.setId(id);
+        signInService.signIn(multipartFile);
         return ResultMsgFactory.createSuccessMsg();
     }
 

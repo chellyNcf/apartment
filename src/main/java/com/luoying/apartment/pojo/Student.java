@@ -75,6 +75,11 @@ public class Student extends BaseEntity {
     private Long dormitoryId;
 
     /**
+     * 照片地址
+     */
+    private String photoImgUrl;
+
+    /**
      * 0未入住，1已入住，2退宿
      */
     private Integer status;

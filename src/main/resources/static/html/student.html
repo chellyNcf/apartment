@@ -111,11 +111,14 @@
         <button class="layui-btn layui-btn-normal layui-btn-sm layui-btn-radius" lay-event="add">
             增加 <i class="layui-icon layui-icon-add-1"></i>
         </button>
+        <button class="layui-btn layui-btn-normal layui-btn-sm layui-btn-radius" lay-event="upload">
+            上传学生照片 <i class="layui-icon layui-icon-upload-circle"></i>
+        </button>
         <button class="layui-btn layui-btn-normal layui-btn-sm layui-btn-radius" lay-event="stay">
-            寒暑假留校申请 <i class="layui-icon layui-icon-add-1"></i>
+            寒暑假留校申请 <i class="layui-icon layui-icon-log"></i>
         </button>
         <button class="layui-btn layui-btn-normal layui-btn-sm layui-btn-radius" lay-event="bad">
-            违规事件 <i class="layui-icon layui-icon-add-1"></i>
+            违规事件 <i class="layui-icon layui-icon-face-cry"></i>
         </button>
     </div>
 </script>
@@ -214,6 +217,15 @@
                     var data = checkStatus.data[0];  //获取选中行数据
 
                     location.href='stay_school_add.html?id='+data.id;
+                    break;
+                case 'upload':
+                    if(checkStatus.data.length==0){
+                        layer.msg("请选择学生");
+                        break;
+                    }
+                    var data = checkStatus.data[0];  //获取选中行数据
+
+                    location.href='student_upload.html?id='+data.id;
                     break;
             };
         });

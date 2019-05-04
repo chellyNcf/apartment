@@ -17,6 +17,8 @@ create table `tb_student`(
  primary key(`id`)
 )ENGINE = INNODB AUTO_INCREMENT = 1 CHARSET = utf8 comment '学生表';
 
+ALTER TABLE `tb_student` ADD `photo_img_url` varchar(255) null comment '学生照片';
+
 #用户表
 create table `tb_user`(
 `id` BIGINT(20) not null auto_increment  comment '主键',

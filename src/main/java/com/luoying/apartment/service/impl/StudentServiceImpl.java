@@ -3,6 +3,7 @@ package com.luoying.apartment.service.impl;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.luoying.apartment.base.bean.MyPage;
+import com.luoying.apartment.base.config.ApartmentConfig;
 import com.luoying.apartment.base.constant.UserTypeEnum;
 import com.luoying.apartment.dao.BedMapper;
 import com.luoying.apartment.dao.DormitoryMapper;
@@ -15,11 +16,16 @@ import com.luoying.apartment.pojo.User;
 import com.luoying.apartment.service.IStudentService;
 import com.luoying.apartment.utils.MyUtil;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.DigestUtils;
+import org.springframework.web.multipart.MultipartFile;
 
+import java.io.File;
+import java.io.IOException;
 import java.util.Date;
+import java.util.UUID;
 
 @Service
 public class StudentServiceImpl extends ServiceImpl<StudentMapper,Student> implements IStudentService {
@@ -32,6 +38,9 @@ public class StudentServiceImpl extends ServiceImpl<StudentMapper,Student> imple
 
     @Autowired
     private DormitoryMapper dormitoryMapper;
+
+    @Autowired
+    private ApartmentConfig apartmentConfig;
 
     @Override
     public MyPage<Student> getStudentPage(MyPage<Student> page) {
@@ -98,5 +107,32 @@ public class StudentServiceImpl extends ServiceImpl<StudentMapper,Student> imple
     public Student getStudentDetail(Student student) {
 
         return this.baseMapper.queryStudentInfo(student);
+    }
+
+    @Transactional(rollbackFor = {Exception.class})
+    @Override
+    public void uploadPhoto(MultipartFile multipartFile, Integer id) {
+
+        MyUtil.check(!multipartFile.isEmpty(), "文件为空");
+
+        Student student=getById(id);
+        MyUtil.checkNull(student);
+
+        String fileName = multipartFile.getOriginalFilename();  // 文件名
+        String suffixName = fileName.substring(fileName.lastIndexOf("."));  // 后缀名
+        String filePath="images/";
+        fileName = UUID.randomUUID() + suffixName; // 新文件名
+        filePath=filePath + fileName;
+        student.setPhotoImgUrl(filePath);
+        updateById(student);
+
+        File file = new File(apartmentConfig.getFilePath()+filePath);
+        try {
+            multipartFile.transferTo(file);
+        } catch (IOException e) {
+            e.printStackTrace();
+            MyUtil.checkFailed(e.getMessage());
+        }
+
     }
 }

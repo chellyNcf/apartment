@@ -50,6 +50,7 @@ public class LoginInterceptor implements HandlerInterceptor {
         user.setId(id);
         user.setUsername(MyUtil.ObjectToString(claims.get("username")));
         user.setUserType(MyUtil.getInt(claims.get("userType")));
+        logger.info("用户{}:{}", id ,user);
         JwtUtil.setUser(user);
         return true;
     }
